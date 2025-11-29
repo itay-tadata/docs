@@ -1,0 +1,389 @@
+---
+title: "Analytics & Monitoring"
+description: "Track tool usage, performance, and errors"
+---
+
+## Overview
+
+The Analytics dashboard provides comprehensive insights into how your toolsets are being used, helping you monitor performance, identify issues, and optimize costs.
+
+## Accessing Analytics
+
+1. Navigate to **Toolsets** in your dashboard
+2. Click on a toolset
+3. Click **Analytics** in the top navigation
+
+Or use the direct URL pattern:
+```
+https://app.tadata.com/toolsets/{toolset-id}/analytics
+```
+
+## Dashboard Overview
+
+### Key Metrics Cards
+
+<CardGroup cols={2}>
+  <Card title="Total Calls" icon="hashtag">
+    Number of tool executions in selected time period
+  </Card>
+  <Card title="Error Rate" icon="triangle-exclamation">
+    Percentage of failed tool executions
+  </Card>
+  <Card title="Avg Response Time" icon="clock">
+    Mean execution duration across all tools
+  </Card>
+  <Card title="Top Tools" icon="ranking-star">
+    Most frequently used tools
+  </Card>
+</CardGroup>
+
+### Usage Over Time
+
+Line chart showing:
+- Tool executions per day/week/month
+- Error rate trends
+- Response time trends
+
+**Use Cases:**
+- Identify usage spikes (correlate with incidents or launches)
+- Spot error rate increases (indicates issues)
+- Track performance degradation over time
+
+### Client Distribution
+
+Pie chart showing which clients are using your toolset:
+
+- **Claude Desktop**: 45%
+- **Cursor**: 30%
+- **Custom**: 15%
+- **Other**: 10%
+
+**Use Cases:**
+- Understand your user base
+- Optimize for primary clients
+- Track adoption across platforms
+
+### Tool Breakdown
+
+Table showing per-tool metrics:
+
+| Tool | Calls | Success Rate | Avg Duration | Last Used |
+|------|-------|--------------|--------------|-----------|
+| `list_issues` | 1,247 | 98.5% | 450ms | 2 min ago |
+| `create_issue` | 432 | 95.2% | 820ms | 15 min ago |
+| `update_issue` | 89 | 91.0% | 710ms | 1 hour ago |
+
+**Use Cases:**
+- Identify most popular tools
+- Find tools with high error rates
+- Spot slow tools needing optimization
+
+## Execution Traces
+
+Detailed logs of every tool invocation:
+
+### Trace View
+
+<Frame>
+  <img src="/images/analytics-traces.png" alt="Execution traces" />
+</Frame>
+
+Each trace includes:
+
+<Tabs>
+  <Tab title="Basic Info">
+    - **Timestamp**: When the tool was executed
+    - **Tool Name**: Which tool was called
+    - **Status**: Success (green) or Error (red)
+    - **Duration**: How long it took
+    - **Client**: Which AI agent made the call
+  </Tab>
+
+  <Tab title="Input">
+    ```json
+    {
+      "title": "Fix production bug",
+      "description": "Error in payment processing",
+      "priority": 1,
+      "status": "todo"
+    }
+    ```
+
+    What the AI agent sent to the tool.
+  </Tab>
+
+  <Tab title="Output">
+    ```json
+    {
+      "id": "ABC-123",
+      "title": "Fix production bug",
+      "url": "https://linear.app/...",
+      "createdAt": "2025-11-29T12:34:56Z"
+    }
+    ```
+
+    What the tool returned.
+  </Tab>
+
+  <Tab title="Error Details">
+    ```json
+    {
+      "error": "Unauthorized",
+      "message": "API key is invalid",
+      "code": 401,
+      "stack": "..."
+    }
+    ```
+
+    Error details if the call failed.
+  </Tab>
+</Tabs>
+
+### Filtering Traces
+
+Filter by:
+- **Date Range**: Last hour, day, week, month, custom
+- **Tool**: Specific tool or all tools
+- **Status**: Success, error, or both
+- **Client**: Claude Desktop, Cursor, custom, or all
+
+### Trace Actions
+
+For each trace, you can:
+
+- **Copy Input**: Copy parameters as JSON
+- **Copy Output**: Copy response as JSON
+- **Copy cURL**: Get equivalent curl command
+- **Re-run**: Execute again (in Playground)
+- **View Raw HTTP**: See full request/response
+
+## Export Data
+
+Download analytics data for external analysis:
+
+### CSV Export
+
+1. Click **Export** in Analytics
+2. Select date range
+3. Choose format: **CSV**
+4. Download file
+
+**CSV Columns:**
+- timestamp
+- tool_name
+- status
+- duration_ms
+- client
+- input (JSON string)
+- output (JSON string)
+- error (if failed)
+
+**Use Cases:**
+- Import into Excel/Google Sheets
+- Load into BI tools (Tableau, Looker)
+- Custom analysis with Python/R
+- Share with stakeholders
+
+### JSON Export
+
+For programmatic access:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  "https://api.tadata.com/v1/toolsets/{id}/traces?format=json"
+```
+
+## Use Cases
+
+### 1. Debug Errors
+
+**Scenario:** Users report tools are failing
+
+**Steps:**
+1. Go to Analytics → Traces
+2. Filter by Status: Error
+3. Review error messages
+4. Identify common patterns (auth failures, invalid params, etc.)
+5. Fix root cause
+6. Monitor error rate decrease
+
+### 2. Optimize Slow Tools
+
+**Scenario:** Users complain about slow responses
+
+**Steps:**
+1. Go to Analytics → Tool Breakdown
+2. Sort by Avg Duration (descending)
+3. Identify slowest tools
+4. Review traces for those tools
+5. Options:
+   - Enable response filtering
+   - Implement pagination
+   - Upgrade API plan (if rate limited)
+   - Contact support for optimization help
+
+### 3. Track Usage Patterns
+
+**Scenario:** Want to understand how agents use tools
+
+**Steps:**
+1. View Usage Over Time chart
+2. Identify peak usage periods
+3. Correlate with business events (launches, incidents)
+4. Top Tools shows what's most valuable
+5. Inform product decisions (which connectors to add, which tools to improve)
+
+### 4. Calculate ROI
+
+**Scenario:** Need to justify Tadata investment
+
+**Steps:**
+1. Export traces to CSV
+2. Calculate:
+   - Total tool executions
+   - Time saved per execution (vs. manual)
+   - Cost savings (vs. building custom integrations)
+3. Present to stakeholders
+
+**Example:**
+```
+Tool executions/month: 10,000
+Time saved per execution: 5 minutes
+Total time saved: 50,000 minutes = 833 hours
+At $100/hour: $83,300 saved per month
+```
+
+### 5. Monitor Production Health
+
+**Scenario:** Ensure toolsets are working reliably
+
+**Steps:**
+1. Set up daily dashboard review
+2. Check error rate (should be < 5%)
+3. Check response time (should be < 2s)
+4. Review any spikes or anomalies
+5. Set up alerts (coming soon) for automatic notifications
+
+## Server Group Analytics
+
+For organizations with multiple toolsets:
+
+1. Navigate to **Server Groups**
+2. Click on a group
+3. View aggregated analytics across all toolsets
+
+**Metrics:**
+- Combined usage across all toolsets
+- Group-level error rates
+- Comparative performance (which toolsets are fastest)
+- Resource allocation (which toolsets need more attention)
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Review Analytics Weekly" icon="calendar">
+    Set up a recurring meeting to review:
+    - Usage trends
+    - Error rate changes
+    - Slow tools
+    - Client distribution
+
+    Catch issues early, optimize proactively.
+  </Accordion>
+
+  <Accordion title="Set Baseline Metrics" icon="gauge">
+    Track these baselines:
+    - **Error Rate**: < 5% is healthy
+    - **Response Time**: < 2s is good, < 500ms is excellent
+    - **Usage Growth**: Track adoption over time
+
+    Alert when deviations occur.
+  </Accordion>
+
+  <Accordion title="Export Data Regularly" icon="download">
+    Monthly or quarterly:
+    - Export traces to CSV
+    - Archive for historical analysis
+    - Use for reports and presentations
+  </Accordion>
+
+  <Accordion title="Correlate with Business Events" icon="chart-line">
+    Note when:
+    - New features launched (usage should spike)
+    - Incidents occurred (correlate with tool usage)
+    - Changes deployed (check for error rate increases)
+
+    Understand causation, not just correlation.
+  </Accordion>
+
+  <Accordion title="Share Insights with Team" icon="users">
+    Create dashboards or reports showing:
+    - Most valuable tools (high usage, low errors)
+    - Tools needing improvement (high errors, slow)
+    - Usage growth over time
+    - Cost savings achieved
+
+    Build support for AI agent initiatives.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="No Data in Analytics">
+    **Causes:**
+    - Toolset hasn't been used yet
+    - Selected date range is too narrow
+    - Tools were disabled
+
+    **Solutions:**
+    - Test in Playground to generate data
+    - Expand date range
+    - Check tool status (enabled vs. disabled)
+  </Accordion>
+
+  <Accordion title="High Error Rate">
+    **Causes:**
+    - Authentication issues (expired tokens, invalid keys)
+    - Service outages
+    - Invalid tool parameters
+    - Rate limiting
+
+    **Solutions:**
+    - Review error traces for specific messages
+    - Check Connected Accounts for auth status
+    - Verify service status pages
+    - Implement retry logic or backoff
+  </Accordion>
+
+  <Accordion title="Slow Response Times">
+    **Causes:**
+    - Large API responses
+    - Slow upstream service
+    - Network latency
+    - Unoptimized queries
+
+    **Solutions:**
+    - Enable response filtering
+    - Implement pagination
+    - Upgrade service API plan
+    - Contact Tadata support for optimization help
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Enable Knowledge Indexing" icon="book" href="/optimization/knowledge-indexing">
+    Add documentation search for better context
+  </Card>
+  <Card title="Enable Code Indexing" icon="code" href="/optimization/code-indexing">
+    Add code search capabilities
+  </Card>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Generate test data to see in analytics
+  </Card>
+  <Card title="View Recipes" icon="book-open" href="/recipes/introduction">
+    Pre-optimized toolset configurations
+  </Card>
+</CardGroup>

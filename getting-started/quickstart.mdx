@@ -1,0 +1,98 @@
+---
+title: "Quickstart"
+description: "Connect your first integration in 5 minutes"
+---
+
+## Overview
+
+This guide walks you through connecting your first integration using Tadata's optimized connectors. You'll connect Slack and test it in just 3 steps.
+
+<Info>
+  **Prerequisites:**
+  - A Tadata account ([sign up here](https://app.tadata.com/signup))
+  - A Slack workspace (for this example)
+</Info>
+
+## Step 1: Choose Integration
+
+1. Log in to your [Tadata Dashboard](https://app.tadata.com)
+2. Navigate to **Connectors**
+3. Find **Slack**
+
+<Tip>
+  For this quickstart, we'll use Slack for team communication. You can connect any of our integrations.
+</Tip>
+
+## Step 2: Authenticate
+
+1. Click **Connect** on the Slack connector
+2. Authorize with OAuth (redirects to Slack)
+3. Grant permissions and select your workspace
+
+<Frame>
+  <img src="/images/slack-oauth.png" alt="Slack OAuth Authorization" />
+</Frame>
+
+<Check>
+  Done! Your Slack integration is connected and optimized automatically.
+</Check>
+
+## Step 3: Test in Playground
+
+Now verify your integration works:
+
+1. Navigate to **Toolsets** in your dashboard
+2. Find your newly created Slack toolset
+3. Click **Playground**
+4. Try a command:
+
+```text
+Post "Hello from Tadata!" to #general
+```
+
+You'll see the tool execute in real-time and your message appear in Slack.
+
+<Check>
+  Your integration is working! You can now connect it to Claude Desktop, Cursor, or use it programmatically.
+</Check>
+
+## Connecting to Your AI Agent
+
+Ready to use your integration? Follow the instructions in the app to connect the toolset to your agent, or connect to any agent with an MCP client.
+
+## What's Next?
+
+<CardGroup cols={2}>
+  <Card title="Add More Integrations" icon="plus" href="/guides/using-connectors">
+    Connect GitHub, Linear, Sentry, and more
+  </Card>
+  <Card title="Bring Your Own API" icon="upload" href="/guides/bringing-your-own">
+    Upload an OpenAPI spec or integrate existing tools
+  </Card>
+  <Card title="Explore Recipes" icon="book-open" href="/recipes/introduction">
+    Pre-configured combinations for common workflows
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Monitor usage and performance
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="OAuth authorization failed">
+    - Check that popup blockers are disabled
+    - Try again in an incognito/private browser window
+    - Ensure you have admin access to the Slack workspace
+  </Accordion>
+
+  <Accordion title="Tool execution errors in Playground">
+    - Verify your Slack account has necessary permissions
+    - Check that the workspace is still connected
+    - Try reconnecting the Slack account
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  **Need more help?** Check out our [Testing Playground guide](/guides/testing-playground) or contact [support@tadata.com](mailto:support@tadata.com).
+</Note>

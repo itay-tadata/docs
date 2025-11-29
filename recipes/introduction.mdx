@@ -1,0 +1,300 @@
+---
+title: "Recipes Overview"
+description: "Pre-configured toolsets for common AI agent workflows"
+---
+
+## What Are Recipes?
+
+**Recipes** are pre-designed combinations of connectors that solve specific use cases. Instead of figuring out which connectors to combine and how to configure them, use a recipe to get started instantly.
+
+<Info>
+  Think of recipes as "templates" or "blueprints" for building powerful AI agents.
+</Info>
+
+## Why Use Recipes?
+
+<CardGroup cols={2}>
+  <Card title="Proven Patterns" icon="check-circle">
+    Based on real-world production workflows used by teams
+  </Card>
+  <Card title="Save Time" icon="clock">
+    Skip trial and error - start with working configurations
+  </Card>
+  <Card title="Best Practices" icon="star">
+    Optimized tool selections and permissions
+  </Card>
+  <Card title="Customizable" icon="sliders">
+    Use as starting point, adjust to your needs
+  </Card>
+</CardGroup>
+
+## Available Recipes
+
+<CardGroup cols={2}>
+  <Card title="Triage Agent" icon="bug" href="/recipes/triage-agent">
+    **Auto-investigate production issues**
+
+    Connectors: Sentry + GitHub + Slack + Render
+
+    Perfect for: DevOps teams, SRE, incident response
+  </Card>
+
+  <Card title="Customer Support Agent" icon="headset" href="/recipes/customer-support">
+    **Handle support tickets intelligently**
+
+    Connectors: Linear + Slack + Notion + Intercom
+
+    Perfect for: Support teams, customer success
+  </Card>
+
+  <Card title="DevOps Automation Agent" icon="server" href="/recipes/devops-automation">
+    **Deploy, monitor, and maintain services**
+
+    Connectors: GitHub + Render + Sentry + PagerDuty
+
+    Perfect for: Development teams, DevOps engineers
+  </Card>
+
+  <Card title="Data Analysis Agent" icon="chart-line" href="/recipes/data-analysis">
+    **Query, analyze, and report on data**
+
+    Connectors: Supabase + Notion + Slack
+
+    Perfect for: Data teams, analysts, product managers
+  </Card>
+</CardGroup>
+
+## How to Use a Recipe
+
+<Steps>
+  <Step title="Choose a Recipe">
+    Browse recipes and select one that matches your use case
+  </Step>
+
+  <Step title="Click 'Use This Recipe'">
+    In the recipe page, click the "Use This Recipe" button
+  </Step>
+
+  <Step title="Connect Services">
+    Authenticate required connectors (OAuth, one-click)
+  </Step>
+
+  <Step title="Review Tools">
+    See which tools are enabled by default. Adjust if needed.
+  </Step>
+
+  <Step title="Deploy">
+    Your toolset is deployed and ready to use!
+  </Step>
+
+  <Step title="Test in Playground">
+    Try example workflows to see it in action
+  </Step>
+
+  <Step title="Connect to AI">
+    Add to Claude Desktop, Cursor, or your AI agent
+  </Step>
+</Steps>
+
+## Recipe Components
+
+Each recipe includes:
+
+### Connectors
+
+List of pre-built integrations to connect:
+- Which services (Linear, GitHub, Slack, etc.)
+- Why each is needed
+- Alternative options (e.g., Jira instead of Linear)
+
+### Tools
+
+Specific tools enabled from each connector:
+- Read operations (safe, always enabled)
+- Write operations (carefully selected)
+- Blocked tools (dangerous operations disabled by default)
+
+### Configuration
+
+Recommended settings:
+- Tool permissions (allow, block, require approval)
+- Optimization features (knowledge indexing, code indexing)
+- Workflows (multi-tool automation sequences)
+
+### Example Workflows
+
+Real-world scenarios showing the agent in action:
+- Step-by-step tool execution
+- Expected outcomes
+- Common edge cases
+
+## Customizing Recipes
+
+Recipes are starting points. Customize them:
+
+<AccordionGroup>
+  <Accordion title="Add More Connectors" icon="plus">
+    Expand the recipe with additional services:
+    - Triage Agent + PagerDuty for alerting
+    - Support Agent + Salesforce for CRM
+    - DevOps Agent + DataDog for monitoring
+  </Accordion>
+
+  <Accordion title="Remove Connectors" icon="minus">
+    Don't need all connectors? Remove unused ones:
+    - Triage Agent without Slack (if you use Discord)
+    - Support Agent without Intercom (if you use Zendesk)
+  </Accordion>
+
+  <Accordion title="Adjust Tool Permissions" icon="lock">
+    Change which tools are allowed:
+    - Block destructive operations (delete, archive)
+    - Require approval for sensitive actions (deploy, merge PR)
+    - Enable additional tools as you gain confidence
+  </Accordion>
+
+  <Accordion title="Add Knowledge/Code Indexing" icon="book">
+    Enhance with search capabilities:
+    - Add company documentation (knowledge indexing)
+    - Add code repositories (code indexing)
+    - Agents can reference docs and code automatically
+  </Accordion>
+</AccordionGroup>
+
+## Recipe Comparison
+
+| Recipe | Time to Setup | Complexity | Primary Use Case |
+|--------|---------------|------------|------------------|
+| **Triage Agent** | 10 min | Medium | Incident response |
+| **Customer Support** | 10 min | Low | Ticket handling |
+| **DevOps Automation** | 15 min | High | Deployment workflows |
+| **Data Analysis** | 10 min | Low | Querying & reporting |
+
+## Success Stories
+
+<AccordionGroup>
+  <Accordion title="Triage Agent: 90% Faster Incident Response" icon="trophy">
+    **Company:** TechCorp (50 engineers)
+
+    **Before:** 30 minutes to triage production errors manually
+
+    **After:** 3 minutes with Triage Agent
+
+    **Impact:**
+    - 10x faster incident response
+    - Reduced MTTR from hours to minutes
+    - Engineers focus on fixes, not investigation
+  </Accordion>
+
+  <Accordion title="Support Agent: 50% Fewer Escalations" icon="trophy">
+    **Company:** SaaS Startup (10-person support team)
+
+    **Before:** 40% of tickets escalated to engineering
+
+    **After:** 20% escalation rate with Support Agent
+
+    **Impact:**
+    - Agents answer common questions automatically
+    - Engineering team freed up for development
+    - Faster customer response times
+  </Accordion>
+
+  <Accordion title="DevOps Agent: Automated Deployments" icon="trophy">
+    **Company:** E-commerce Platform
+
+    **Before:** Manual deployment process, 30 minutes per deploy
+
+    **After:** Automated with DevOps Agent, 5 minutes
+
+    **Impact:**
+    - 5x more frequent deployments
+    - Fewer human errors
+    - Automated rollback on errors
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start with One Recipe" icon="flag-checkered">
+    Don't try to implement all recipes at once:
+    1. Choose your biggest pain point
+    2. Implement one recipe
+    3. Test thoroughly
+    4. Roll out to team
+    5. Then add more recipes
+
+    **Gradual adoption = higher success rate**
+  </Accordion>
+
+  <Accordion title="Test in Playground First" icon="flask">
+    Before deploying to production:
+    1. Test each tool individually
+    2. Test multi-tool workflows
+    3. Test error handling
+    4. Verify tool permissions
+
+    **Catch issues early in safe environment**
+  </Accordion>
+
+  <Accordion title="Use Test Accounts" icon="vial">
+    Connect test workspaces first:
+    - Linear: Test workspace
+    - Slack: Test channel (#testing)
+    - GitHub: Test repository
+
+    Validate without affecting production.
+  </Accordion>
+
+  <Accordion title="Monitor Analytics" icon="chart-line">
+    After deploying:
+    - Track tool usage
+    - Monitor error rates
+    - Review execution traces
+    - Optimize based on data
+
+    **Data-driven iteration**
+  </Accordion>
+
+  <Accordion title="Share with Team" icon="users">
+    Document your configuration:
+    - Which recipe you're using
+    - Customizations made
+    - Example workflows
+    - Contact for questions
+
+    **Enable team adoption**
+  </Accordion>
+</AccordionGroup>
+
+## Creating Your Own Recipe
+
+Have a unique workflow? Create a custom recipe:
+
+1. **Identify Use Case**: What problem are you solving?
+2. **Select Connectors**: Which services do you need?
+3. **Configure Tools**: Enable relevant operations
+4. **Test Workflows**: Verify multi-tool sequences work
+5. **Document**: Write down the workflow steps
+6. **Share**: Export configuration, share with team
+
+<Card title="Need Help?" icon="question">
+  Contact [support@tadata.com](mailto:support@tadata.com) to discuss custom recipes for your use case.
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Triage Agent" icon="bug" href="/recipes/triage-agent">
+    Auto-investigate production issues
+  </Card>
+  <Card title="Customer Support Agent" icon="headset" href="/recipes/customer-support">
+    Handle support tickets intelligently
+  </Card>
+  <Card title="DevOps Automation" icon="server" href="/recipes/devops-automation">
+    Automate deployments and monitoring
+  </Card>
+  <Card title="Data Analysis Agent" icon="chart-line" href="/recipes/data-analysis">
+    Query and report on data
+  </Card>
+</CardGroup>

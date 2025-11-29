@@ -1,0 +1,69 @@
+---
+title: "Customer Support Agent"
+description: "Automate ticket handling and customer communication"
+---
+
+## Overview
+
+The **Customer Support Agent** handles support tickets by searching knowledge bases, creating issues, and communicating with customers and internal teams.
+
+<Check>
+  **Result:** Reduce ticket resolution time by 50%, fewer escalations to engineering
+</Check>
+
+## Required Connectors
+
+<CardGroup cols={2}>
+  <Card title="Linear" icon="grid-2">
+    **Issue tracking**: create_issue, update_issue, add_comment
+  </Card>
+  <Card title="Slack" icon="slack">
+    **Internal communication**: post_message, search_messages
+  </Card>
+  <Card title="Notion" icon="file">
+    **Knowledge base**: search_pages, get_page (via knowledge indexing)
+  </Card>
+  <Card title="Intercom" icon="comments">
+    **Customer messaging**: send_message, list_conversations
+  </Card>
+</CardGroup>
+
+## Example Workflow
+
+```text User: "How do I reset my password?"
+
+Agent:
+1. search_docs("password reset") in Notion
+2. Find help article
+3. send_message via Intercom with article link
+4. If issue persists: create_issue in Linear
+5. post_message to #support in Slack
+```
+
+## Setup
+
+<Steps>
+  <Step title="Connect Services">
+    Linear, Slack, Notion, Intercom - all OAuth
+  </Step>
+  <Step title="Enable Knowledge Indexing">
+    Index Notion knowledge base for search-docs tool
+  </Step>
+  <Step title="Configure Permissions">
+    Allow all tools except delete operations
+  </Step>
+  <Step title="Deploy & Test">
+    Test in Playground with common support questions
+  </Step>
+</Steps>
+
+## Key Features
+
+- **Auto-Search Knowledge Base**: Finds relevant help articles
+- **Create Tickets**: Opens Linear issues for escalation
+- **Internal Communication**: Notifies support team in Slack
+- **Customer Follow-up**: Replies via Intercom
+
+<Card title="Use This Recipe" icon="rocket" href="https://app.tadata.com/recipes/customer-support">
+  Get started in 10 minutes
+</Card>

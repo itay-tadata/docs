@@ -11,58 +11,55 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "getting-started/welcome",
+              "getting-started/quickstart",
+              "getting-started/key-concepts"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Guides",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "guides/using-connectors",
+              "guides/bringing-your-own",
+              "guides/testing-playground"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Authentication",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "authentication/overview",
+              "authentication/passthrough",
+              "authentication/oauth"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Connectors",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+              "connectors/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Optimization",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "optimization/overview",
+              "optimization/analytics",
+              "optimization/knowledge-indexing",
+              "optimization/code-indexing"
+            ]
+          },
+          {
+            "group": "Recipes",
+            "pages": [
+              "recipes/introduction",
+              "recipes/triage-agent",
+              "recipes/customer-support",
+              "recipes/devops-automation",
+              "recipes/data-analysis"
             ]
           }
         ]
@@ -71,14 +68,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Dashboard",
+          "href": "https://app.tadata.com",
+          "icon": "grid-2"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Community",
+          "href": "https://discord.gg/tadata",
+          "icon": "discord"
         }
       ]
     }
@@ -91,13 +88,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@tadata.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://app.tadata.com"
     }
   },
   "contextual": {
@@ -114,9 +111,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/tadata",
+      "github": "https://github.com/tadata",
+      "linkedin": "https://linkedin.com/company/tadata"
     }
   }
 }

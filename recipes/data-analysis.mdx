@@ -1,0 +1,123 @@
+---
+title: "Data Analysis Agent"
+description: "Query databases, generate reports, and share insights"
+---
+
+## Overview
+
+The **Data Analysis Agent** queries databases, generates reports, and shares insights with your team by connecting data sources, documentation tools, and communication platforms.
+
+<Check>
+  **Result:** Reduce time to insight from hours to minutes, automate reporting
+</Check>
+
+## Required Connectors
+
+<CardGroup cols={3}>
+  <Card title="Supabase" icon="database">
+    **Database**: execute_query, list_tables
+  </Card>
+  <Card title="Notion" icon="file">
+    **Reports**: create_page, update_database
+  </Card>
+  <Card title="Slack" icon="slack">
+    **Sharing**: post_message
+  </Card>
+</CardGroup>
+
+## Example Workflows
+
+### Weekly Metrics Report
+
+```text
+"Generate this week's user signup report"
+
+Agent:
+1. execute_query: SELECT COUNT(*) FROM users WHERE created_at > DATE('2025-11-22')
+2. Result: 1,247 new users
+3. create_page in Notion with charts and insights
+4. post_message to #growth channel with summary
+```
+
+### Ad-Hoc Analysis
+
+```text
+"How many premium users signed up this month?"
+
+Agent:
+1. execute_query with filters for premium + this month
+2. Result: 89 premium users
+3. post_message with breakdown (weekly trends, retention)
+```
+
+### Automated Alerting
+
+```text
+Workflow: Daily active users < threshold
+
+1. execute_query for DAU
+2. If DAU < 10,000: Create alert in Notion
+3. post_message to #alerts channel
+4. Analyze historical data for trends
+```
+
+## Setup
+
+<Steps>
+  <Step title="Connect Services">
+    Supabase (service_role key), Notion (OAuth), Slack (OAuth)
+  </Step>
+  <Step title="Configure Database Access">
+    Create read-only database user for safety
+  </Step>
+  <Step title="Set Up Report Templates">
+    Create Notion database for reports
+  </Step>
+  <Step title="Test Queries">
+    Validate SQL queries in Playground
+  </Step>
+</Steps>
+
+## Key Features
+
+- **SQL Queries**: Execute SELECT queries on your database
+- **Automated Reports**: Generate Notion pages with charts
+- **Team Sharing**: Post insights to Slack channels
+- **Scheduled Analysis**: Run queries on schedule (workflows)
+
+## Security
+
+<Warning>
+  **Use read-only database credentials** to prevent accidental data modification or deletion.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Read-Only User" icon="lock">
+    Create a database user with SELECT-only permissions:
+
+    ```sql
+    CREATE USER tadata_readonly WITH PASSWORD 'secure_password';
+    GRANT SELECT ON ALL TABLES IN SCHEMA public TO tadata_readonly;
+    ```
+
+    Use this user's credentials in Tadata.
+  </Accordion>
+
+  <Accordion title="Query Validation" icon="check">
+    Agent validates queries before execution:
+    - No DROP, DELETE, UPDATE, INSERT allowed
+    - Only SELECT queries
+    - Parameterized queries to prevent injection
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+- **Use Read-Only Credentials**: Prevent accidental writes
+- **Test Queries First**: Validate in database tool before using in agent
+- **Set Query Timeouts**: Prevent long-running queries
+- **Monitor Usage**: Track query performance in Analytics
+
+<Card title="Use This Recipe" icon="rocket" href="https://app.tadata.com/recipes/data-analysis">
+  Get started in 10 minutes
+</Card>

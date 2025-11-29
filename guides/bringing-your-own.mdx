@@ -1,0 +1,471 @@
+---
+title: "Bring Your Own API"
+description: "Add custom connectors with OpenAPI specs or integrate existing MCP servers"
+---
+
+## Overview
+
+While Tadata offers 50+ pre-built connectors, you may need to integrate:
+- **Internal/private APIs** not available in our catalog
+- **Custom business logic** specific to your organization
+- **Existing MCP servers** you've already built
+
+This guide covers three approaches to bringing your own APIs.
+
+<Note>
+  **Time Investment**: Expect 15-30 minutes for setup, including authentication configuration and testing. For instant setup, use [pre-built connectors](/guides/using-connectors).
+</Note>
+
+## When to Bring Your Own
+
+<CardGroup cols={2}>
+  <Card title="Use Pre-Built Connectors When" icon="plug">
+    - Service is in our catalog (Linear, GitHub, Slack, etc.)
+    - Standard OAuth or API key auth
+    - Common use cases
+    - Want instant setup
+  </Card>
+
+  <Card title="Bring Your Own When" icon="code">
+    - Service not in catalog
+    - Internal/private APIs
+    - Custom authentication schemes
+    - Existing MCP server to proxy
+  </Card>
+</CardGroup>
+
+## Approach 1: Upload OpenAPI Specification
+
+**Best for:** REST APIs with OpenAPI/Swagger documentation
+
+### Prerequisites
+
+- OpenAPI 3.0+ specification file (JSON or YAML)
+- Or a public URL hosting your OpenAPI spec
+- API credentials (API key, OAuth client ID/secret, etc.)
+
+### Step 1: Access Upload Interface
+
+1. Navigate to **Toolsets** → **Create New**
+2. Select **From OpenAPI Specification**
+3. Choose upload method:
+   - **Upload File**: Drag and drop your `.json` or `.yaml` file
+   - **URL**: Enter the URL to your OpenAPI spec (e.g., `https://api.yourservice.com/openapi.json`)
+
+<Tip>
+  Many services host their OpenAPI specs at `/openapi.json`, `/swagger.json`, or `/api-docs`. Check your API documentation.
+</Tip>
+
+### Step 2: Review Generated Tools
+
+Tadata automatically parses your OpenAPI spec and generates MCP tools:
+
+```yaml Example: OpenAPI Endpoint
+paths:
+  /api/v1/issues:
+    post:
+      operationId: createIssue
+      summary: Create a new issue
+      parameters:
+        - name: title
+          in: body
+          required: true
+          schema:
+            type: string
+        - name: priority
+          in: body
+          required: false
+          schema:
+            type: integer
+```
+
+**Becomes:**
+
+```json Generated MCP Tool
+{
+  "name": "create_issue",
+  "description": "Create a new issue",
+  "parameters": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "priority": {
+      "type": "integer",
+      "required": false
+    }
+  }
+}
+```
+
+You'll see:
+- **Tool count**: Number of operations found
+- **Authentication methods**: Detected from `securitySchemes`
+- **Base URL**: API endpoint base URL
+- **Tool list**: All generated tools with descriptions
+
+### Step 3: Configure Authentication
+
+Choose your authentication method based on what your API supports:
+
+<Tabs>
+  <Tab title="API Key (Header)">
+    **Most common for internal APIs**
+
+    ```json Configuration
+    {
+      "authType": "header",
+      "headerName": "Authorization",
+      "headerPrefix": "Bearer ",
+      "apiKey": "your-api-key-here"
+    }
+    ```
+
+    **Examples:**
+    - Authorization: `Bearer sk_live_abc123`
+    - X-API-Key: `abc123`
+    - X-Auth-Token: `token123`
+  </Tab>
+
+  <Tab title="API Key (Query Param)">
+    **Less common, but some APIs use query parameters**
+
+    ```json Configuration
+    {
+      "authType": "query",
+      "paramName": "api_key",
+      "apiKey": "your-api-key-here"
+    }
+    ```
+
+    **Example Request:**
+    ```
+    GET https://api.example.com/data?api_key=abc123
+    ```
+  </Tab>
+
+  <Tab title="OAuth 2.0">
+    **For services supporting OAuth (more complex)**
+
+    ```json Configuration
+    {
+      "authType": "oauth",
+      "clientId": "your-client-id",
+      "clientSecret": "your-client-secret",
+      "authorizationUrl": "https://api.example.com/oauth/authorize",
+      "tokenUrl": "https://api.example.com/oauth/token",
+      "scopes": ["read", "write"]
+    }
+    ```
+
+    Tadata will handle the OAuth flow and token refresh.
+  </Tab>
+
+  <Tab title="Basic Auth">
+    **Simple username/password authentication**
+
+    ```json Configuration
+    {
+      "authType": "basic",
+      "username": "your-username",
+      "password": "your-password"
+    }
+    ```
+
+    Credentials are base64-encoded and sent in the `Authorization` header.
+  </Tab>
+</Tabs>
+
+<Warning>
+  **Custom Header Prefixes**: Some APIs require specific prefixes like `Token `, `Api-Key `, or no prefix at all. Check your API documentation.
+</Warning>
+
+### Step 4: Customize Tool Definitions (Optional)
+
+You can edit generated tools:
+
+- **Rename tools**: Make names more intuitive for AI agents
+- **Edit descriptions**: Improve clarity for better tool selection
+- **Hide parameters**: Remove unused or internal-only parameters
+- **Add examples**: Provide example values to guide the AI
+
+<CodeGroup>
+```json Before
+{
+  "name": "post_api_v1_issues",
+  "description": "POST /api/v1/issues"
+}
+```
+
+```json After
+{
+  "name": "create_issue",
+  "description": "Create a new issue with title, description, and priority. Returns the created issue ID."
+}
+```
+</CodeGroup>
+
+<Tip>
+  Better descriptions = better AI tool selection. Be specific about what each tool does and when to use it.
+</Tip>
+
+### Step 5: Test in Playground
+
+Before deploying:
+
+1. Click **Open Playground**
+2. Test each tool with sample inputs
+3. Verify responses are correct
+4. Check error handling
+
+Example tests:
+
+```text Test Read Operations
+List all issues
+```
+
+```text Test Write Operations
+Create an issue titled "Test Issue" with priority 2
+```
+
+```text Test Error Handling
+Create an issue without a title (should fail gracefully)
+```
+
+### Step 6: Deploy
+
+Once testing passes:
+
+1. Enter a **toolset name** (e.g., "Internal API Tools")
+2. Click **Deploy**
+3. Your toolset will be available at `{name}.mcp.tadata.com`
+
+<Check>
+  Your custom API is now usable by AI agents!
+</Check>
+
+## Approach 2: Integrate Existing MCP Server
+
+**Best for:** You've already built an MCP server and want to proxy it through Tadata for analytics and optimization
+
+### Prerequisites
+
+- Running MCP server with accessible endpoint
+- MCP server URL (HTTP or SSE transport)
+
+### Setup
+
+1. Navigate to **Toolsets** → **Create New**
+2. Select **Integrate Existing MCP Server**
+3. Enter your MCP server details:
+
+```json Configuration
+{
+  "name": "My Custom MCP Server",
+  "url": "https://my-mcp-server.com",
+  "transport": "http",
+  "authentication": {
+    "type": "header",
+    "headerName": "X-API-Key",
+    "value": "your-server-key"
+  }
+}
+```
+
+4. Click **Test Connection**
+5. Tadata will fetch available tools from your server
+6. Select tools to expose
+7. Deploy
+
+### Benefits of Proxying
+
+Even if you have a working MCP server, proxying through Tadata gives you:
+
+- **Analytics**: Track tool usage, performance, errors
+- **Optimization**: Enable compression, filtering, projection
+- **Monitoring**: Get alerts on failures
+- **Custom Domains**: Host on your own domain
+- **Unified Management**: Manage all toolsets in one place
+
+## Approach 3: Request Connector Addition
+
+**Best for:** Popular APIs that aren't in our catalog yet
+
+If you need a connector for a well-known service:
+
+1. Visit [tadata.com/request-connector](https://tadata.com/request-connector)
+2. Submit the service details:
+   - Service name and website
+   - API documentation link
+   - Use case description
+   - Expected usage volume
+3. Our team will review and prioritize
+4. We'll notify you when the connector is available
+
+<Info>
+  We prioritize connectors based on community demand. Upvote existing requests to increase priority!
+</Info>
+
+## Best Practices
+
+### OpenAPI Specs
+
+<AccordionGroup>
+  <Accordion title="Use OpenAPI 3.0+">
+    Older Swagger 2.0 specs work but may have limitations. Upgrade to OpenAPI 3.0+ for:
+    - Better schema definitions
+    - Improved authentication options
+    - More detailed parameter validation
+  </Accordion>
+
+  <Accordion title="Include Detailed Descriptions">
+    Write clear descriptions for operations:
+
+    ✅ **Good**: "Create a new issue with title, description, and priority. Returns the created issue with ID and timestamp."
+
+    ❌ **Bad**: "POST /issues"
+
+    AI agents use descriptions to select the right tool.
+  </Accordion>
+
+  <Accordion title="Define All Parameters">
+    Include all parameters with:
+    - Type (string, integer, boolean, etc.)
+    - Required vs. optional
+    - Default values
+    - Enums for fixed choices
+    - Examples
+
+    This helps AI agents construct valid requests.
+  </Accordion>
+
+  <Accordion title="Version Your API">
+    Use versioned URLs (e.g., `/api/v1/`, `/api/v2/`) to avoid breaking changes. Update your OpenAPI spec URL when you deploy new versions.
+  </Accordion>
+</AccordionGroup>
+
+### Authentication
+
+<AccordionGroup>
+  <Accordion title="Use Scoped API Keys">
+    Create API keys with minimal necessary permissions:
+    - Read-only keys for read operations
+    - Separate keys for development vs. production
+    - Revokable keys for testing
+  </Accordion>
+
+  <Accordion title="Rotate Credentials Regularly">
+    Set reminders to rotate API keys every 90 days. Tadata will notify you if authentication fails.
+  </Accordion>
+
+  <Accordion title="Test Authentication Separately">
+    Before testing tools, verify authentication:
+    1. Use a simple read operation
+    2. Confirm you get expected data (not 401/403 errors)
+    3. Then test write operations
+  </Accordion>
+</AccordionGroup>
+
+### Testing
+
+<AccordionGroup>
+  <Accordion title="Test All Tool Types">
+    Categorize and test:
+    - **Read operations** (GET): Should return data
+    - **Write operations** (POST, PUT): Should create/update resources
+    - **Delete operations**: Test carefully with test data only
+    - **List operations**: Verify pagination works
+    - **Search operations**: Test various query parameters
+  </Accordion>
+
+  <Accordion title="Handle Errors Gracefully">
+    Test error scenarios:
+    - Missing required parameters
+    - Invalid parameter values
+    - Authentication failures
+    - Rate limiting (if applicable)
+    - Service downtime
+
+    Verify error messages are clear and actionable.
+  </Accordion>
+
+  <Accordion title="Check Response Optimization">
+    Review responses in Playground:
+    - Are responses too large?
+    - Can you filter specific fields?
+    - Should you enable compression?
+
+    See [Optimization](/optimization/overview) for advanced techniques.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="OpenAPI upload fails to parse">
+    **Symptoms**: "Invalid OpenAPI spec" error
+
+    **Solutions**:
+    - Validate your spec at [editor.swagger.io](https://editor.swagger.io)
+    - Check for syntax errors (JSON/YAML formatting)
+    - Ensure it's OpenAPI 3.0+ format
+    - Remove unsupported extensions
+  </Accordion>
+
+  <Accordion title="Tools generated but authentication fails">
+    **Symptoms**: "401 Unauthorized" or "403 Forbidden" in Playground
+
+    **Solutions**:
+    - Double-check API key is correct
+    - Verify header name and prefix (e.g., "Bearer " with space)
+    - Confirm the API key has necessary permissions
+    - Test the API directly with curl/Postman first
+  </Accordion>
+
+  <Accordion title="Tools work in Playground but fail in agents">
+    **Symptoms**: Tools execute in Playground but fail when used by Claude/Cursor
+
+    **Solutions**:
+    - Check MCP config syntax in Claude Desktop / Cursor
+    - Verify the toolset URL is correct
+    - Restart the AI application completely
+    - Review error logs in Analytics
+  </Accordion>
+
+  <Accordion title="Existing MCP server connection fails">
+    **Symptoms**: "Cannot connect to MCP server" error
+
+    **Solutions**:
+    - Verify the server URL is accessible from internet (not localhost)
+    - Check firewall rules allow Tadata IP ranges
+    - Confirm transport type (HTTP vs. SSE) is correct
+    - Test the MCP server directly with curl
+  </Accordion>
+</AccordionGroup>
+
+## Comparison Table
+
+| Feature | Pre-Built Connectors | OpenAPI Upload | Integrate MCP | Request Addition |
+|---------|---------------------|----------------|---------------|------------------|
+| **Setup Time** | 2 minutes | 15-30 minutes | 10 minutes | Days to weeks |
+| **Authentication** | One-click OAuth | Manual config | Manual config | One-click OAuth |
+| **Maintenance** | Tadata maintains | You maintain | You maintain | Tadata maintains |
+| **Optimization** | Pre-optimized | Manual tuning | Manual tuning | Pre-optimized |
+| **Best For** | Popular services | Custom/internal APIs | Existing MCP servers | Popular services not in catalog |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Validate your custom toolset works correctly
+  </Card>
+  <Card title="Configure Authentication" icon="key" href="/authentication/overview">
+    Advanced authentication configuration
+  </Card>
+  <Card title="Enable Optimization" icon="gauge-high" href="/optimization/overview">
+    Optimize responses for token efficiency
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Monitor usage and performance
+  </Card>
+</CardGroup>

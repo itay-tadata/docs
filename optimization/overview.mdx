@@ -1,0 +1,265 @@
+---
+title: "Optimization Overview"
+description: "Improve performance and reduce token usage with built-in optimizations"
+---
+
+## Why Optimization Matters
+
+AI agents face two key challenges when using tools:
+
+1. **Token Limits**: Large API responses quickly consume context windows
+2. **Latency**: Slow API calls frustrate users and waste time
+
+Tadata's pre-built connectors are **already optimized** to address these issues. No configuration needed - they just work efficiently.
+
+## Built-In Optimizations
+
+### Pre-Optimized Responses
+
+Our connectors return only what's needed:
+
+<Tabs>
+  <Tab title="Linear Example">
+    **Without Optimization:**
+    ```json
+    {
+      "id": "ABC-123",
+      "title": "Fix bug",
+      "description": "...",
+      "status": "in_progress",
+      "priority": 2,
+      "createdAt": "2025-11-29T10:00:00Z",
+      "updatedAt": "2025-11-29T12:00:00Z",
+      "creator": {...},  // 50+ fields
+      "assignee": {...},  // 50+ fields
+      "project": {...},  // 50+ fields
+      "team": {...},  // 50+ fields
+      "comments": [...],  // Array of comments
+      "attachments": [...],  // Array of attachments
+      "relations": [...],  // Array of related issues
+      // 100+ more fields...
+    }
+    ```
+
+    **Response size:** ~15 KB per issue
+
+    **With Tadata Optimization:**
+    ```json
+    {
+      "id": "ABC-123",
+      "title": "Fix bug",
+      "status": "in_progress",
+      "priority": 2,
+      "assignee": "Alice",
+      "url": "https://linear.app/..."
+    }
+    ```
+
+    **Response size:** ~200 bytes per issue
+
+    **Savings:** 98.7% reduction
+  </Tab>
+
+  <Tab title="GitHub Example">
+    **Without Optimization:**
+    Full PR object with 200+ fields including commit history, diffs, reviews, comments, etc.
+
+    **With Tadata Optimization:**
+    ```json
+    {
+      "number": 123,
+      "title": "Add feature",
+      "state": "open",
+      "author": "bob",
+      "url": "https://github.com/..."
+    }
+    ```
+
+    **Savings:** 95%+ reduction
+  </Tab>
+</Tabs>
+
+<Check>
+  **No configuration required.** This optimization is built into every Tadata connector.
+</Check>
+
+## Advanced Optimization Features
+
+### 1. Analytics & Monitoring
+
+Track tool performance and usage:
+
+- **Tool Execution Metrics**: Calls, errors, response times
+- **Usage Patterns**: Which tools are most used, by which clients
+- **Traces**: Detailed logs of every tool invocation
+- **Export**: Download data for external analysis
+
+<Card title="Analytics Guide" icon="chart-line" href="/optimization/analytics">
+  Monitor usage, performance, and costs
+</Card>
+
+### 2. Knowledge Indexing
+
+Enable `search-docs` tool for documentation search:
+
+- Index markdown/documentation repositories
+- AI agents query docs without reading everything
+- Avoid hitting token limits with full doc embedding
+
+**Use Cases:**
+- Product documentation search
+- Internal wiki/knowledge base access
+- API reference lookup
+
+<Card title="Knowledge Indexing" icon="book" href="/optimization/knowledge-indexing">
+  Enable documentation search for your toolsets
+</Card>
+
+### 3. Code Indexing
+
+Enable `search-code` tool for repository search:
+
+- Index code repositories (GitHub, GitLab)
+- Find functions, classes, patterns
+- Support debugging and code review workflows
+
+**Use Cases:**
+- Code search for debugging
+- Finding similar patterns
+- Reference existing implementations
+
+<Card title="Code Indexing" icon="code" href="/optimization/code-indexing">
+  Enable code search for your toolsets
+</Card>
+
+### 4. Workflows
+
+Automate multi-tool sequences (part of optimization):
+
+- Chain multiple tool calls
+- Conditional logic
+- Error handling
+- Reusable patterns
+
+**Use Cases:**
+- Triage: Check Sentry → Find code → Create issue → Notify team
+- Deploy: Merge PR → Deploy → Monitor errors → Rollback if needed
+
+<Info>
+  Workflows are available in toolset configuration under Optimization settings.
+</Info>
+
+## Optimization Comparison
+
+| Feature | Pre-Built Connectors | Custom APIs (OpenAPI) |
+|---------|---------------------|------------------------|
+| **Token-Efficient Responses** | ✅ Built-in | ⚠️ Manual configuration |
+| **Fast Execution** | ✅ Optimized endpoints | ⚠️ Depends on API |
+| **Analytics** | ✅ Included | ✅ Included |
+| **Knowledge Indexing** | ✅ Available | ✅ Available |
+| **Code Indexing** | ✅ Available | ✅ Available |
+| **Workflows** | ✅ Available | ✅ Available |
+
+<Tip>
+  **Recommendation:** Use pre-built connectors whenever possible to get optimizations automatically.
+</Tip>
+
+## Measuring Impact
+
+### Token Savings
+
+View token savings in Analytics:
+
+```
+Tool: list_issues
+Executions: 1,000
+Avg tokens without optimization: 5,000
+Avg tokens with optimization: 250
+Total tokens saved: 4,750,000 (95% reduction)
+```
+
+### Performance Improvements
+
+Compare response times:
+
+| Tool | Without Optimization | With Optimization | Improvement |
+|------|---------------------|-------------------|-------------|
+| `list_issues` | 2.5s | 450ms | 82% faster |
+| `search_docs` | N/A (load all docs) | 200ms | ∞ (not possible without) |
+| `create_issue` | 1.2s | 800ms | 33% faster |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start with Pre-Built Connectors" icon="plug">
+    Pre-built connectors are already optimized. No work needed on your part.
+
+    Only build custom connectors when necessary.
+  </Accordion>
+
+  <Accordion title="Enable Analytics Early" icon="chart-line">
+    Turn on analytics from day one to:
+    - Identify slow tools
+    - Find optimization opportunities
+    - Track usage patterns
+    - Prove ROI
+  </Accordion>
+
+  <Accordion title="Use Knowledge Indexing for Large Docs" icon="book">
+    If your product has extensive documentation:
+    - Enable `search-docs` tool
+    - Index markdown files
+    - Let AI agents search instead of loading all docs
+
+    Saves massive amounts of tokens.
+  </Accordion>
+
+  <Accordion title="Enable Code Indexing for Development Workflows" icon="code">
+    For agents working with code:
+    - Enable `search-code` tool
+    - Index relevant repositories
+    - Agents can find functions without reading entire codebases
+  </Accordion>
+
+  <Accordion title="Monitor and Iterate" icon="arrows-rotate">
+    Regularly review analytics:
+    - Which tools are slowest?
+    - Which use the most tokens?
+    - Are there errors to fix?
+
+    Continuous improvement based on data.
+  </Accordion>
+</AccordionGroup>
+
+## What's Included vs. What's Optional
+
+### Included in Every Toolset
+
+✅ **Token-efficient responses** (for pre-built connectors)
+✅ **Basic analytics** (execution count, errors)
+✅ **Execution traces** (input/output logs)
+✅ **Performance metrics** (response times)
+
+### Optional (Enable as Needed)
+
+⚙️ **Knowledge indexing** - For documentation search
+⚙️ **Code indexing** - For code repository search
+⚙️ **Workflows** - For multi-tool automation
+⚙️ **Advanced analytics** - CSV export, detailed insights
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Monitor tool usage, performance, and costs
+  </Card>
+  <Card title="Enable Knowledge Indexing" icon="book" href="/optimization/knowledge-indexing">
+    Add documentation search to your toolsets
+  </Card>
+  <Card title="Enable Code Indexing" icon="code" href="/optimization/code-indexing">
+    Add code search to your toolsets
+  </Card>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Verify optimizations are working
+  </Card>
+</CardGroup>

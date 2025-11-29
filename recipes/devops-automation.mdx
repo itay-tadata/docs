@@ -1,0 +1,81 @@
+---
+title: "DevOps Automation Agent"
+description: "Automate deployments, monitoring, and incident management"
+---
+
+## Overview
+
+The **DevOps Automation Agent** automates deployment workflows, monitors services, and manages incidents by connecting code repositories, hosting platforms, error monitoring, and alerting tools.
+
+<Check>
+  **Result:** Reduce deployment time by 80%, automate rollbacks, faster incident response
+</Check>
+
+## Required Connectors
+
+<CardGroup cols={2}>
+  <Card title="GitHub" icon="github">
+    **Code & PRs**: list_pull_requests, merge_pull_request, create_release
+  </Card>
+  <Card title="Render" icon="server">
+    **Hosting**: trigger_deploy, list_deployments, get_logs, rollback
+  </Card>
+  <Card title="Sentry" icon="bug">
+    **Error monitoring**: list_errors, create_alert
+  </Card>
+  <Card title="PagerDuty" icon="phone">
+    **Incident alerting**: create_incident, list_on_call
+  </Card>
+</CardGroup>
+
+## Example Workflows
+
+### Auto-Deploy Workflow
+
+```text
+1. Check for merged PRs: list_pull_requests (status: merged)
+2. If merged and CI passed: trigger_deploy to staging
+3. Monitor Sentry for 10 minutes
+4. If error rate < 1%: trigger_deploy to production
+5. If error rate > 5%: rollback and create_incident in PagerDuty
+```
+
+### Incident Response Workflow
+
+```text
+Critical error detected:
+1. list_errors from Sentry
+2. Check recent deployments: list_deployments
+3. If error spike after deploy: suggest rollback
+4. create_incident in PagerDuty
+5. Page on-call engineer: list_on_call
+```
+
+## Setup
+
+<Steps>
+  <Step title="Connect Services">
+    GitHub, Render, Sentry, PagerDuty
+  </Step>
+  <Step title="Configure Permissions">
+    - Allow: Read operations, deploy to staging
+    - Require Approval: Deploy to production, rollback
+  </Step>
+  <Step title="Set Up Workflows">
+    Create automated deploy and monitoring workflows
+  </Step>
+  <Step title="Test with Staging">
+    Validate on staging environment first
+  </Step>
+</Steps>
+
+## Key Features
+
+- **Automated Deployments**: Merge → CI → Deploy → Monitor
+- **Error Monitoring**: Track post-deploy error rates
+- **Auto-Rollback**: Rollback on high error rates (with approval)
+- **Incident Management**: Create and escalate incidents
+
+<Card title="Use This Recipe" icon="rocket" href="https://app.tadata.com/recipes/devops-automation">
+  Get started in 15 minutes
+</Card>

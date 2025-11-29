@@ -1,0 +1,376 @@
+---
+title: "Triage Agent"
+description: "Automatically investigate and resolve production incidents"
+---
+
+## Overview
+
+The **Triage Agent** automatically detects, investigates, and helps resolve production issues by connecting error monitoring, code repositories, team communication, and deployment tools.
+
+<Check>
+  **Result:** Reduce triage time from 30 minutes to 3 minutes
+</Check>
+
+## Problem It Solves
+
+When a production error occurs:
+1. ❌ Someone has to notice (Sentry alert)
+2. ❌ Investigate error (read stack trace, check logs)
+3. ❌ Find relevant code (search GitHub)
+4. ❌ Notify team (post to Slack)
+5. ❌ Create ticket (open Linear issue)
+6. ❌ Check if related to recent deploy (Render logs)
+
+**Total time: 20-40 minutes** of manual work
+
+## Solution: Automated Triage
+
+✅ **Agent does all of this automatically in < 3 minutes**
+
+## Required Connectors
+
+<CardGroup cols={2}>
+  <Card title="Sentry" icon="bug">
+    **Error monitoring**
+
+    Tools: list_errors, get_error_details, resolve_error
+  </Card>
+
+  <Card title="GitHub" icon="github">
+    **Code repository**
+
+    Tools: search_code (via code indexing), create_issue, list_commits
+  </Card>
+
+  <Card title="Slack" icon="slack">
+    **Team communication**
+
+    Tools: post_message, create_thread
+  </Card>
+
+  <Card title="Render" icon="server">
+    **Hosting & deployment**
+
+    Tools: list_deployments, get_logs, rollback_deployment
+  </Card>
+</CardGroup>
+
+### Alternative Connectors
+
+Don't use these exact tools? Use alternatives:
+
+| Recommended | Alternative Options |
+|-------------|---------------------|
+| Sentry | Rollbar, Bugsnag, Datadog APM |
+| GitHub | GitLab, Bitbucket |
+| Slack | Discord, Microsoft Teams |
+| Render | Vercel, Railway, Heroku, AWS |
+
+## Setup
+
+### Step 1: Use This Recipe
+
+Click **Use Triage Agent Recipe** button above or in your dashboard.
+
+### Step 2: Connect Services
+
+Connect each service with OAuth (one-click):
+
+<Steps>
+  <Step title="Connect Sentry">
+    - Authorize with OAuth
+    - Select organization and project
+    - Grant permissions: read errors, write resolutions
+  </Step>
+
+  <Step title="Connect GitHub">
+    - Authorize with OAuth
+    - Select repository (your backend code)
+    - Grant permissions: read code, create issues
+  </Step>
+
+  <Step title="Connect Slack">
+    - Authorize with OAuth
+    - Select workspace
+    - Choose default channel (e.g., #engineering)
+    - Grant permissions: post messages, create threads
+  </Step>
+
+  <Step title="Connect Render">
+    - Enter API key (from Render dashboard)
+    - Select service to monitor
+  </Step>
+</Steps>
+
+### Step 3: Enable Code Indexing
+
+**Critical for finding relevant code:**
+
+1. In toolset configuration, enable **Code Indexing**
+2. Index your GitHub repository
+3. Wait 5-10 minutes for indexing to complete
+
+<Info>
+  Code indexing allows the agent to find error-causing code automatically.
+</Info>
+
+### Step 4: Configure Tool Permissions
+
+Recommended permissions:
+
+| Tool | Permission | Reason |
+|------|------------|--------|
+| Sentry: list_errors | Allow | Safe read operation |
+| Sentry: resolve_error | Allow | Safe write operation |
+| GitHub: search_code | Allow | Read-only |
+| GitHub: create_issue | Allow | Creates tickets automatically |
+| Slack: post_message | Allow | Notifies team |
+| Render: list_deployments | Allow | Safe read operation |
+| Render: get_logs | Allow | Safe read operation |
+| Render: rollback_deployment | **Require Approval** | Destructive, needs human review |
+
+### Step 5: Deploy
+
+Click **Deploy** to activate your Triage Agent.
+
+## Example Workflows
+
+### Workflow 1: New Production Error
+
+```text User Prompt
+"Check Sentry for new production errors and investigate"
+```
+
+**Agent Execution:**
+
+<Steps>
+  <Step title="Fetch Errors">
+    Tool: `list_errors` (Sentry)
+
+    Result: "TypeError: Cannot read property 'processPayment' of undefined" in production
+  </Step>
+
+  <Step title="Get Error Details">
+    Tool: `get_error_details` (Sentry)
+
+    Result: Full stack trace, user impact (50 users affected), timestamp
+  </Step>
+
+  <Step title="Search Code">
+    Tool: `search_code("processPayment")` (GitHub)
+
+    Result: Found in `src/payments/processor.ts:45`
+  </Step>
+
+  <Step title="Check Recent Deploys">
+    Tool: `list_deployments` (Render)
+
+    Result: Deploy #234 happened 2 hours ago, matches error timeframe
+  </Step>
+
+  <Step title="Create Issue">
+    Tool: `create_issue` (GitHub)
+
+    Result: Issue #456 created with:
+    - Error message and stack trace
+    - Link to Sentry error
+    - File/line reference
+    - Recent deploy info
+  </Step>
+
+  <Step title="Notify Team">
+    Tool: `post_message` (Slack, #engineering)
+
+    Result: "🚨 Production error detected: TypeError in processPayment. 50 users affected. Created issue #456. Code: src/payments/processor.ts:45"
+  </Step>
+
+  <Step title="Mark as Triaged">
+    Tool: `resolve_error` (Sentry, status: "In Progress")
+
+    Result: Sentry error marked as being worked on
+  </Step>
+</Steps>
+
+**Total Time:** 2-3 minutes (vs. 30 minutes manual)
+
+### Workflow 2: Correlate Error with Deployment
+
+```text User Prompt
+"Is the recent error spike related to our latest deployment?"
+```
+
+**Agent Execution:**
+
+1. `list_errors` (Sentry) - Fetch errors in last 2 hours
+2. `list_deployments` (Render) - Get recent deploys
+3. Correlate timestamps
+4. `get_logs` (Render) - Check deployment logs
+5. `post_message` (Slack) - Report findings: "Yes, error spike started 5 min after deploy #234. Likely cause: new payment processing code."
+
+### Workflow 3: Investigate Specific Error
+
+```text User Prompt
+"Investigate Sentry error SENTRY-ABC-123"
+```
+
+**Agent Execution:**
+
+1. `get_error_details("SENTRY-ABC-123")` (Sentry)
+2. Extract error message and stack trace
+3. `search_code` (GitHub) - Find relevant code
+4. Analyze code for potential issue
+5. Create GitHub issue with analysis
+6. `post_message` (Slack) - Summary with recommended fix
+
+## Advanced Configuration
+
+### Enable Workflows
+
+Create multi-step automation sequences:
+
+**Auto-Triage Workflow:**
+```yaml
+trigger: New Sentry error (webhook)
+steps:
+  1. Get error details
+  2. Search code
+  3. Check recent deploys
+  4. Create GitHub issue
+  5. Post to Slack
+  6. Mark Sentry error as triaged
+```
+
+**Auto-Rollback Workflow:**
+```yaml
+trigger: Error rate > 5% after deployment
+steps:
+  1. Check error rate
+  2. If > 5%, request approval for rollback
+  3. On approval: Rollback deployment
+  4. Verify error rate decreases
+  5. Post results to Slack
+```
+
+### Add Knowledge Indexing
+
+Index your runbooks and documentation:
+
+1. Enable Knowledge Indexing
+2. Index docs repository (e.g., `company/runbooks`)
+3. Agent can search for "troubleshooting payment errors"
+4. Finds relevant runbook and includes in GitHub issue
+
+## Metrics & Impact
+
+Track triage performance in Analytics:
+
+**Key Metrics:**
+- **Triage Time:** Before vs. after (30 min → 3 min)
+- **Time to First Response:** How fast issues are noticed and addressed
+- **Manual Steps Saved:** Count automated actions
+- **Engineer Hours Saved:** Time spent on triage × # incidents
+
+**Example Impact:**
+```
+Incidents per month: 50
+Time saved per incident: 27 minutes
+Total time saved: 22.5 hours/month
+At $100/hour: $2,250 saved/month
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Set Up Sentry Filters" icon="filter">
+    Configure Sentry to only alert on actionable errors:
+    - Exclude known/expected errors
+    - Set error rate thresholds
+    - Filter by environment (production only)
+
+    Reduces noise, improves signal.
+  </Accordion>
+
+  <Accordion title="Use Descriptive Commit Messages" icon="message">
+    Good commit messages help the agent correlate errors with code changes:
+
+    ✅ "Add payment processing with Stripe integration"
+    ❌ "fix stuff"
+
+    Agent can identify likely culprit commits.
+  </Accordion>
+
+  <Accordion title="Maintain Runbooks" icon="book">
+    Create runbooks for common issues:
+    - "Payment processing errors"
+    - "Database connection timeouts"
+    - "API rate limiting"
+
+    Index with knowledge indexing for agent reference.
+  </Accordion>
+
+  <Accordion title="Review Agent Actions" icon="eye">
+    Periodically review what the agent is doing:
+    - Are GitHub issues helpful?
+    - Are Slack notifications actionable?
+    - Are there false positives?
+
+    Tune configuration based on feedback.
+  </Accordion>
+
+  <Accordion title="Require Approval for Destructive Actions" icon="shield">
+    Keep `rollback_deployment` as "Require Approval":
+    - Agent suggests rollback
+    - Human reviews and approves
+    - Agent executes
+
+    Safety net for critical operations.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Agent not finding relevant code" icon="magnifying-glass">
+    **Cause:** Code indexing not enabled or out of date
+
+    **Solution:**
+    - Enable code indexing
+    - Reindex after major code changes
+    - Verify correct repository is indexed
+  </Accordion>
+
+  <Accordion title="Slack notifications too noisy" icon="volume-xmark">
+    **Cause:** Every error triggers notification
+
+    **Solution:**
+    - Filter Sentry errors (only critical/high-priority)
+    - Batch notifications (every 15 min vs. real-time)
+    - Use Slack threads for related errors
+  </Accordion>
+
+  <Accordion title="GitHub issues lack context" icon="file">
+    **Cause:** Agent not finding enough information
+
+    **Solution:**
+    - Enable knowledge indexing for runbooks
+    - Improve error messages in code (include context)
+    - Add more detail to Sentry error reports
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Test triage workflows before production
+  </Card>
+  <Card title="Enable Code Indexing" icon="code" href="/optimization/code-indexing">
+    Critical for finding error-causing code
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Track triage time and impact
+  </Card>
+  <Card title="Other Recipes" icon="book-open" href="/recipes/introduction">
+    Explore more pre-built agent workflows
+  </Card>
+</CardGroup>

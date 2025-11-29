@@ -1,0 +1,587 @@
+---
+title: "Testing in Playground"
+description: "Interactive testing and debugging before deploying to AI agents"
+---
+
+## Overview
+
+The **Playground** is an interactive environment where you can test your toolsets before deploying them to Claude Desktop, Cursor, or other AI agents. It simulates how AI agents will interact with your tools, helping you catch issues early.
+
+## Access the Playground
+
+### For Any Toolset
+
+1. Navigate to **Toolsets** in your dashboard
+2. Click on a toolset (e.g., "My Linear Tools")
+3. Click **Playground** in the top navigation
+
+Or use the direct link pattern:
+```
+https://app.tadata.com/toolsets/{toolset-id}/playground
+```
+
+## Interface Overview
+
+The Playground consists of three main areas:
+
+### 1. Chat Interface (Center)
+
+<Frame>
+  <img src="/images/playground-chat.png" alt="Playground chat interface" />
+</Frame>
+
+**Features:**
+- **Natural language input**: Chat with your toolset as if it were Claude or Cursor
+- **Tool execution**: Tools run in real-time with actual API calls
+- **Response streaming**: See responses as they're generated
+- **History**: Scroll up to see previous interactions
+
+### 2. Tools Sidebar (Left)
+
+<Frame>
+  <img src="/images/playground-sidebar.png" alt="Tools sidebar" />
+</Frame>
+
+**Features:**
+- **Available tools list**: All tools in this toolset
+- **Tool descriptions**: Hover for full description
+- **Enable/Disable toggles**: Turn tools on/off
+- **Search**: Filter tools by name
+
+### 3. Execution Trace (Right)
+
+<Frame>
+  <img src="/images/playground-trace.png" alt="Execution trace viewer" />
+</Frame>
+
+**Features:**
+- **Tool calls**: Each tool invocation with timestamp
+- **Input parameters**: What the AI sent to the tool
+- **Output**: Tool response (formatted JSON)
+- **Timing**: Execution duration
+- **Status**: Success (green) or Error (red)
+
+## Testing Workflow
+
+### Step 1: Test Read Operations
+
+Start with safe, read-only operations to verify authentication:
+
+<Tabs>
+  <Tab title="Linear">
+    ```text
+    List my open Linear issues
+    ```
+
+    **Expected Result:**
+    - Tool: `list_issues` executed
+    - Output: Array of issues with titles, statuses, assignees
+    - Status: Success (green)
+  </Tab>
+
+  <Tab title="GitHub">
+    ```text
+    Show my recent pull requests
+    ```
+
+    **Expected Result:**
+    - Tool: `list_pull_requests` executed
+    - Output: Array of PRs with titles, authors, statuses
+    - Status: Success
+  </Tab>
+
+  <Tab title="Slack">
+    ```text
+    List all channels in my workspace
+    ```
+
+    **Expected Result:**
+    - Tool: `list_channels` executed
+    - Output: Array of channel names and IDs
+    - Status: Success
+  </Tab>
+</Tabs>
+
+<Check>
+  If read operations succeed, your authentication is working correctly!
+</Check>
+
+### Step 2: Test Write Operations
+
+Once reads work, test write operations:
+
+<Warning>
+  Write operations make real changes! Use test workspaces or create test data.
+</Warning>
+
+<Tabs>
+  <Tab title="Linear">
+    ```text
+    Create a test issue titled "Playground Test" in the Backlog
+    ```
+
+    **Expected Result:**
+    - Tool: `create_issue` executed
+    - Output: New issue object with ID, URL
+    - Verify: Check Linear to confirm issue exists
+  </Tab>
+
+  <Tab title="Slack">
+    ```text
+    Post "Test message from Tadata" to #general
+    ```
+
+    **Expected Result:**
+    - Tool: `post_message` executed
+    - Output: Message ID and timestamp
+    - Verify: Check Slack channel for message
+  </Tab>
+
+  <Tab title="GitHub">
+    ```text
+    Create a draft pull request from feature-branch to main
+    ```
+
+    **Expected Result:**
+    - Tool: `create_pull_request` executed
+    - Output: PR number and URL
+    - Verify: Check GitHub for PR (in draft state)
+  </Tab>
+</Tabs>
+
+### Step 3: Test Error Handling
+
+Deliberately trigger errors to verify graceful handling:
+
+<CodeGroup>
+```text Missing Required Parameter
+Create a Linear issue without a title
+```
+
+```text Invalid Value
+Update issue ABC-999 to status "InvalidStatus"
+```
+
+```text Unauthorized Operation
+Delete repository (if tool is blocked)
+```
+</CodeGroup>
+
+**Expected Results:**
+- Clear error messages
+- No crashes or undefined behavior
+- Helpful guidance on how to fix
+
+### Step 4: Test Complex Workflows
+
+Try multi-tool workflows:
+
+<Steps>
+  <Step title="Triage Workflow">
+    ```text
+    1. Check Sentry for the latest production error
+    2. Find the relevant code in GitHub
+    3. Create a Linear issue with details
+    4. Post a summary to #engineering in Slack
+    ```
+
+    Verify all four tools execute in sequence.
+  </Step>
+
+  <Step title="Support Workflow">
+    ```text
+    1. Search Notion for "password reset" documentation
+    2. Create a Linear ticket for the customer
+    3. Post the article link to #support in Slack
+    ```
+
+    Verify knowledge search and tool coordination.
+  </Step>
+</Steps>
+
+## Set Tool Permissions
+
+Control which tools can be executed:
+
+### Permission Levels
+
+| Permission | Behavior | Use Case |
+|------------|----------|----------|
+| **Allow** ✅ | Tool executes freely | Safe read operations, tested write operations |
+| **Block** ❌ | Tool is visible but execution blocked | Dangerous operations, incomplete tools |
+| **Require Approval** ⏸️ | Prompt before execution (coming soon) | Sensitive operations needing human review |
+
+### How to Set Permissions
+
+1. Open the **Tools Sidebar** (left panel)
+2. Find the tool (e.g., `delete_repository`)
+3. Click the permission dropdown
+4. Select: **Allow**, **Block**, or **Require Approval**
+
+<Frame>
+  <img src="/images/playground-permissions.png" alt="Setting tool permissions" />
+</Frame>
+
+### Recommended Permission Strategy
+
+<Tabs>
+  <Tab title="Development Phase">
+    **Goal:** Test everything
+
+    - ✅ **Allow**: All read operations
+    - ✅ **Allow**: Write operations to test workspace
+    - ❌ **Block**: Delete/archive operations
+
+    Test freely, but protect against accidents.
+  </Tab>
+
+  <Tab title="Production Phase">
+    **Goal:** Safe and reliable
+
+    - ✅ **Allow**: Tested read operations
+    - ✅ **Allow**: Safe write operations (create, update)
+    - ⏸️ **Require Approval**: Sensitive writes (deploy, merge PR)
+    - ❌ **Block**: Destructive operations (delete, archive)
+
+    Minimize risk while maintaining functionality.
+  </Tab>
+</Tabs>
+
+## View Execution Traces
+
+Execution traces help you understand what happened:
+
+### Trace Components
+
+<Tabs>
+  <Tab title="Tool Call">
+    ```json
+    {
+      "tool": "create_issue",
+      "timestamp": "2025-11-29T12:34:56Z",
+      "duration": "234ms",
+      "status": "success"
+    }
+    ```
+  </Tab>
+
+  <Tab title="Input Parameters">
+    ```json
+    {
+      "title": "Playground Test",
+      "description": "Testing tool execution",
+      "priority": 2,
+      "status": "backlog"
+    }
+    ```
+
+    What the AI agent sent to the tool.
+  </Tab>
+
+  <Tab title="Output">
+    ```json
+    {
+      "id": "ABC-123",
+      "title": "Playground Test",
+      "url": "https://linear.app/company/issue/ABC-123",
+      "createdAt": "2025-11-29T12:34:56Z"
+    }
+    ```
+
+    What the tool returned.
+  </Tab>
+
+  <Tab title="Error (if failed)">
+    ```json
+    {
+      "error": "Unauthorized",
+      "message": "API key is invalid or expired",
+      "code": 401
+    }
+    ```
+
+    Error details for debugging.
+  </Tab>
+</Tabs>
+
+### Trace Actions
+
+For each trace entry, you can:
+
+- **Copy Input**: Copy parameters as JSON
+- **Copy Output**: Copy response as JSON
+- **Copy cURL**: Get equivalent curl command
+- **Re-run**: Execute the same tool call again
+- **View Raw**: See full HTTP request/response
+
+<Tip>
+  Copy cURL commands to test API calls directly outside Tadata for debugging.
+</Tip>
+
+## Debug Common Issues
+
+### Authentication Errors
+
+<AccordionGroup>
+  <Accordion title="401 Unauthorized" icon="circle-exclamation">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Unauthorized",
+      "code": 401
+    }
+    ```
+
+    **Causes:**
+    - OAuth token expired
+    - API key is incorrect
+    - Insufficient permissions
+
+    **Solutions:**
+    1. Go to **Settings** → **Connected Accounts**
+    2. Click **Reconnect** for the failing service
+    3. Re-authorize with correct permissions
+    4. Test again in Playground
+  </Accordion>
+
+  <Accordion title="403 Forbidden" icon="ban">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Forbidden",
+      "code": 403
+    }
+    ```
+
+    **Causes:**
+    - Account lacks necessary permissions
+    - Resource doesn't exist or is private
+    - Rate limit exceeded
+
+    **Solutions:**
+    1. Verify the connected account has access to the resource
+    2. Check service account permissions (admin, member, guest?)
+    3. Wait if rate limited (check service dashboard)
+  </Accordion>
+</AccordionGroup>
+
+### Tool Execution Errors
+
+<AccordionGroup>
+  <Accordion title="Missing Required Parameters" icon="input-text">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Missing required parameter: title"
+    }
+    ```
+
+    **Cause:** The AI agent didn't provide a required parameter.
+
+    **Solutions:**
+    - Improve tool descriptions to clarify required parameters
+    - Provide examples in tool definition
+    - Be more specific in your Playground prompt
+  </Accordion>
+
+  <Accordion title="Invalid Parameter Values" icon="circle-xmark">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Invalid status: 'Completed'. Must be one of: backlog, todo, in_progress, done, canceled"
+    }
+    ```
+
+    **Cause:** Parameter value doesn't match expected format/enum.
+
+    **Solutions:**
+    - Check tool documentation for valid values
+    - Update your prompt with correct values
+    - Add enum constraints to tool definition
+  </Accordion>
+
+  <Accordion title="Timeout" icon="clock">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Request timeout after 30s"
+    }
+    ```
+
+    **Cause:** The API took too long to respond.
+
+    **Solutions:**
+    - Check if the service is experiencing issues
+    - Reduce the scope of the request (e.g., fetch fewer results)
+    - Enable pagination for large datasets
+  </Accordion>
+</AccordionGroup>
+
+### Response Issues
+
+<AccordionGroup>
+  <Accordion title="Response Too Large" icon="up-right-and-down-left-from-center">
+    **Symptoms:** Responses are megabytes of JSON, hitting token limits.
+
+    **Solutions:**
+    - Enable [Response Compression](/optimization/overview)
+    - Use filtering to select specific fields
+    - Implement pagination for list operations
+    - Limit the number of results returned
+  </Accordion>
+
+  <Accordion title="Unexpected Response Format" icon="file-code">
+    **Symptoms:** Response structure doesn't match expectations.
+
+    **Solutions:**
+    - Check API documentation for correct response schema
+    - Update tool output schema in toolset configuration
+    - Use transformation rules to normalize responses
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+### Testing Strategy
+
+<Steps>
+  <Step title="Test Authentication First">
+    Use simple read operations to verify credentials work before testing complex workflows.
+  </Step>
+
+  <Step title="Test Each Tool Individually">
+    Don't test all tools in one conversation. Test each tool separately to isolate issues.
+  </Step>
+
+  <Step title="Test Error Cases">
+    Deliberately trigger errors to verify graceful handling and helpful error messages.
+  </Step>
+
+  <Step title="Test Multi-Tool Workflows">
+    Once individual tools work, test workflows combining multiple tools.
+  </Step>
+
+  <Step title="Test with Edge Cases">
+    Try unusual inputs, empty values, very long strings, special characters, etc.
+  </Step>
+</Steps>
+
+### Safety
+
+<Warning>
+  The Playground makes **real API calls**. Write operations affect production data unless you use test workspaces.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Use Test Workspaces" icon="vial">
+    When available, connect test/staging environments:
+    - Linear: Create a test workspace
+    - Slack: Use a test channel like #testing
+    - GitHub: Use a test repository
+
+    Test freely without affecting production.
+  </Accordion>
+
+  <Accordion title="Block Dangerous Tools" icon="shield">
+    Set destructive tools to **Block** by default:
+    - `delete_*` operations
+    - `archive_*` operations
+    - `revoke_*` operations
+    - Production deployment tools
+
+    Only enable when you're confident and ready.
+  </Accordion>
+
+  <Accordion title="Review Traces Before Deploying" icon="eye">
+    Check execution traces for:
+    - Unexpected tool calls
+    - Sensitive data in responses
+    - Excessive API calls
+    - Error patterns
+
+    Fix issues before connecting to Claude/Cursor.
+  </Accordion>
+</AccordionGroup>
+
+### Performance
+
+<AccordionGroup>
+  <Accordion title="Check Response Times" icon="gauge">
+    Monitor tool execution duration in traces:
+    - **< 500ms**: Excellent
+    - **500ms - 2s**: Good
+    - **2s - 5s**: Acceptable
+    - **> 5s**: Needs optimization
+
+    Slow tools frustrate users and waste time.
+  </Accordion>
+
+  <Accordion title="Optimize Large Responses" icon="compress">
+    If responses are large (>10 KB):
+    - Enable compression
+    - Filter specific fields
+    - Implement pagination
+    - Truncate long text fields
+
+    See [Optimization](/optimization/overview) for techniques.
+  </Accordion>
+
+  <Accordion title="Test Rate Limits" icon="gauge-max">
+    Make multiple rapid requests to check:
+    - Does the API rate limit you?
+    - How are rate limit errors handled?
+    - Do you need to implement backoff/retry?
+
+    Plan for rate limits in production.
+  </Accordion>
+</AccordionGroup>
+
+## Export and Share
+
+### Export Traces
+
+Download execution traces for analysis:
+
+1. Click **Export Traces** in the Playground
+2. Select date range
+3. Choose format: **JSON** or **CSV**
+4. Download file
+
+**Use cases:**
+- Debug issues with your team
+- Analyze tool usage patterns
+- Share examples with support
+- Import into analytics tools
+
+### Share Playground Session
+
+Generate a shareable link to a Playground session:
+
+1. Click **Share** button
+2. Choose access level:
+   - **View Only**: Recipients can view but not execute tools
+   - **Full Access**: Recipients can test tools (requires authentication)
+3. Copy link and share with teammates
+
+<Info>
+  Shared links expire after 7 days for security.
+</Info>
+
+## Next Steps
+
+Once your toolset passes Playground testing:
+
+<CardGroup cols={2}>
+  <Card title="Connect to Claude Desktop" icon="message-bot" href="/getting-started/quickstart#step-5-connect-to-claude-desktop">
+    Add your toolset to Claude Desktop configuration
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Monitor real-world usage and performance
+  </Card>
+  <Card title="Enable Optimization" icon="gauge-high" href="/optimization/overview">
+    Reduce token usage and improve speed
+  </Card>
+  <Card title="Explore Recipes" icon="book-open" href="/recipes/introduction">
+    Pre-configured toolsets for common workflows
+  </Card>
+</CardGroup>

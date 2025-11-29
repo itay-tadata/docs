@@ -1,0 +1,582 @@
+---
+title: "Passthrough Authentication"
+description: "Configure direct API key pass-through for custom APIs"
+---
+
+## Overview
+
+**Passthrough authentication** allows you to use API keys directly without storing them permanently in Tadata. Your API key is passed through to the service with each request, giving you full control over credentials.
+
+<Info>
+  **Best for:** Custom APIs, internal tools, services without OAuth support, when you want full control over credentials.
+</Info>
+
+## How It Works
+
+```mermaid
+sequenceDiagram
+    participant Agent as AI Agent
+    participant Tadata as Tadata
+    participant API as Your API
+
+    Agent->>Tadata: Execute tool with params
+    Tadata->>Tadata: Add API key to request
+    Tadata->>API: Forward request with API key
+    API->>API: Validate API key
+    API->>Tadata: Response
+    Tadata->>Agent: Return response
+```
+
+**Key Points:**
+- Tadata does NOT permanently store your API key
+- Key is added to each request (header or query parameter)
+- Transmitted over HTTPS only
+- You manage key rotation and expiration
+
+## Configuration Methods
+
+### Method 1: Header-Based Authentication (Most Common)
+
+Most modern APIs use header-based authentication with formats like:
+
+```
+Authorization: Bearer sk_live_abc123
+X-API-Key: abc123
+X-Auth-Token: token123
+```
+
+#### Configuration
+
+<Tabs>
+  <Tab title="Bearer Token">
+    **Used by:** Stripe, OpenAI, many modern APIs
+
+    ```json Configuration
+    {
+      "authType": "header",
+      "headerName": "Authorization",
+      "headerPrefix": "Bearer ",
+      "apiKey": "sk_live_abc123"
+    }
+    ```
+
+    **Resulting Header:**
+    ```
+    Authorization: Bearer sk_live_abc123
+    ```
+  </Tab>
+
+  <Tab title="Custom Header">
+    **Used by:** Custom APIs, legacy systems
+
+    ```json Configuration
+    {
+      "authType": "header",
+      "headerName": "X-API-Key",
+      "headerPrefix": "",
+      "apiKey": "abc123"
+    }
+    ```
+
+    **Resulting Header:**
+    ```
+    X-API-Key: abc123
+    ```
+  </Tab>
+
+  <Tab title="Token Prefix">
+    **Used by:** GitHub, GitLab
+
+    ```json Configuration
+    {
+      "authType": "header",
+      "headerName": "Authorization",
+      "headerPrefix": "token ",
+      "apiKey": "ghp_abc123"
+    }
+    ```
+
+    **Resulting Header:**
+    ```
+    Authorization: token ghp_abc123
+    ```
+  </Tab>
+</Tabs>
+
+<Warning>
+  **Header Prefix Spacing:** Some APIs require a space after the prefix (`Bearer `), others don't (`Bearer`). Check your API documentation carefully.
+</Warning>
+
+### Method 2: Query Parameter Authentication
+
+Some APIs (especially older ones) use query parameters:
+
+```
+GET https://api.example.com/data?api_key=abc123
+```
+
+#### Configuration
+
+```json Configuration
+{
+  "authType": "query",
+  "paramName": "api_key",
+  "apiKey": "abc123"
+}
+```
+
+**Example Services:**
+- Google Maps API (`key` parameter)
+- OpenWeatherMap (`appid` parameter)
+- Some internal APIs
+
+<Info>
+  **Security Note:** Query parameters appear in URL logs. Header-based auth is more secure when possible.
+</Info>
+
+### Method 3: Basic Authentication
+
+HTTP Basic Auth encodes username:password in base64:
+
+```
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+```
+
+#### Configuration
+
+```json Configuration
+{
+  "authType": "basic",
+  "username": "your-username",
+  "password": "your-password"
+}
+```
+
+Tadata automatically encodes and adds the `Authorization: Basic ...` header.
+
+**Example Services:**
+- Some REST APIs
+- Internal company APIs
+- Legacy systems
+
+## Step-by-Step Setup
+
+### Step 1: Get Your API Key
+
+Find your API key in the service's settings:
+
+<Tabs>
+  <Tab title="Sentry">
+    1. Go to Sentry dashboard
+    2. Settings → Account → API → Auth Tokens
+    3. Click "Create New Token"
+    4. Select scopes: `project:read`, `event:read`, etc.
+    5. Copy the token: `sntrys_abc123...`
+  </Tab>
+
+  <Tab title="Supabase">
+    1. Go to your Supabase project
+    2. Settings → API
+    3. Copy "service_role" key (for server-side) or "anon" key (for client-side)
+    4. Key format: `eyJhbGci...`
+  </Tab>
+
+  <Tab title="Custom API">
+    1. Log in to your API dashboard
+    2. Navigate to Settings or Developer section
+    3. Generate a new API key
+    4. Copy the key
+    5. Note the authentication method (header vs. query param)
+  </Tab>
+</Tabs>
+
+### Step 2: Configure in Tadata
+
+1. Navigate to your toolset configuration
+2. Go to **Authentication** tab
+3. Select **Passthrough**
+4. Fill in the configuration form:
+
+<Frame>
+  <img src="/images/passthrough-config.png" alt="Passthrough configuration form" />
+</Frame>
+
+<Accordion title="Configuration Form Fields">
+  **Authentication Type:**
+  - Header
+  - Query Parameter
+  - Basic Auth
+
+  **Header Name** (if Header type):
+  - `Authorization` (most common)
+  - `X-API-Key`
+  - `X-Auth-Token`
+  - Custom header name
+
+  **Header Prefix** (if Header type):
+  - `Bearer ` (with space)
+  - `token ` (with space)
+  - Empty (no prefix)
+
+  **Parameter Name** (if Query Parameter type):
+  - `api_key`
+  - `key`
+  - `token`
+  - Custom parameter name
+
+  **API Key / Username / Password:**
+  - Your actual credential
+
+  **Base URL** (optional):
+  - Override API base URL
+  - Useful for self-hosted services
+</Accordion>
+
+### Step 3: Test Connection
+
+1. Click **Test Connection**
+2. Tadata will make a simple API call to verify:
+   - API key is valid
+   - Authentication method is correct
+   - Service is reachable
+
+<Check>
+  **Success:** "Connection successful! API key is valid."
+</Check>
+
+<Warning>
+  **Failure:** Check error message for details (invalid key, wrong header, etc.)
+</Warning>
+
+### Step 4: Save and Test in Playground
+
+1. Click **Save** to apply configuration
+2. Open **Playground**
+3. Test a simple read operation:
+
+```text
+List all projects
+```
+
+4. Check execution trace for:
+   - Status: Success (green)
+   - Response: Valid data
+   - No authentication errors
+
+## Examples by Service Type
+
+### Example 1: Sentry (Bearer Token)
+
+**API Documentation:** `https://docs.sentry.io/api/auth/`
+
+```json Configuration
+{
+  "authType": "header",
+  "headerName": "Authorization",
+  "headerPrefix": "Bearer ",
+  "apiKey": "sntrys_abc123def456ghi789"
+}
+```
+
+**Test in Playground:**
+```text
+Get the latest errors from Sentry
+```
+
+### Example 2: Internal API (Custom Header)
+
+**API Endpoint:** `https://internal-api.company.com`
+
+```json Configuration
+{
+  "authType": "header",
+  "headerName": "X-Company-API-Key",
+  "headerPrefix": "",
+  "apiKey": "company_key_abc123",
+  "baseUrl": "https://internal-api.company.com"
+}
+```
+
+**Test in Playground:**
+```text
+Fetch data from internal API
+```
+
+### Example 3: Legacy API (Query Parameter)
+
+**API Endpoint:** `https://legacy-api.example.com`
+
+```json Configuration
+{
+  "authType": "query",
+  "paramName": "apikey",
+  "apiKey": "legacy_abc123"
+}
+```
+
+**Resulting Request:**
+```
+GET https://legacy-api.example.com/data?apikey=legacy_abc123
+```
+
+## Best Practices
+
+### Security
+
+<AccordionGroup>
+  <Accordion title="Use Scoped/Restricted API Keys" icon="lock">
+    Create keys with minimum necessary permissions:
+
+    **Sentry Example:**
+    - ✅ Create key with `project:read`, `event:read` only
+    - ❌ Don't use admin key with full access
+
+    **GitHub Example:**
+    - ✅ Create token scoped to specific repos
+    - ❌ Don't use personal access token with org admin rights
+  </Accordion>
+
+  <Accordion title="Create Dedicated Service Account Keys" icon="robot">
+    **Recommended Approach:**
+    1. Create a service account user (e.g., "Tadata Bot")
+    2. Generate API key for that account
+    3. Grant only necessary permissions
+    4. Actions appear under bot name (clear audit trail)
+
+    **Benefits:**
+    - Easy to revoke without affecting humans
+    - Clear separation of automation vs. manual actions
+    - Easier to track and audit
+  </Accordion>
+
+  <Accordion title="Rotate Keys Regularly" icon="arrows-rotate">
+    **Rotation Schedule:**
+    - **Production keys:** Every 90 days
+    - **Development keys:** Every 180 days
+    - **Immediately:** If key is compromised or suspected leak
+
+    **Rotation Process:**
+    1. Generate new API key in service
+    2. Update key in Tadata configuration
+    3. Test in Playground to confirm
+    4. Revoke old key in service
+  </Accordion>
+
+  <Accordion title="Never Hardcode Keys in OpenAPI Specs" icon="file-code">
+    When uploading OpenAPI specs, don't include actual API keys:
+
+    ❌ **Don't do this:**
+    ```yaml
+    securitySchemes:
+      ApiKey:
+        type: apiKey
+        in: header
+        name: X-API-Key
+        value: "actual_key_abc123"  # Never do this!
+    ```
+
+    ✅ **Do this:**
+    ```yaml
+    securitySchemes:
+      ApiKey:
+        type: apiKey
+        in: header
+        name: X-API-Key
+        # Value configured separately in Tadata
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Monitoring
+
+<AccordionGroup>
+  <Accordion title="Monitor for Authentication Errors" icon="triangle-exclamation">
+    Set up alerts for:
+    - 401 Unauthorized errors (key invalid/expired)
+    - 403 Forbidden errors (insufficient permissions)
+    - Sudden spikes in errors (potential issue)
+
+    View in [Analytics](/optimization/analytics).
+  </Accordion>
+
+  <Accordion title="Track Key Usage in Service Dashboard" icon="chart-line">
+    Most services provide API key usage metrics:
+    - Number of requests
+    - Error rates
+    - Last used timestamp
+
+    Review regularly to detect:
+    - Unexpected usage patterns
+    - Unauthorized access attempts
+    - Keys that are no longer needed
+  </Accordion>
+
+  <Accordion title="Set Up Key Expiration Reminders" icon="bell">
+    Use calendar reminders to rotate keys before they expire:
+    - 1 week before expiration: Create new key
+    - 1 day before expiration: Update in Tadata
+    - On expiration: Revoke old key
+
+    Prevents unexpected toolset failures.
+  </Accordion>
+</AccordionGroup>
+
+### Organization
+
+<AccordionGroup>
+  <Accordion title="Use Descriptive Key Names" icon="tag">
+    When creating API keys in services, use clear names:
+
+    ✅ **Good:**
+    - "Tadata Production - Triage Agent"
+    - "Tadata Dev - Testing"
+    - "Tadata Service Bot"
+
+    ❌ **Bad:**
+    - "Key 1"
+    - "Test"
+    - "My Key"
+
+    Makes it easier to identify and manage keys.
+  </Accordion>
+
+  <Accordion title="Document Key Purpose" icon="clipboard">
+    Maintain a document with:
+    - Key name
+    - Service
+    - Tadata toolset(s) using it
+    - Permissions granted
+    - Creation date
+    - Rotation date
+    - Owner/contact
+
+    Useful for team handoffs and audits.
+  </Accordion>
+
+  <Accordion title="Separate Keys by Environment" icon="sitemap">
+    Use different API keys for:
+    - **Development:** Tadata dev toolsets, limited data
+    - **Staging:** Tadata staging toolsets, staging data
+    - **Production:** Tadata production toolsets, live data
+
+    Prevents dev/testing from affecting production.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="401 Unauthorized - Invalid API Key">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Unauthorized",
+      "message": "Invalid API key",
+      "code": 401
+    }
+    ```
+
+    **Solutions:**
+    - Copy API key again (ensure no extra spaces)
+    - Check if key has expired
+    - Verify key is active in service dashboard
+    - Try generating a new key
+  </Accordion>
+
+  <Accordion title="401 Unauthorized - Wrong Header Format">
+    **Symptoms:** API key is valid, but still getting 401
+
+    **Solutions:**
+    - Check header prefix (e.g., `Bearer ` with space vs. `Bearer`)
+    - Verify header name (case-sensitive: `Authorization` vs. `authorization`)
+    - Consult API documentation for exact format
+    - Test with curl/Postman to confirm correct format:
+
+    ```bash
+    curl -H "Authorization: Bearer YOUR_KEY" https://api.example.com/test
+    ```
+  </Accordion>
+
+  <Accordion title="403 Forbidden - Insufficient Permissions">
+    **Symptoms:**
+    ```json
+    {
+      "error": "Forbidden",
+      "message": "API key lacks necessary permissions",
+      "code": 403
+    }
+    ```
+
+    **Solutions:**
+    - Review key permissions in service dashboard
+    - Grant additional scopes/permissions
+    - Generate a new key with broader access
+    - Check if resource is accessible to the account
+  </Accordion>
+
+  <Accordion title="Connection Test Fails">
+    **Symptoms:** "Connection test failed" when saving configuration
+
+    **Solutions:**
+    - Verify base URL is correct (https, no trailing slash)
+    - Check if API is publicly accessible (not behind VPN)
+    - Ensure firewall allows Tadata IP ranges
+    - Test API endpoint directly in browser/Postman
+  </Accordion>
+
+  <Accordion title="API Key Works in Postman but Not in Tadata">
+    **Symptoms:** Manual testing works, but Tadata fails
+
+    **Solutions:**
+    - Compare exact headers sent by Postman vs. Tadata
+    - Check for additional required headers (User-Agent, Content-Type, etc.)
+    - Verify base URL matches exactly (http vs. https, port numbers)
+    - Look for IP whitelisting requirements (contact service to whitelist Tadata)
+  </Accordion>
+</AccordionGroup>
+
+## Migration from OAuth
+
+If you previously used OAuth and want to switch to passthrough:
+
+<Steps>
+  <Step title="Generate API Key">
+    Create an API key in the service dashboard
+  </Step>
+
+  <Step title="Test Key Separately">
+    Verify the key works with curl/Postman before configuring in Tadata
+  </Step>
+
+  <Step title="Update Tadata Configuration">
+    In toolset settings:
+    1. Go to Authentication tab
+    2. Switch from OAuth to Passthrough
+    3. Enter API key configuration
+  </Step>
+
+  <Step title="Test in Playground">
+    Confirm tools still work with the new authentication method
+  </Step>
+
+  <Step title="Disconnect OAuth (Optional)">
+    If no longer needed, disconnect the OAuth account in Settings → Connected Accounts
+  </Step>
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="OAuth Authentication" icon="shield-check" href="/authentication/oauth">
+    Compare with OAuth for more secure, automated token management
+  </Card>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Verify your authentication is working correctly
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Monitor tool usage and authentication errors
+  </Card>
+  <Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
+    Upload OpenAPI specs with passthrough auth
+  </Card>
+</CardGroup>
