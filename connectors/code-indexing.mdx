@@ -1,0 +1,67 @@
+---
+title: "Code Indexing"
+description: "Add code search to your toolsets"
+---
+
+## Overview
+
+Code Indexing adds a `search-code` tool to your toolset, allowing AI agents to search code repositories without loading entire codebases into context.
+
+Connect public GitHub repositories and Tadata handles the rest.
+
+## Setup
+
+1. Go to your toolset configuration and enable Code Indexing
+2. Enter one or more public GitHub repository URLs
+3. Click OK - Tadata indexes everything in the background
+
+The `search-code` tool is now available. Test it in the Playground.
+
+## Using search-code
+
+Your AI agent can now search code:
+
+```text Example Query
+"Find the authentication function"
+```
+
+The tool returns relevant code snippets with file paths and line numbers.
+
+## Staying Updated
+
+**Manual Reindex**: Click "Reindex Now" in your toolset configuration after major code changes
+
+**Automatic Re-syncing**: Enable automated re-syncing to keep the tool up to date automatically
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Debugging Agents" icon="bug">
+    When errors occur, agents search code to find relevant functions and identify issues, then create tickets with file/line references
+  </Accordion>
+
+  <Accordion title="Code Review Agents" icon="code-compare">
+    Agents search for existing patterns in the codebase to compare with PR changes and suggest improvements
+  </Accordion>
+
+  <Accordion title="Development Agents" icon="laptop-code">
+    Agents help developers find existing implementations and examples when building new features
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Knowledge Indexing" icon="book" href="/connectors/knowledge-indexing">
+    Add documentation search
+  </Card>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Try the search-code tool
+  </Card>
+  <Card title="Triage Recipe" icon="wrench" href="/recipes/triage-agent">
+    See it in production workflows
+  </Card>
+  <Card title="Using Connectors" icon="plug" href="/guides/using-connectors">
+    Connect more services
+  </Card>
+</CardGroup>

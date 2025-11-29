@@ -1,265 +1,219 @@
 ---
-title: "Optimization Overview"
-description: "Improve performance and reduce token usage with built-in optimizations"
+title: "Optimization"
+description: "Built-in optimizations to improve performance and reduce token usage"
 ---
 
 ## Why Optimization Matters
 
-AI agents face two key challenges when using tools:
+AI agents face key challenges when using tools:
 
-1. **Token Limits**: Large API responses quickly consume context windows
-2. **Latency**: Slow API calls frustrate users and waste time
+1. **Token Limits**: Large API responses consume context windows fast
+2. **Latency**: Slow API calls frustrate users
+3. **Tool Selection**: Too many tools overwhelm agents
 
-Tadata's pre-built connectors are **already optimized** to address these issues. No configuration needed - they just work efficiently.
+Tadata's connectors come with built-in optimizations that solve these problems automatically.
 
-## Built-In Optimizations
+## Optimization Features
 
-### Pre-Optimized Responses
+### 1. Response Compression
 
-Our connectors return only what's needed:
+**Achieves 60%+ token savings**
 
-<Tabs>
-  <Tab title="Linear Example">
-    **Without Optimization:**
-    ```json
-    {
-      "id": "ABC-123",
-      "title": "Fix bug",
-      "description": "...",
-      "status": "in_progress",
-      "priority": 2,
-      "createdAt": "2025-11-29T10:00:00Z",
-      "updatedAt": "2025-11-29T12:00:00Z",
-      "creator": {...},  // 50+ fields
-      "assignee": {...},  // 50+ fields
-      "project": {...},  // 50+ fields
-      "team": {...},  // 50+ fields
-      "comments": [...],  // Array of comments
-      "attachments": [...],  // Array of attachments
-      "relations": [...],  // Array of related issues
-      // 100+ more fields...
-    }
-    ```
+API responses typically include hundreds of fields that AI agents don't need. Tadata compresses responses to only essential data.
 
-    **Response size:** ~15 KB per issue
-
-    **With Tadata Optimization:**
-    ```json
-    {
-      "id": "ABC-123",
-      "title": "Fix bug",
-      "status": "in_progress",
-      "priority": 2,
-      "assignee": "Alice",
-      "url": "https://linear.app/..."
-    }
-    ```
-
-    **Response size:** ~200 bytes per issue
-
-    **Savings:** 98.7% reduction
-  </Tab>
-
-  <Tab title="GitHub Example">
-    **Without Optimization:**
-    Full PR object with 200+ fields including commit history, diffs, reviews, comments, etc.
-
-    **With Tadata Optimization:**
-    ```json
-    {
-      "number": 123,
-      "title": "Add feature",
-      "state": "open",
-      "author": "bob",
-      "url": "https://github.com/..."
-    }
-    ```
-
-    **Savings:** 95%+ reduction
-  </Tab>
-</Tabs>
+**Result:** More context window space for your agent's conversation and reasoning.
 
 <Check>
-  **No configuration required.** This optimization is built into every Tadata connector.
+  **Built into all pre-built connectors.** No configuration needed.
 </Check>
 
-## Advanced Optimization Features
+### 2. Response Projection
 
-### 1. Analytics & Monitoring
+**Returns only relevant fields for each operation**
 
-Track tool performance and usage:
+Instead of returning entire objects with nested arrays and unnecessary metadata, Tadata projects responses to include only what matters for the task.
 
-- **Tool Execution Metrics**: Calls, errors, response times
-- **Usage Patterns**: Which tools are most used, by which clients
-- **Traces**: Detailed logs of every tool invocation
-- **Export**: Download data for external analysis
+**Benefits:**
+- Reduces token count significantly
+- Keeps agents focused on relevant information
+- Cleaner data that's easier to understand and process
 
-<Card title="Analytics Guide" icon="chart-line" href="/optimization/analytics">
-  Monitor usage, performance, and costs
-</Card>
+**Result:** Agents work with exactly the data they need, nothing more.
 
-### 2. Knowledge Indexing
+### 3. Response Filtering
 
-Enable `search-docs` tool for documentation search:
+**Optimizes tools that return complex query results**
 
-- Index markdown/documentation repositories
-- AI agents query docs without reading everything
-- Avoid hitting token limits with full doc embedding
+Especially relevant for database queries and data-intensive operations, response filtering removes unnecessary data to improve performance.
 
-**Use Cases:**
-- Product documentation search
-- Internal wiki/knowledge base access
-- API reference lookup
+**Benefits:**
+- Faster API calls
+- Better user experience
+- Lower token consumption
+- Critical for complex database queries
 
-<Card title="Knowledge Indexing" icon="book" href="/optimization/knowledge-indexing">
-  Enable documentation search for your toolsets
-</Card>
+**Result:** Agents respond faster, users wait less.
 
-### 3. Code Indexing
+### 4. Tool Batching
 
-Enable `search-code` tool for repository search:
+**Reduces runtime drastically by parallelizing operations**
 
-- Index code repositories (GitHub, GitLab)
-- Find functions, classes, patterns
-- Support debugging and code review workflows
+AI agents can't parallelize tool calls on their own. Tool batching executes related operations in parallel, dramatically improving performance.
 
-**Use Cases:**
-- Code search for debugging
-- Finding similar patterns
-- Reference existing implementations
+**Benefits:**
+- Parallel execution of related operations
+- Drastically reduced runtime
+- Fewer sequential bottlenecks
 
-<Card title="Code Indexing" icon="code" href="/optimization/code-indexing">
-  Enable code search for your toolsets
-</Card>
+**Result:** Complex workflows complete much faster.
 
-### 4. Workflows
+### 5. Tool Workflows
 
-Automate multi-tool sequences (part of optimization):
+**Pre-defined workflows reduce runtime by up to 80%**
 
-- Chain multiple tool calls
-- Conditional logic
-- Error handling
-- Reusable patterns
+While agents can figure out what to do at runtime, many workflows are common and predictable. Defining these workflows upfront eliminates the planning overhead and executes them optimally.
 
-**Use Cases:**
-- Triage: Check Sentry → Find code → Create issue → Notify team
-- Deploy: Merge PR → Deploy → Monitor errors → Rollback if needed
+**Example Workflows:**
+- **Triage**: Fetch error → Search code → Create issue → Notify team
+- **Deploy**: Merge PR → Deploy → Monitor → Rollback if errors
+- **Support**: Ticket received → Search docs → Auto-respond → Escalate if needed
+
+**Benefits:**
+- Up to 80% runtime reduction
+- No planning overhead - workflows execute immediately
+- Consistent execution every time
+- Graceful error handling
+
+**Result:** Common workflows complete in seconds instead of requiring agent reasoning at each step.
+
+### 6. Suggested Tool Names & Descriptions
+
+**AI-optimized tool naming for better selection**
+
+Generic API endpoint names like `POST /issues` don't help AI agents understand what a tool does. Tadata optimizes tool names and descriptions to be intuitive.
+
+**Before:**
+- Tool: `POST /api/v1/issues`
+- Description: "Creates a new issue resource"
+
+**After:**
+- Tool: `create_linear_issue`
+- Description: "Create a new issue in Linear with title, description, priority, and assignee"
+
+**Benefits:**
+- Agents choose the right tool more often
+- Reduced confusion and errors
+- Better alignment with natural language requests
+
+**Result:** AI agents understand and use your tools correctly.
+
+### 7. Automated Tool Selection
+
+**Focus agents on relevant operations only**
+
+When you have toolsets with many connectors, automated tool selection suggests only the tools relevant for specific use cases.
+
+**How It Works:**
+- You enable all tools in a connector (maximum flexibility)
+- Configure use-case-based tool selection in server settings
+- Agents only see tools relevant to their task
+
+**Example:**
+For a "production triage" agent:
+- ✅ Show: Error monitoring, code search, issue creation
+- ❌ Hide: Marketing tools, CRM operations, analytics
+
+**Benefits:**
+- Agents aren't overwhelmed by irrelevant options
+- Better tool selection accuracy
+- Faster decision-making
+
+**Result:** Your agents focus on what matters for their specific role.
+
+## How Tadata Handles Optimizations
 
 <Info>
-  Workflows are available in toolset configuration under Optimization settings.
+  **Pre-Built Connectors:** Tadata takes care of all optimizations automatically. No configuration needed.
+
+  **Custom Toolsets:** You can enable and configure these optimizations for your own APIs and connectors.
 </Info>
 
-## Optimization Comparison
+### Automatic (All Pre-Built Connectors)
 
-| Feature | Pre-Built Connectors | Custom APIs (OpenAPI) |
-|---------|---------------------|------------------------|
-| **Token-Efficient Responses** | ✅ Built-in | ⚠️ Manual configuration |
-| **Fast Execution** | ✅ Optimized endpoints | ⚠️ Depends on API |
-| **Analytics** | ✅ Included | ✅ Included |
-| **Knowledge Indexing** | ✅ Available | ✅ Available |
-| **Code Indexing** | ✅ Available | ✅ Available |
-| **Workflows** | ✅ Available | ✅ Available |
+These optimizations are **always enabled** for Tadata's pre-built connectors:
 
-<Tip>
-  **Recommendation:** Use pre-built connectors whenever possible to get optimizations automatically.
-</Tip>
+✅ Response Compression
+✅ Response Projection
+✅ Response Filtering
 
-## Measuring Impact
+**No configuration needed.** Just connect and go.
 
-### Token Savings
+### Optional (Configure for Custom Toolsets)
 
-View token savings in Analytics:
+These features are available when bringing your own APIs or creating custom toolsets:
 
-```
-Tool: list_issues
-Executions: 1,000
-Avg tokens without optimization: 5,000
-Avg tokens with optimization: 250
-Total tokens saved: 4,750,000 (95% reduction)
-```
+⚙️ Tool Batching
+⚙️ Tool Workflows
+⚙️ Suggested Tool Names & Descriptions
+⚙️ Automated Tool Selection
 
-### Performance Improvements
-
-Compare response times:
-
-| Tool | Without Optimization | With Optimization | Improvement |
-|------|---------------------|-------------------|-------------|
-| `list_issues` | 2.5s | 450ms | 82% faster |
-| `search_docs` | N/A (load all docs) | 200ms | ∞ (not possible without) |
-| `create_issue` | 1.2s | 800ms | 33% faster |
+**Tadata lets you add these optimizations to your custom connectors.**
 
 ## Best Practices
 
 <AccordionGroup>
   <Accordion title="Start with Pre-Built Connectors" icon="plug">
-    Pre-built connectors are already optimized. No work needed on your part.
+    Pre-built connectors have all automatic optimizations built-in. No work needed.
 
-    Only build custom connectors when necessary.
+    Only build custom connectors when the service you need isn't available.
   </Accordion>
 
-  <Accordion title="Enable Analytics Early" icon="chart-line">
-    Turn on analytics from day one to:
-    - Identify slow tools
-    - Find optimization opportunities
-    - Track usage patterns
-    - Prove ROI
+  <Accordion title="Enable All Tools, Use Automated Selection" icon="sparkles">
+    Don't limit yourself by enabling only some tools. Instead:
+    1. Enable all tools in a connector
+    2. Use automated tool selection to show relevant ones per use case
+    3. Get maximum flexibility with focused agent experience
   </Accordion>
 
-  <Accordion title="Use Knowledge Indexing for Large Docs" icon="book">
-    If your product has extensive documentation:
-    - Enable `search-docs` tool
-    - Index markdown files
-    - Let AI agents search instead of loading all docs
-
-    Saves massive amounts of tokens.
+  <Accordion title="Define Workflows for Repetitive Tasks" icon="arrows-repeat">
+    If your agent frequently performs multi-step sequences:
+    1. Define a workflow once
+    2. Reuse across all agent instances
+    3. Benefit from consistent execution and error handling
   </Accordion>
 
-  <Accordion title="Enable Code Indexing for Development Workflows" icon="code">
-    For agents working with code:
-    - Enable `search-code` tool
-    - Index relevant repositories
-    - Agents can find functions without reading entire codebases
+  <Accordion title="Optimize Tool Names for Your Use Case" icon="tag">
+    Generic API names don't help AI agents. Customize tool names and descriptions to match:
+    - How users naturally describe tasks
+    - Your team's terminology
+    - Common use cases
+
+    Example: Change "POST /deployments" to "Deploy code to production environment"
   </Accordion>
 
-  <Accordion title="Monitor and Iterate" icon="arrows-rotate">
-    Regularly review analytics:
-    - Which tools are slowest?
-    - Which use the most tokens?
-    - Are there errors to fix?
+  <Accordion title="Monitor Performance in Analytics" icon="chart-line">
+    Track which optimizations have the biggest impact:
+    - Token usage before/after
+    - Response time improvements
+    - Tool selection accuracy
 
-    Continuous improvement based on data.
+    Use this data to fine-tune configurations.
   </Accordion>
 </AccordionGroup>
-
-## What's Included vs. What's Optional
-
-### Included in Every Toolset
-
-✅ **Token-efficient responses** (for pre-built connectors)
-✅ **Basic analytics** (execution count, errors)
-✅ **Execution traces** (input/output logs)
-✅ **Performance metrics** (response times)
-
-### Optional (Enable as Needed)
-
-⚙️ **Knowledge indexing** - For documentation search
-⚙️ **Code indexing** - For code repository search
-⚙️ **Workflows** - For multi-tool automation
-⚙️ **Advanced analytics** - CSV export, detailed insights
 
 ## Next Steps
 
 <CardGroup cols={2}>
+  <Card title="Using Connectors" icon="plug" href="/guides/using-connectors">
+    Connect pre-built, pre-optimized integrations
+  </Card>
+  <Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
+    Add custom APIs with optimization options
+  </Card>
   <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
-    Monitor tool usage, performance, and costs
-  </Card>
-  <Card title="Enable Knowledge Indexing" icon="book" href="/optimization/knowledge-indexing">
-    Add documentation search to your toolsets
-  </Card>
-  <Card title="Enable Code Indexing" icon="code" href="/optimization/code-indexing">
-    Add code search to your toolsets
+    Monitor performance and measure impact
   </Card>
   <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
-    Verify optimizations are working
+    See optimizations in action
   </Card>
 </CardGroup>

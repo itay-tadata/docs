@@ -1,283 +1,124 @@
 ---
-title: "Authentication Overview"
-description: "Understanding authentication options for your toolsets"
+title: "Authentication"
+description: "How authentication works with Tadata"
 ---
 
-## Why Authentication Matters
+## How Authentication Works
 
-AI agents need to authenticate with services (Linear, GitHub, Slack, etc.) to perform actions on your behalf. Tadata provides two authentication approaches, each with different trade-offs.
+When you connect services to Tadata, we store your credentials securely. Your AI agent authenticates with Tadata once, and Tadata handles authentication with all connected services on your behalf.
 
-## Two Approaches
+### The Flow
 
-<CardGroup cols={2}>
-  <Card title="OAuth (Recommended)" icon="shield-check" href="/authentication/oauth">
-    Managed authentication with automatic token refresh
-  </Card>
-  <Card title="Passthrough" icon="key" href="/authentication/passthrough">
-    Direct API key pass-through for custom APIs
-  </Card>
-</CardGroup>
+1. **You connect services** (Linear, GitHub, Slack, etc.) to Tadata
+2. **Tadata stores credentials** - OAuth tokens or API keys, encrypted at rest
+3. **Your AI agent connects to Tadata** - Authenticates once with your Tadata toolset
+4. **Tadata authenticates with services** - Transparently handles auth when tools execute
 
-## Comparison
+This means you can create toolsets from multiple sources without managing separate credentials for each one.
 
-| Feature | OAuth | Passthrough |
-|---------|-------|-------------|
-| **Setup** | One-click "Connect" button | Manual API key configuration |
-| **Security** | ✅ Best: Tokens scoped, encrypted, auto-refresh | ⚠️ Good: Keys transmitted over HTTPS only |
-| **Token Storage** | Tadata stores encrypted tokens | Tadata does NOT store keys |
-| **Token Refresh** | Automatic | Manual (you handle expiration) |
-| **Revocation** | Easy: Revoke in service dashboard | Manual: Regenerate API key |
-| **Best For** | Pre-built connectors (Linear, GitHub, Slack) | Custom APIs, internal tools, simple integrations |
-| **User Experience** | Seamless | Requires finding/copying API key |
+## Connecting Services
 
-## OAuth (Managed Authentication)
+### OAuth (Most Common)
 
-### How It Works
+For services with OAuth support, click **Connect** and authorize:
 
 <Steps>
-  <Step title="User Clicks Connect">
-    In Tadata, user clicks "Connect Linear" (or any OAuth-enabled connector)
+  <Step title="Click Connect">
+    Find your service (Slack, Linear, GitHub) and click **Connect**
   </Step>
 
-  <Step title="Redirect to Service">
-    User is redirected to Linear's authorization page
+  <Step title="Authorize">
+    Redirected to the service to review and grant permissions
   </Step>
 
-  <Step title="Grant Permissions">
-    User reviews requested permissions (read issues, write issues, etc.) and clicks "Authorize"
-  </Step>
-
-  <Step title="Redirect Back">
-    Linear redirects back to Tadata with an authorization code
-  </Step>
-
-  <Step title="Exchange for Tokens">
-    Tadata exchanges the code for access token + refresh token
-
-    - **Access Token**: Short-lived (hours/days), used for API calls
-    - **Refresh Token**: Long-lived (months/years), used to get new access tokens
-  </Step>
-
-  <Step title="Store Securely">
-    Tokens are encrypted and stored in Tadata's secure vault
+  <Step title="Done">
+    Tadata stores OAuth tokens (access + refresh) securely. Automatic token refresh handled for you.
   </Step>
 </Steps>
 
-### Benefits
+### API Keys
 
-<AccordionGroup>
-  <Accordion title="Scoped Permissions" icon="lock">
-    OAuth tokens are scoped to specific permissions:
-    - Linear: `read:issues`, `write:issues`, `read:projects`
-    - GitHub: `repo`, `read:user`, `write:discussion`
-    - Slack: `chat:write`, `channels:read`
-
-    This limits what the AI agent can do, even if compromised.
-  </Accordion>
-
-  <Accordion title="Automatic Token Refresh" icon="arrows-rotate">
-    When an access token expires, Tadata automatically:
-    1. Detects the expiration (401 Unauthorized response)
-    2. Uses the refresh token to get a new access token
-    3. Retries the original request
-    4. Updates stored tokens
-
-    **You never have to manually refresh tokens.**
-  </Accordion>
-
-  <Accordion title="Easy Revocation" icon="trash">
-    Revoke access anytime:
-    - In Tadata: Settings → Connected Accounts → Disconnect
-    - In service dashboard: Revoke Tadata OAuth app
-
-    No need to rotate API keys or update configurations.
-  </Accordion>
-
-  <Accordion title="User-Specific Access" icon="user">
-    Each user connects their own account. Actions appear under their name in the service (e.g., "Alice created issue ABC-123" in Linear).
-
-    Better audit trails and accountability.
-  </Accordion>
-</AccordionGroup>
-
-### When to Use OAuth
-
-✅ **Use OAuth when:**
-- Service supports it (Linear, GitHub, Slack, Notion, etc.)
-- You want automatic token management
-- You need user-specific actions (audit trails)
-- You're using pre-built Tadata connectors
-
-❌ **Don't use OAuth when:**
-- Service doesn't support OAuth
-- You need a service account (not user-specific)
-- You're integrating internal/custom APIs
-
-<Card title="Configure OAuth" icon="shield-check" href="/authentication/oauth">
-  Detailed OAuth setup guide
-</Card>
-
-## Passthrough Authentication
-
-### How It Works
+For services without OAuth or custom APIs:
 
 <Steps>
   <Step title="Get API Key">
-    User retrieves API key from service settings (e.g., Sentry → Settings → API Keys)
+    Retrieve API key from service settings
   </Step>
 
   <Step title="Configure in Tadata">
-    User enters API key in Tadata with header/query parameter configuration
+    Enter the API key in Tadata's connector configuration
   </Step>
 
-  <Step title="API Calls">
-    When a tool is executed:
-    1. Tadata receives the request from AI agent
-    2. Tadata adds the API key to the request (header or query param)
-    3. Tadata forwards request to the service
-    4. Service validates the API key and responds
-    5. Tadata returns response to AI agent
+  <Step title="Done">
+    Tadata stores the key securely and uses it when executing tools
   </Step>
 </Steps>
 
-### Benefits
+## Security
 
 <AccordionGroup>
-  <Accordion title="No Token Storage" icon="database">
-    Tadata does NOT permanently store your API key. It's passed through on each request.
+  <Accordion title="Credential Storage" icon="lock">
+    All credentials (OAuth tokens and API keys) are encrypted at rest using industry-standard encryption (AES-256).
 
-    **Your key never leaves your control.**
+    Only Tadata's backend services can decrypt credentials when needed for API calls.
   </Accordion>
 
-  <Accordion title="Works with Any API" icon="plug">
-    As long as the API accepts API keys (header or query param), you can use it:
-    - Custom internal APIs
-    - Self-hosted services
-    - APIs without OAuth support
+  <Accordion title="Automatic Token Refresh" icon="arrows-rotate">
+    For OAuth connections, Tadata automatically refreshes expired access tokens using refresh tokens.
+
+    You never have to manually refresh tokens or reconnect services.
   </Accordion>
 
-  <Accordion title="Service Accounts" icon="robot">
-    Use dedicated service accounts for automation:
-    - Create an API key for "Tadata Bot" user
-    - Actions appear under the bot name
-    - Revoke bot key without affecting human users
+  <Accordion title="Revocation" icon="trash">
+    Revoke access anytime:
+    - In Tadata: Disconnect the service
+    - In the service: Revoke Tadata OAuth app
+    - Tadata stores credentials securely in an encrypted manner, and you can always revoke access and permanently delete tokens through your dashboard
+
+    All credentials are permanently deleted upon revocation.
   </Accordion>
 
-  <Accordion title="Simple Setup" icon="bolt">
-    No OAuth flows, no redirects. Just copy/paste the API key.
+  <Accordion title="HTTPS Only" icon="shield">
+    All communication is over HTTPS. Credentials are never logged or exposed in URLs.
   </Accordion>
 </AccordionGroup>
 
-### When to Use Passthrough
-
-✅ **Use Passthrough when:**
-- Service doesn't support OAuth
-- You're integrating custom/internal APIs
-- You want full control over credentials
-- You prefer not to store tokens with Tadata
-
-❌ **Don't use Passthrough when:**
-- OAuth is available (it's more secure)
-- You need automatic token refresh
-- You want user-specific actions (not service account)
-
-<Card title="Configure Passthrough" icon="key" href="/authentication/passthrough">
-  Detailed passthrough setup guide
-</Card>
-
-## Security Best Practices
-
-Regardless of authentication method:
-
-### General Security
+## Best Practices
 
 <AccordionGroup>
-  <Accordion title="Use Least Privilege" icon="user-shield">
+  <Accordion title="Use OAuth When Available" icon="shield-check">
+    OAuth is more secure than API keys:
+    - Scoped permissions (read vs. write, specific resources)
+    - Revocable without changing passwords
+    - Automatic token refresh
+
+    Prefer OAuth-enabled connectors over API key connectors.
+  </Accordion>
+
+  <Accordion title="Least Privilege" icon="user-shield">
     Grant minimum necessary permissions:
     - OAuth: Select only required scopes during authorization
     - API Keys: Create restricted/scoped keys when possible
 
-    **Example:** If you only need to read Linear issues, don't grant write permissions.
+    If you only read data, don't grant write permissions.
   </Accordion>
 
-  <Accordion title="Separate Environments" icon="sitemap">
-    Use different accounts for:
-    - **Development**: Test workspace, limited permissions
-    - **Staging**: Staging environment, broader access
-    - **Production**: Production environment, full access
+  <Accordion title="Service Accounts for Production" icon="robot">
+    Create dedicated bot accounts for AI agents:
+    - Not tied to any individual (survives team changes)
+    - Clear audit trails (all actions under bot name)
+    - Controlled permissions (grant only what the bot needs)
 
-    This limits the blast radius if something goes wrong.
+    Example: Create `ai-agent-bot@company.com` in Linear, GitHub, Slack.
   </Accordion>
 
-  <Accordion title="Monitor Usage" icon="eye">
-    Regularly review:
-    - [Analytics](/optimization/analytics) for unusual tool usage
-    - Service audit logs for unexpected actions
-    - Connected accounts for unauthorized access
-
-    Set up alerts for anomalies.
-  </Accordion>
-
-  <Accordion title="Rotate Credentials Regularly" icon="clock-rotate-left">
-    **For API Keys:**
-    - Rotate every 90 days minimum
-    - Rotate immediately if compromised
-    - Use automated rotation if available
-
-    **For OAuth:**
-    - Tokens auto-refresh, but review connected accounts quarterly
-    - Revoke and reconnect if account permissions change
-  </Accordion>
-</AccordionGroup>
-
-### OAuth-Specific
-
-<AccordionGroup>
-  <Accordion title="Review Permissions During Authorization" icon="clipboard-check">
-    When authorizing, carefully review what Tadata is requesting:
-    - Read vs. write access
-    - Scope of access (all repos vs. specific repos)
-    - Duration (if applicable)
-
-    Only authorize if permissions are reasonable.
-  </Accordion>
-
-  <Accordion title="Revoke Unused Connections" icon="trash">
-    Periodically review connected accounts and disconnect:
-    - Services you no longer use
-    - Test accounts that are no longer needed
-    - Duplicate connections
+  <Accordion title="Review Connected Services" icon="eye">
+    Periodically review connected services in Tadata:
+    - Disconnect unused services
+    - Verify permissions are still appropriate
+    - Check for expired or failing connections
 
     Fewer connections = smaller attack surface.
-  </Accordion>
-</AccordionGroup>
-
-### Passthrough-Specific
-
-<AccordionGroup>
-  <Accordion title="Use Scoped/Restricted API Keys" icon="key">
-    Many services allow creating keys with limited permissions:
-    - **Read-only keys** for fetching data
-    - **Scoped keys** for specific resources (e.g., one GitHub repo)
-    - **IP-restricted keys** (if Tadata IP ranges are known)
-
-    Use the most restrictive key that works.
-  </Accordion>
-
-  <Accordion title="Don't Reuse API Keys" icon="clone">
-    Create unique API keys for Tadata. Don't reuse keys from:
-    - Local development
-    - Other services/integrations
-    - Shared team keys
-
-    This makes it easier to revoke if compromised.
-  </Accordion>
-
-  <Accordion title="Store Keys Securely in Transit" icon="lock">
-    When configuring API keys:
-    - Use HTTPS (Tadata enforces this)
-    - Don't email or Slack API keys
-    - Use password managers to share keys securely
   </Accordion>
 </AccordionGroup>
 
@@ -285,60 +126,58 @@ Regardless of authentication method:
 
 <AccordionGroup>
   <Accordion title="OAuth authorization fails" icon="circle-exclamation">
-    **Symptoms:** Redirect fails, "Authorization denied" error
+    **Symptoms:** Redirect fails or "Authorization denied" error
 
     **Solutions:**
-    - Disable popup blockers
-    - Try in an incognito/private browser window
+    - Disable popup blockers for Tadata
+    - Try in incognito/private browser
     - Verify you have admin access to the workspace/organization
-    - Check service status (is OAuth down?)
+    - Check if service is experiencing an outage
   </Accordion>
 
-  <Accordion title="Token expired or revoked" icon="clock">
-    **Symptoms:** Tools fail with "401 Unauthorized" in Playground
+  <Accordion title="Tools fail with 401 Unauthorized" icon="ban">
+    **Symptoms:** Tools work initially, then fail with 401
+
+    **Causes:**
+    - OAuth token expired (auto-refresh failed)
+    - API key was revoked or expired
+    - Tadata app was revoked in service settings
 
     **Solutions:**
-    - Go to Settings → Connected Accounts
-    - Find the failing account
-    - Click **Reconnect**
-    - Re-authorize with the service
+    - Check connection status in Tadata dashboard
+    - Reconnect the service if needed
+    - Verify credentials are still valid
   </Accordion>
 
-  <Accordion title="API key not working" icon="key-skeleton">
-    **Symptoms:** "401 Unauthorized" or "403 Forbidden" with passthrough
+  <Accordion title="Tools fail with 403 Forbidden" icon="lock">
+    **Symptoms:** Some tools work, others fail with 403
 
-    **Solutions:**
-    - Double-check API key is copied correctly (no extra spaces)
-    - Verify key hasn't expired
-    - Confirm key has necessary permissions
-    - Check header name and prefix (e.g., "Bearer " with space)
-    - Test API key directly with curl/Postman
-  </Accordion>
-
-  <Accordion title="Insufficient permissions" icon="ban">
-    **Symptoms:** Some tools work, others fail with "403 Forbidden"
+    **Causes:**
+    - Insufficient OAuth scopes
+    - API key lacks necessary permissions
+    - Resource is private/inaccessible to connected account
 
     **Solutions:**
     - Review OAuth scopes granted during authorization
-    - For API keys, check key permissions in service dashboard
-    - Reconnect OAuth with broader scopes if needed
-    - Create a new API key with more permissions
+    - Reconnect with broader scopes if needed
+    - Check API key permissions in service dashboard
+    - Verify connected account has access to the resource
   </Accordion>
 </AccordionGroup>
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="OAuth Setup" icon="shield-check" href="/authentication/oauth">
-    Configure managed OAuth authentication
-  </Card>
-  <Card title="Passthrough Setup" icon="key" href="/authentication/passthrough">
-    Configure direct API key pass-through
+  <Card title="Using Connectors" icon="plug" href="/guides/using-connectors">
+    Connect services to Tadata
   </Card>
   <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
     Verify authentication is working
   </Card>
+  <Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
+    Add custom APIs with OpenAPI specs
+  </Card>
   <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
-    Monitor tool usage and errors
+    Monitor usage and errors
   </Card>
 </CardGroup>

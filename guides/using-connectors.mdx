@@ -1,66 +1,11 @@
 ---
 title: "Using Connectors"
-description: "Browse, connect, and manage pre-built integrations"
+description: "Connect and manage pre-built integrations"
 ---
 
 ## Overview
 
-Connectors are the fastest way to add tools to your AI agents. With **50+ pre-built connectors**, you can connect popular services in minutes without writing any code.
-
-This guide covers:
-- Browsing the connector catalog
-- Connecting services with OAuth
-- Selecting tools to expose
-- Adding connectors to toolsets
-- Managing connected accounts
-
-## Browse the Connector Catalog
-
-### Access the Catalog
-
-1. Log in to your [Tadata Dashboard](https://app.tadata.com)
-2. Navigate to **Connectors** in the sidebar
-3. Browse available integrations
-
-### Search and Filter
-
-<Tabs>
-  <Tab title="By Category">
-    Filter connectors by category:
-    - **DevOps & Engineering**: GitHub, Render, Sentry, Linear, PagerDuty
-    - **Communication**: Slack, Discord, Intercom, Telegram
-    - **Data & Backend**: Supabase, MongoDB, PostgreSQL, Redis
-    - **Productivity**: Notion, Monday, Asana, Trello, Airtable
-    - **CRM & Sales**: Attio, HubSpot, Salesforce
-    - **Marketing**: Mailchimp, SendGrid, Twilio
-  </Tab>
-
-  <Tab title="By Search">
-    Use the search bar to find connectors by name:
-    ```
-    Search: "linear"
-    Results: Linear (Issue tracking for software teams)
-    ```
-  </Tab>
-
-  <Tab title="By Tag">
-    Filter by tags:
-    - `issue-tracking`
-    - `communication`
-    - `deployment`
-    - `monitoring`
-    - `database`
-  </Tab>
-</Tabs>
-
-### Connector Details
-
-Click any connector to view:
-- **Description**: What the service does
-- **Available Tools**: List of operations (e.g., `create_issue`, `list_projects`)
-- **Authentication Method**: OAuth, API Key, or Custom
-- **Setup Time**: Estimated time to connect
-- **Use Cases**: Common workflows and examples
+Connectors are pre-built integrations for popular services. This guide covers how to connect them and configure your toolsets.
 
 ## Connect a Service
 
@@ -103,29 +48,15 @@ Most connectors use OAuth for secure, one-click authentication:
 
 ### API Key Connection
 
-Some connectors support API key authentication:
+Some connectors use API key authentication:
 
 <Steps>
   <Step title="Get Your API Key">
-    Find your API key in the service's settings:
-    - Sentry: Settings → API Keys
-    - Supabase: Project Settings → API
-    - MongoDB: Security → API Keys
+    Find your API key in the service's settings (usually under Settings → API or Developer)
   </Step>
 
   <Step title="Enter API Key">
-    In Tadata, paste your API key into the connection form
-
-    Configure additional settings if needed:
-    - Base URL (for self-hosted services)
-    - Organization ID
-    - Project ID
-  </Step>
-
-  <Step title="Test Connection">
-    Click **Test Connection** to verify the API key works
-
-    Tadata will make a simple API call to confirm authentication
+    Paste your API key into the Tadata connection form and configure any additional settings
   </Step>
 
   <Step title="Save">
@@ -133,77 +64,19 @@ Some connectors support API key authentication:
   </Step>
 </Steps>
 
-<Warning>
-  API keys are transmitted over HTTPS only and are not stored permanently by Tadata (passthrough mode).
-</Warning>
+<Info>
+  Tadata stores all credentials securely in an encrypted manner. You can always revoke access and permanently delete tokens through your dashboard.
+</Info>
 
 ## Select Tools to Enable
 
-After connecting, choose which tools to expose to your AI agents:
+After connecting, choose which tools to expose to your AI agents.
 
-### Enable All Tools (Recommended for Getting Started)
+### Enable All (Recommended)
 
-Click **Enable All** to add all available tools to your toolset.
+Enabling all tools is a great way to start. You get maximum flexibility and can discover useful operations you might not have known about.
 
-**Pros:**
-- Maximum flexibility for your AI agent
-- Discover useful tools you didn't know existed
-- Easy to disable specific tools later
-
-**Cons:**
-- More tools = more context for AI to process
-- Potentially exposes sensitive operations
-
-### Select Specific Tools
-
-Or manually select tools:
-
-<Tabs>
-  <Tab title="Linear Example">
-    **Read Operations** (Safe):
-    - ✅ `list_issues` - Fetch issues
-    - ✅ `list_projects` - Get all projects
-    - ✅ `search_issues` - Search by keyword
-
-    **Write Operations** (Requires Care):
-    - ⚠️ `create_issue` - Create new issues
-    - ⚠️ `update_issue` - Modify existing issues
-    - ⚠️ `delete_issue` - Delete issues (careful!)
-
-    **Recommended**: Enable reads first, add writes after testing
-  </Tab>
-
-  <Tab title="GitHub Example">
-    **Read Operations**:
-    - ✅ `list_pull_requests`
-    - ✅ `get_pull_request`
-    - ✅ `list_issues`
-
-    **Write Operations**:
-    - ⚠️ `create_pull_request`
-    - ⚠️ `merge_pull_request`
-    - ⚠️ `create_release`
-
-    **Destructive Operations**:
-    - ❌ `delete_repository` - Block until ready!
-  </Tab>
-
-  <Tab title="Slack Example">
-    **Communication**:
-    - ✅ `post_message` - Send messages to channels
-    - ✅ `create_thread` - Start conversation threads
-    - ✅ `list_channels` - Get all channels
-
-    **Management**:
-    - ⚠️ `create_channel` - Create new channels
-    - ⚠️ `archive_channel` - Archive channels
-    - ⚠️ `invite_user` - Add users to channels
-  </Tab>
-</Tabs>
-
-<Tip>
-  Start conservative. Enable read-only tools first, test thoroughly, then gradually add write operations.
-</Tip>
+Once your toolset is deployed, you can use **AI tool selection** in your server settings to automatically suggest the most relevant tools based on your desired use case. This helps your agent focus on the right operations without overwhelming it with options.
 
 ## Create New Toolset vs. Add to Existing
 
@@ -248,42 +121,6 @@ Best for:
     Use: Production incident response
   </Card>
 </CardGroup>
-
-## Manage Connected Accounts
-
-### View Connected Accounts
-
-1. Navigate to **Settings** → **Connected Accounts**
-2. See all active connections:
-   - Service name and logo
-   - Connected user/organization
-   - Connection date
-   - Last used timestamp
-
-### Reconnect Account
-
-If a token expires or is revoked:
-
-1. Find the account in **Connected Accounts**
-2. Click **Reconnect**
-3. Re-authorize with the service
-4. Your toolsets continue working immediately
-
-<Info>
-  Tadata notifies you via email if a connection fails or requires reconnection.
-</Info>
-
-### Disconnect Account
-
-To remove a connection:
-
-1. Find the account in **Connected Accounts**
-2. Click **Disconnect**
-3. Confirm the action
-
-<Warning>
-  Disconnecting an account will break any toolsets using that connector. Proceed with caution.
-</Warning>
 
 ## Best Practices
 
@@ -349,34 +186,6 @@ To remove a connection:
   </Accordion>
 </AccordionGroup>
 
-### Testing
-
-<AccordionGroup>
-  <Accordion title="Test in Playground First" icon="flask">
-    Before connecting to Claude or Cursor:
-    1. Test each tool in the [Playground](/guides/testing-playground)
-    2. Verify authentication works
-    3. Check that responses are sensible
-    4. Confirm permissions are correct
-  </Accordion>
-
-  <Accordion title="Start with Read-Only Operations" icon="eye">
-    Initial testing flow:
-    1. Enable only read tools (`list_*`, `get_*`, `search_*`)
-    2. Test in Playground: "List my Linear issues"
-    3. Verify data looks correct
-    4. Then add write tools (`create_*`, `update_*`)
-  </Accordion>
-
-  <Accordion title="Use Test Workspaces" icon="vial">
-    When available, connect test/staging workspaces first:
-    - Linear: Use a test workspace
-    - Slack: Create a test channel
-    - GitHub: Use a test repository
-
-    Validate everything works before connecting production.
-  </Accordion>
-</AccordionGroup>
 
 ## Troubleshooting
 

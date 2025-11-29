@@ -33,23 +33,22 @@
             "group": "Authentication",
             "pages": [
               "authentication/overview",
-              "authentication/passthrough",
-              "authentication/oauth"
+              "authentication/passthrough"
             ]
           },
           {
             "group": "Connectors",
             "pages": [
-              "connectors/introduction"
+              "connectors/introduction",
+              "connectors/knowledge-indexing",
+              "connectors/code-indexing"
             ]
           },
           {
             "group": "Optimization",
             "pages": [
               "optimization/overview",
-              "optimization/analytics",
-              "optimization/knowledge-indexing",
-              "optimization/code-indexing"
+              "optimization/analytics"
             ]
           },
           {

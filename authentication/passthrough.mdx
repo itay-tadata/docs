@@ -1,582 +1,285 @@
 ---
 title: "Passthrough Authentication"
-description: "Configure direct API key pass-through for custom APIs"
+description: "Advanced authentication mode where AI agent provides credentials directly"
 ---
 
 ## Overview
 
-**Passthrough authentication** allows you to use API keys directly without storing them permanently in Tadata. Your API key is passed through to the service with each request, giving you full control over credentials.
-
-<Info>
-  **Best for:** Custom APIs, internal tools, services without OAuth support, when you want full control over credentials.
-</Info>
-
-## How It Works
-
-```mermaid
-sequenceDiagram
-    participant Agent as AI Agent
-    participant Tadata as Tadata
-    participant API as Your API
-
-    Agent->>Tadata: Execute tool with params
-    Tadata->>Tadata: Add API key to request
-    Tadata->>API: Forward request with API key
-    API->>API: Validate API key
-    API->>Tadata: Response
-    Tadata->>Agent: Return response
-```
-
-**Key Points:**
-- Tadata does NOT permanently store your API key
-- Key is added to each request (header or query parameter)
-- Transmitted over HTTPS only
-- You manage key rotation and expiration
-
-## Configuration Methods
-
-### Method 1: Header-Based Authentication (Most Common)
-
-Most modern APIs use header-based authentication with formats like:
-
-```
-Authorization: Bearer sk_live_abc123
-X-API-Key: abc123
-X-Auth-Token: token123
-```
-
-#### Configuration
-
-<Tabs>
-  <Tab title="Bearer Token">
-    **Used by:** Stripe, OpenAI, many modern APIs
-
-    ```json Configuration
-    {
-      "authType": "header",
-      "headerName": "Authorization",
-      "headerPrefix": "Bearer ",
-      "apiKey": "sk_live_abc123"
-    }
-    ```
-
-    **Resulting Header:**
-    ```
-    Authorization: Bearer sk_live_abc123
-    ```
-  </Tab>
-
-  <Tab title="Custom Header">
-    **Used by:** Custom APIs, legacy systems
-
-    ```json Configuration
-    {
-      "authType": "header",
-      "headerName": "X-API-Key",
-      "headerPrefix": "",
-      "apiKey": "abc123"
-    }
-    ```
-
-    **Resulting Header:**
-    ```
-    X-API-Key: abc123
-    ```
-  </Tab>
-
-  <Tab title="Token Prefix">
-    **Used by:** GitHub, GitLab
-
-    ```json Configuration
-    {
-      "authType": "header",
-      "headerName": "Authorization",
-      "headerPrefix": "token ",
-      "apiKey": "ghp_abc123"
-    }
-    ```
-
-    **Resulting Header:**
-    ```
-    Authorization: token ghp_abc123
-    ```
-  </Tab>
-</Tabs>
+**Passthrough authentication** is an advanced mode where your AI agent sends credentials with each request instead of Tadata storing them. This gives you full control over credential management but comes with limitations.
 
 <Warning>
-  **Header Prefix Spacing:** Some APIs require a space after the prefix (`Bearer `), others don't (`Bearer`). Check your API documentation carefully.
+  **Most users don't need passthrough.** The standard authentication model (Tadata stores credentials) is simpler and supports multi-source toolsets.
+
+  Only use passthrough if you have specific requirements around credential storage or OAuth app ownership.
 </Warning>
 
-### Method 2: Query Parameter Authentication
+## How Passthrough Works
 
-Some APIs (especially older ones) use query parameters:
-
+### Standard Authentication (Default)
 ```
-GET https://api.example.com/data?api_key=abc123
-```
-
-#### Configuration
-
-```json Configuration
-{
-  "authType": "query",
-  "paramName": "api_key",
-  "apiKey": "abc123"
-}
+AI Agent → Tadata (has stored credentials) → Services (Linear, Slack, GitHub)
 ```
 
-**Example Services:**
-- Google Maps API (`key` parameter)
-- OpenWeatherMap (`appid` parameter)
-- Some internal APIs
-
-<Info>
-  **Security Note:** Query parameters appear in URL logs. Header-based auth is more secure when possible.
-</Info>
-
-### Method 3: Basic Authentication
-
-HTTP Basic Auth encodes username:password in base64:
-
+### Passthrough Authentication
 ```
-Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+AI Agent (has credentials) → Tadata (passes through) → Service (single source only)
 ```
 
-#### Configuration
+In passthrough mode:
+1. AI agent obtains credentials (OAuth token or API key)
+2. AI agent sends credentials with each tool execution request
+3. Tadata passes credentials through to the service without storing
+4. Service validates and responds
 
-```json Configuration
-{
-  "authType": "basic",
-  "username": "your-username",
-  "password": "your-password"
-}
-```
-
-Tadata automatically encodes and adds the `Authorization: Basic ...` header.
-
-**Example Services:**
-- Some REST APIs
-- Internal company APIs
-- Legacy systems
-
-## Step-by-Step Setup
-
-### Step 1: Get Your API Key
-
-Find your API key in the service's settings:
-
-<Tabs>
-  <Tab title="Sentry">
-    1. Go to Sentry dashboard
-    2. Settings → Account → API → Auth Tokens
-    3. Click "Create New Token"
-    4. Select scopes: `project:read`, `event:read`, etc.
-    5. Copy the token: `sntrys_abc123...`
-  </Tab>
-
-  <Tab title="Supabase">
-    1. Go to your Supabase project
-    2. Settings → API
-    3. Copy "service_role" key (for server-side) or "anon" key (for client-side)
-    4. Key format: `eyJhbGci...`
-  </Tab>
-
-  <Tab title="Custom API">
-    1. Log in to your API dashboard
-    2. Navigate to Settings or Developer section
-    3. Generate a new API key
-    4. Copy the key
-    5. Note the authentication method (header vs. query param)
-  </Tab>
-</Tabs>
-
-### Step 2: Configure in Tadata
-
-1. Navigate to your toolset configuration
-2. Go to **Authentication** tab
-3. Select **Passthrough**
-4. Fill in the configuration form:
-
-<Frame>
-  <img src="/images/passthrough-config.png" alt="Passthrough configuration form" />
-</Frame>
-
-<Accordion title="Configuration Form Fields">
-  **Authentication Type:**
-  - Header
-  - Query Parameter
-  - Basic Auth
-
-  **Header Name** (if Header type):
-  - `Authorization` (most common)
-  - `X-API-Key`
-  - `X-Auth-Token`
-  - Custom header name
-
-  **Header Prefix** (if Header type):
-  - `Bearer ` (with space)
-  - `token ` (with space)
-  - Empty (no prefix)
-
-  **Parameter Name** (if Query Parameter type):
-  - `api_key`
-  - `key`
-  - `token`
-  - Custom parameter name
-
-  **API Key / Username / Password:**
-  - Your actual credential
-
-  **Base URL** (optional):
-  - Override API base URL
-  - Useful for self-hosted services
-</Accordion>
-
-### Step 3: Test Connection
-
-1. Click **Test Connection**
-2. Tadata will make a simple API call to verify:
-   - API key is valid
-   - Authentication method is correct
-   - Service is reachable
-
-<Check>
-  **Success:** "Connection successful! API key is valid."
-</Check>
+## Key Limitation
 
 <Warning>
-  **Failure:** Check error message for details (invalid key, wrong header, etc.)
+  **Passthrough toolsets are limited to ONE connector (one API source).**
+
+  You cannot mix multiple sources in a passthrough toolset. For example:
+  - ❌ Slack + Linear + GitHub (requires standard auth)
+  - ✅ Just Linear (passthrough works)
+  - ✅ Just your custom API (passthrough works)
+
+  For multi-source workflows, use standard authentication.
 </Warning>
 
-### Step 4: Save and Test in Playground
+## OAuth Passthrough
 
-1. Click **Save** to apply configuration
-2. Open **Playground**
-3. Test a simple read operation:
+### Requirements
 
-```text
-List all projects
-```
+To use OAuth passthrough, you must:
+- **Control the OAuth resource** - Have your own OAuth app registered with the service
+- **Handle OAuth flow** - Your AI agent must implement the OAuth authorization code flow
+- **Manage tokens** - Your agent handles token refresh and expiration
 
-4. Check execution trace for:
-   - Status: Success (green)
-   - Response: Valid data
-   - No authentication errors
+### When to Use
 
-## Examples by Service Type
+Use OAuth passthrough if:
+- You've already built your own OAuth app and want to use it
+- You need custom OAuth scopes not provided by Tadata's OAuth apps
+- You want OAuth tokens to never leave your control
+- You're integrating a single-source toolset only
 
-### Example 1: Sentry (Bearer Token)
+### Setup
 
-**API Documentation:** `https://docs.sentry.io/api/auth/`
+<Steps>
+  <Step title="Register OAuth App">
+    Register your OAuth application with the service (Linear, GitHub, etc.)
+    - Set redirect URI to your agent's callback handler
+    - Note client ID and client secret
+  </Step>
 
-```json Configuration
-{
-  "authType": "header",
-  "headerName": "Authorization",
-  "headerPrefix": "Bearer ",
-  "apiKey": "sntrys_abc123def456ghi789"
-}
-```
+  <Step title="Configure Toolset">
+    In Tadata, create a toolset and enable passthrough mode:
+    - Select the connector (e.g., Linear)
+    - Choose **Passthrough Authentication**
+    - Select **OAuth** as passthrough type
+    - Provide OAuth configuration (authorization URL, token URL, scopes)
+  </Step>
 
-**Test in Playground:**
-```text
-Get the latest errors from Sentry
-```
+  <Step title="Implement OAuth in Agent">
+    Your AI agent must:
+    - Redirect users to authorization URL
+    - Handle callback with authorization code
+    - Exchange code for access + refresh tokens
+    - Store tokens securely
+    - Send access token with each tool request to Tadata
+  </Step>
 
-### Example 2: Internal API (Custom Header)
-
-**API Endpoint:** `https://internal-api.company.com`
-
-```json Configuration
-{
-  "authType": "header",
-  "headerName": "X-Company-API-Key",
-  "headerPrefix": "",
-  "apiKey": "company_key_abc123",
-  "baseUrl": "https://internal-api.company.com"
-}
-```
-
-**Test in Playground:**
-```text
-Fetch data from internal API
-```
-
-### Example 3: Legacy API (Query Parameter)
-
-**API Endpoint:** `https://legacy-api.example.com`
-
-```json Configuration
-{
-  "authType": "query",
-  "paramName": "apikey",
-  "apiKey": "legacy_abc123"
-}
-```
-
-**Resulting Request:**
-```
-GET https://legacy-api.example.com/data?apikey=legacy_abc123
-```
-
-## Best Practices
-
-### Security
-
-<AccordionGroup>
-  <Accordion title="Use Scoped/Restricted API Keys" icon="lock">
-    Create keys with minimum necessary permissions:
-
-    **Sentry Example:**
-    - ✅ Create key with `project:read`, `event:read` only
-    - ❌ Don't use admin key with full access
-
-    **GitHub Example:**
-    - ✅ Create token scoped to specific repos
-    - ❌ Don't use personal access token with org admin rights
-  </Accordion>
-
-  <Accordion title="Create Dedicated Service Account Keys" icon="robot">
-    **Recommended Approach:**
-    1. Create a service account user (e.g., "Tadata Bot")
-    2. Generate API key for that account
-    3. Grant only necessary permissions
-    4. Actions appear under bot name (clear audit trail)
-
-    **Benefits:**
-    - Easy to revoke without affecting humans
-    - Clear separation of automation vs. manual actions
-    - Easier to track and audit
-  </Accordion>
-
-  <Accordion title="Rotate Keys Regularly" icon="arrows-rotate">
-    **Rotation Schedule:**
-    - **Production keys:** Every 90 days
-    - **Development keys:** Every 180 days
-    - **Immediately:** If key is compromised or suspected leak
-
-    **Rotation Process:**
-    1. Generate new API key in service
-    2. Update key in Tadata configuration
-    3. Test in Playground to confirm
-    4. Revoke old key in service
-  </Accordion>
-
-  <Accordion title="Never Hardcode Keys in OpenAPI Specs" icon="file-code">
-    When uploading OpenAPI specs, don't include actual API keys:
-
-    ❌ **Don't do this:**
-    ```yaml
-    securitySchemes:
-      ApiKey:
-        type: apiKey
-        in: header
-        name: X-API-Key
-        value: "actual_key_abc123"  # Never do this!
+  <Step title="Send Tokens with Requests">
+    When executing tools, include OAuth token in request headers:
     ```
-
-    ✅ **Do this:**
-    ```yaml
-    securitySchemes:
-      ApiKey:
-        type: apiKey
-        in: header
-        name: X-API-Key
-        # Value configured separately in Tadata
+    Authorization: Bearer <your-access-token>
     ```
-  </Accordion>
-</AccordionGroup>
+  </Step>
+</Steps>
 
-### Monitoring
+### Token Format
+
+Tadata expects OAuth tokens in the `Authorization` header:
+
+```http
+POST https://your-toolset.mcp.tadata.com/execute
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "tool": "create_issue",
+  "parameters": { ... }
+}
+```
+
+## API Key Passthrough
+
+### Requirements
+
+No special requirements. The AI agent just needs the API key.
+
+### When to Use
+
+Use API key passthrough if:
+- You don't want Tadata to store API keys
+- You need different API keys per user/agent
+- You want full control over key rotation
+- You're integrating a single-source toolset only
+
+### Setup
+
+<Steps>
+  <Step title="Get API Key">
+    Retrieve API key from the service or generate one for your custom API
+  </Step>
+
+  <Step title="Configure Toolset">
+    In Tadata, create a toolset and enable passthrough mode:
+    - Select the connector or bring your own API
+    - Choose **Passthrough Authentication**
+    - Select **API Key** as passthrough type
+    - Specify header name (e.g., `Authorization`, `X-API-Key`)
+    - Specify header prefix (e.g., `Bearer `, `Token `, or none)
+  </Step>
+
+  <Step title="Store Key in Agent">
+    Your AI agent stores the API key securely (environment variable, secrets manager, etc.)
+  </Step>
+
+  <Step title="Send Key with Requests">
+    When executing tools, include API key in request headers as configured
+  </Step>
+</Steps>
+
+### API Key Format
+
+Tadata expects API keys in the configured header. Examples:
+
+**Bearer Token:**
+```http
+POST https://your-toolset.mcp.tadata.com/execute
+Authorization: Bearer sk_live_abc123xyz789
+Content-Type: application/json
+```
+
+**Custom Header:**
+```http
+POST https://your-toolset.mcp.tadata.com/execute
+X-API-Key: abc123xyz789
+Content-Type: application/json
+```
+
+## Security Considerations
 
 <AccordionGroup>
-  <Accordion title="Monitor for Authentication Errors" icon="triangle-exclamation">
-    Set up alerts for:
-    - 401 Unauthorized errors (key invalid/expired)
-    - 403 Forbidden errors (insufficient permissions)
-    - Sudden spikes in errors (potential issue)
+  <Accordion title="Credential Transmission" icon="shield">
+    In passthrough mode, credentials are sent with every request:
+    - All communication is over HTTPS (required)
+    - Credentials are not logged by Tadata
+    - Credentials are passed directly to the target service
 
-    View in [Analytics](/optimization/analytics).
+    Ensure your AI agent also stores credentials securely.
   </Accordion>
 
-  <Accordion title="Track Key Usage in Service Dashboard" icon="chart-line">
-    Most services provide API key usage metrics:
-    - Number of requests
-    - Error rates
-    - Last used timestamp
+  <Accordion title="Token Refresh" icon="arrows-rotate">
+    **You are responsible for token refresh.**
 
-    Review regularly to detect:
-    - Unexpected usage patterns
-    - Unauthorized access attempts
-    - Keys that are no longer needed
+    For OAuth passthrough:
+    - Monitor access token expiration
+    - Implement refresh token flow
+    - Handle refresh failures gracefully
+
+    Standard authentication handles this automatically.
   </Accordion>
 
-  <Accordion title="Set Up Key Expiration Reminders" icon="bell">
-    Use calendar reminders to rotate keys before they expire:
-    - 1 week before expiration: Create new key
-    - 1 day before expiration: Update in Tadata
-    - On expiration: Revoke old key
-
-    Prevents unexpected toolset failures.
-  </Accordion>
-</AccordionGroup>
-
-### Organization
-
-<AccordionGroup>
-  <Accordion title="Use Descriptive Key Names" icon="tag">
-    When creating API keys in services, use clear names:
-
-    ✅ **Good:**
-    - "Tadata Production - Triage Agent"
-    - "Tadata Dev - Testing"
-    - "Tadata Service Bot"
-
-    ❌ **Bad:**
-    - "Key 1"
-    - "Test"
-    - "My Key"
-
-    Makes it easier to identify and manage keys.
+  <Accordion title="Rate Limiting" icon="gauge">
+    Each request includes credentials, so rate limiting applies per credential:
+    - Multiple agents using the same API key share rate limits
+    - Consider using separate API keys per agent if needed
   </Accordion>
 
-  <Accordion title="Document Key Purpose" icon="clipboard">
-    Maintain a document with:
-    - Key name
-    - Service
-    - Tadata toolset(s) using it
-    - Permissions granted
-    - Creation date
-    - Rotation date
-    - Owner/contact
+  <Accordion title="Audit Trails" icon="eye">
+    Actions appear under the credential owner:
+    - OAuth: Actions appear under the user who authorized
+    - API Key: Actions appear under the API key owner/service account
 
-    Useful for team handoffs and audits.
-  </Accordion>
-
-  <Accordion title="Separate Keys by Environment" icon="sitemap">
-    Use different API keys for:
-    - **Development:** Tadata dev toolsets, limited data
-    - **Staging:** Tadata staging toolsets, staging data
-    - **Production:** Tadata production toolsets, live data
-
-    Prevents dev/testing from affecting production.
+    Use service accounts for clearer audit trails.
   </Accordion>
 </AccordionGroup>
+
+## Comparison: Standard vs. Passthrough
+
+| Feature | Standard (Tadata stores) | Passthrough |
+|---------|-------------------------|-------------|
+| **Multi-source toolsets** | ✅ Yes (Slack + Linear + GitHub) | ❌ No (one connector only) |
+| **Setup complexity** | ✅ Simple (click Connect) | ⚠️ Complex (implement OAuth/manage keys) |
+| **Credential storage** | Tadata (encrypted) | AI agent (you manage) |
+| **Token refresh** | ✅ Automatic | ❌ Manual (you handle) |
+| **OAuth app** | Tadata's OAuth apps | Your OAuth app (required for OAuth) |
+| **Per-user credentials** | ✅ Yes (connect per user) | ✅ Yes (agent manages) |
+| **Use case** | Most toolsets, multi-source workflows | Advanced, single-source, full control |
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="401 Unauthorized - Invalid API Key">
-    **Symptoms:**
-    ```json
-    {
-      "error": "Unauthorized",
-      "message": "Invalid API key",
-      "code": 401
-    }
-    ```
+  <Accordion title="401 Unauthorized in passthrough mode" icon="ban">
+    **Symptoms:** Tools fail with 401 despite providing credentials
+
+    **Causes:**
+    - Credential format incorrect (missing prefix, wrong header)
+    - OAuth token expired (you need to refresh)
+    - API key invalid or revoked
 
     **Solutions:**
-    - Copy API key again (ensure no extra spaces)
-    - Check if key has expired
-    - Verify key is active in service dashboard
-    - Try generating a new key
+    - Verify credential format matches configuration
+    - Check token expiration and refresh if needed
+    - Test credentials directly against service API (curl/Postman)
+    - Review Tadata passthrough configuration (header name, prefix)
   </Accordion>
 
-  <Accordion title="401 Unauthorized - Wrong Header Format">
-    **Symptoms:** API key is valid, but still getting 401
+  <Accordion title="Cannot mix connectors in passthrough toolset" icon="circle-exclamation">
+    **Symptoms:** Error when trying to add multiple connectors to passthrough toolset
 
-    **Solutions:**
-    - Check header prefix (e.g., `Bearer ` with space vs. `Bearer`)
-    - Verify header name (case-sensitive: `Authorization` vs. `authorization`)
-    - Consult API documentation for exact format
-    - Test with curl/Postman to confirm correct format:
+    **Cause:** Passthrough mode only supports single-source toolsets
 
-    ```bash
-    curl -H "Authorization: Bearer YOUR_KEY" https://api.example.com/test
-    ```
+    **Solution:** Use standard authentication (Tadata stores credentials) for multi-source toolsets
   </Accordion>
 
-  <Accordion title="403 Forbidden - Insufficient Permissions">
-    **Symptoms:**
-    ```json
-    {
-      "error": "Forbidden",
-      "message": "API key lacks necessary permissions",
-      "code": 403
-    }
-    ```
+  <Accordion title="OAuth refresh not working" icon="arrows-rotate">
+    **Symptoms:** Access tokens expire and tools fail
 
-    **Solutions:**
-    - Review key permissions in service dashboard
-    - Grant additional scopes/permissions
-    - Generate a new key with broader access
-    - Check if resource is accessible to the account
+    **Cause:** In passthrough mode, you are responsible for token refresh
+
+    **Solution:**
+    - Implement refresh token flow in your AI agent
+    - Monitor token expiration and refresh proactively
+    - Or switch to standard authentication for automatic refresh
   </Accordion>
 
-  <Accordion title="Connection Test Fails">
-    **Symptoms:** "Connection test failed" when saving configuration
+  <Accordion title="Different credentials per user" icon="users">
+    **Question:** How do I use different credentials for different users?
 
-    **Solutions:**
-    - Verify base URL is correct (https, no trailing slash)
-    - Check if API is publicly accessible (not behind VPN)
-    - Ensure firewall allows Tadata IP ranges
-    - Test API endpoint directly in browser/Postman
-  </Accordion>
+    **Answer:**
+    In passthrough mode, each agent instance can send different credentials. Your agent should:
+    1. Store credentials per user
+    2. Include the appropriate user's credentials with each request
+    3. Ensure proper isolation and security
 
-  <Accordion title="API Key Works in Postman but Not in Tadata">
-    **Symptoms:** Manual testing works, but Tadata fails
-
-    **Solutions:**
-    - Compare exact headers sent by Postman vs. Tadata
-    - Check for additional required headers (User-Agent, Content-Type, etc.)
-    - Verify base URL matches exactly (http vs. https, port numbers)
-    - Look for IP whitelisting requirements (contact service to whitelist Tadata)
+    Alternatively, use standard authentication and have each user connect their own account in Tadata.
   </Accordion>
 </AccordionGroup>
-
-## Migration from OAuth
-
-If you previously used OAuth and want to switch to passthrough:
-
-<Steps>
-  <Step title="Generate API Key">
-    Create an API key in the service dashboard
-  </Step>
-
-  <Step title="Test Key Separately">
-    Verify the key works with curl/Postman before configuring in Tadata
-  </Step>
-
-  <Step title="Update Tadata Configuration">
-    In toolset settings:
-    1. Go to Authentication tab
-    2. Switch from OAuth to Passthrough
-    3. Enter API key configuration
-  </Step>
-
-  <Step title="Test in Playground">
-    Confirm tools still work with the new authentication method
-  </Step>
-
-  <Step title="Disconnect OAuth (Optional)">
-    If no longer needed, disconnect the OAuth account in Settings → Connected Accounts
-  </Step>
-</Steps>
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="OAuth Authentication" icon="shield-check" href="/authentication/oauth">
-    Compare with OAuth for more secure, automated token management
-  </Card>
-  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
-    Verify your authentication is working correctly
-  </Card>
-  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
-    Monitor tool usage and authentication errors
+  <Card title="Authentication Overview" icon="shield" href="/authentication/overview">
+    Understand standard authentication (recommended for most users)
   </Card>
   <Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
-    Upload OpenAPI specs with passthrough auth
+    Add custom APIs with OpenAPI specs
+  </Card>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Verify passthrough authentication works
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Monitor tool usage and errors
   </Card>
 </CardGroup>

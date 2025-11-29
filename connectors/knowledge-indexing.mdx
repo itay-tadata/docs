@@ -1,0 +1,67 @@
+---
+title: "Knowledge Indexing"
+description: "Add documentation search to your toolsets"
+---
+
+## Overview
+
+Knowledge Indexing adds a `search-docs` tool to your toolset, allowing AI agents to search your documentation without loading entire docs into context.
+
+Connect any public documentation website and Tadata handles the rest.
+
+## Setup
+
+1. Go to your toolset configuration and enable Knowledge Indexing
+2. Enter your documentation URL (e.g., `https://docs.yourcompany.com`)
+3. Click OK - Tadata indexes everything in the background
+
+The `search-docs` tool is now available. Test it in the Playground.
+
+## Using search-docs
+
+Your AI agent can now search documentation:
+
+```text Example Query
+"Search docs for authentication guide"
+```
+
+The tool returns relevant snippets with links to full documentation.
+
+## Staying Updated
+
+**Manual Reindex**: Click "Reindex Now" in your toolset configuration when you update your documentation
+
+**Automatic Re-syncing**: Enable automated re-syncing to keep the tool up to date automatically
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Support Agents" icon="headset">
+    Agents search product documentation to answer customer questions accurately with source links
+  </Accordion>
+
+  <Accordion title="Development Agents" icon="code">
+    Agents query API references and technical docs to help developers with implementation questions
+  </Accordion>
+
+  <Accordion title="Triage Agents" icon="bug">
+    Agents search troubleshooting guides when investigating production errors
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Code Indexing" icon="code" href="/connectors/code-indexing">
+    Add code repository search
+  </Card>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Try the search-docs tool
+  </Card>
+  <Card title="Using Connectors" icon="plug" href="/guides/using-connectors">
+    Connect more services
+  </Card>
+  <Card title="View Recipes" icon="book-open" href="/recipes/introduction">
+    See it in action
+  </Card>
+</CardGroup>
