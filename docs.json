@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "quill",
   "name": "Tadata",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#000000",
+    "light": "#404040",
+    "dark": "#000000"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -70,11 +70,6 @@
           "anchor": "Dashboard",
           "href": "https://app.tadata.com",
           "icon": "grid-2"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://discord.gg/tadata",
-          "icon": "discord"
         }
       ]
     }
