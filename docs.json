@@ -50,7 +50,12 @@
               "optimization/overview",
               "optimization/analytics"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Recipes",
+        "groups": [
           {
             "group": "Recipes",
             "pages": [
@@ -67,7 +72,7 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Dashboard",
+          "anchor": "Platform",
           "href": "https://app.tadata.com",
           "icon": "grid-2"
         }
@@ -87,7 +92,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Platform",
       "href": "https://app.tadata.com"
     }
   },
@@ -105,9 +110,9 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/tadata",
-      "github": "https://github.com/tadata",
-      "linkedin": "https://linkedin.com/company/tadata"
+      "x": "https://x.com/ToriSeidenstein",
+      "github": "https://github.com/tadata-org",
+      "linkedin": "https://www.linkedin.com/company/tadata-inc"
     }
   }
 }
