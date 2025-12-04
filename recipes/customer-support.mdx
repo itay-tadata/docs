@@ -13,57 +13,64 @@ The **Customer Support Agent** handles support tickets by searching knowledge ba
 
 ## Required Connectors
 
-<CardGroup cols={2}>
-  <Card title="Linear" icon="grid-2">
-    **Issue tracking**: create_issue, update_issue, add_comment
+<CardGroup cols={3}>
+  <Card title="Linear" icon="/logos/linear.svg">
+    Issue tracking
   </Card>
-  <Card title="Slack" icon="slack">
-    **Internal communication**: post_message, search_messages
+  <Card title="Slack" icon="/logos/slack.svg">
+    Team communication
   </Card>
-  <Card title="Notion" icon="file">
-    **Knowledge base**: search_pages, get_page (via knowledge indexing)
-  </Card>
-  <Card title="Intercom" icon="comments">
-    **Customer messaging**: send_message, list_conversations
+  <Card title="Notion" icon="/logos/notion.svg">
+    Knowledge base
   </Card>
 </CardGroup>
-
-## Example Workflow
-
-```text User: "How do I reset my password?"
-
-Agent:
-1. search_docs("password reset") in Notion
-2. Find help article
-3. send_message via Intercom with article link
-4. If issue persists: create_issue in Linear
-5. post_message to #support in Slack
-```
 
 ## Setup
 
 <Steps>
   <Step title="Connect Services">
-    Linear, Slack, Notion, Intercom - all OAuth
+    - **Linear** (OAuth): Select workspace
+    - **Slack** (OAuth): Select workspace and channels
+    - **Notion** (OAuth): Select workspace
   </Step>
-  <Step title="Enable Knowledge Indexing">
-    Index Notion knowledge base for search-docs tool
-  </Step>
-  <Step title="Configure Permissions">
-    Allow all tools except delete operations
-  </Step>
-  <Step title="Deploy & Test">
-    Test in Playground with common support questions
+  <Step title="Deploy">
+    Click Deploy to activate your Customer Support Agent
   </Step>
 </Steps>
 
+## Usage
+
+**Example prompts:**
+- "How do I reset my password?"
+- "Check recent support tickets and find recurring issues"
+- "Help customer with billing question"
+
 ## Key Features
 
-- **Auto-Search Knowledge Base**: Finds relevant help articles
-- **Create Tickets**: Opens Linear issues for escalation
-- **Internal Communication**: Notifies support team in Slack
-- **Customer Follow-up**: Replies via Intercom
+- **Search Knowledge Base**: Query Notion for help articles
+- **Create Tickets**: Open Linear issues for escalation
+- **Team Communication**: Notify support team in Slack
+- **Track Issues**: Update and comment on existing tickets
 
-<Card title="Use This Recipe" icon="rocket" href="https://app.tadata.com/recipes/customer-support">
-  Get started in 10 minutes
-</Card>
+## Best Practices
+
+- **Maintain Knowledge Base**: Keep Notion documentation up-to-date with common support questions and solutions
+- **Tag Issues Properly**: Use consistent Linear labels/tags for better ticket categorization and searchability
+- **Set Escalation Criteria**: Define clear criteria for when to escalate from agent to human support
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Test support workflows before production
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Track ticket resolution times
+  </Card>
+  <Card title="Optimization Guide" icon="gauge-high" href="/optimization/overview">
+    Learn about automated optimizations
+  </Card>
+  <Card title="Other Recipes" icon="book-open" href="/recipes/introduction">
+    Explore more pre-built agent workflows
+  </Card>
+</CardGroup>

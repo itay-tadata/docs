@@ -14,68 +14,67 @@ The **DevOps Automation Agent** automates deployment workflows, monitors service
 ## Required Connectors
 
 <CardGroup cols={2}>
-  <Card title="GitHub" icon="github">
-    **Code & PRs**: list_pull_requests, merge_pull_request, create_release
+  <Card title="GitHub" icon="/logos/github.svg">
+    Code & PRs
   </Card>
-  <Card title="Render" icon="server">
-    **Hosting**: trigger_deploy, list_deployments, get_logs, rollback
+  <Card title="Render" icon="/logos/render.svg">
+    Hosting & deployment
   </Card>
-  <Card title="Sentry" icon="bug">
-    **Error monitoring**: list_errors, create_alert
+  <Card title="Sentry" icon="/logos/sentry.svg">
+    Error monitoring
   </Card>
-  <Card title="PagerDuty" icon="phone">
-    **Incident alerting**: create_incident, list_on_call
+  <Card title="Slack" icon="/logos/slack.svg">
+    Team communication
   </Card>
 </CardGroup>
-
-## Example Workflows
-
-### Auto-Deploy Workflow
-
-```text
-1. Check for merged PRs: list_pull_requests (status: merged)
-2. If merged and CI passed: trigger_deploy to staging
-3. Monitor Sentry for 10 minutes
-4. If error rate < 1%: trigger_deploy to production
-5. If error rate > 5%: rollback and create_incident in PagerDuty
-```
-
-### Incident Response Workflow
-
-```text
-Critical error detected:
-1. list_errors from Sentry
-2. Check recent deployments: list_deployments
-3. If error spike after deploy: suggest rollback
-4. create_incident in PagerDuty
-5. Page on-call engineer: list_on_call
-```
 
 ## Setup
 
 <Steps>
   <Step title="Connect Services">
-    GitHub, Render, Sentry, PagerDuty
+    - **GitHub** (API Key): Enter GitHub token
+    - **Render** (API Key): Enter Render API key
+    - **Sentry** (OAuth): Select organization and project
+    - **Slack** (OAuth): Select workspace and channels
   </Step>
-  <Step title="Configure Permissions">
-    - Allow: Read operations, deploy to staging
-    - Require Approval: Deploy to production, rollback
-  </Step>
-  <Step title="Set Up Workflows">
-    Create automated deploy and monitoring workflows
-  </Step>
-  <Step title="Test with Staging">
-    Validate on staging environment first
+  <Step title="Deploy">
+    Click Deploy to activate your DevOps Automation Agent
   </Step>
 </Steps>
 
+## Usage
+
+**Example prompts:**
+- "Deploy the latest merged PR to staging"
+- "Check error rates after the last deployment"
+- "Monitor production and alert if errors spike"
+
 ## Key Features
 
-- **Automated Deployments**: Merge → CI → Deploy → Monitor
-- **Error Monitoring**: Track post-deploy error rates
-- **Auto-Rollback**: Rollback on high error rates (with approval)
-- **Incident Management**: Create and escalate incidents
+- **Deployment Management**: Trigger and monitor Render deployments
+- **Error Monitoring**: Track post-deploy error rates from Sentry
+- **PR Management**: List, merge, and create releases on GitHub
+- **Team Alerts**: Notify team in Slack about deployments and issues
 
-<Card title="Use This Recipe" icon="rocket" href="https://app.tadata.com/recipes/devops-automation">
-  Get started in 15 minutes
-</Card>
+## Best Practices
+
+- **Monitor Error Rates Post-Deploy**: Set up automatic error rate checks after each deployment
+- **Use Staging First**: Always validate deployments in staging before production
+- **Require Approval for Production**: Keep production deployments as "Require Approval" for safety
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Test in Playground" icon="flask" href="/guides/testing-playground">
+    Test deployment workflows safely
+  </Card>
+  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
+    Track deployment frequency and success
+  </Card>
+  <Card title="Optimization Guide" icon="gauge-high" href="/optimization/overview">
+    Learn about workflow automation
+  </Card>
+  <Card title="Other Recipes" icon="book-open" href="/recipes/introduction">
+    Explore more pre-built agent workflows
+  </Card>
+</CardGroup>
