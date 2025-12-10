@@ -1,89 +1,99 @@
 ---
 title: "Connectors"
-description: "Pre-built, production-ready integrations"
+description: "Connect your AI agents to the tools they need"
 ---
 
-## Overview
+## What Are Connectors?
 
-Tadata offers pre-built connectors for popular services. Each connector includes authentication, tool definitions, and optimizations - ready to use in minutes.
+Connectors give AI agents the ability to interact with external services and data. Tadata offers two types of connectors:
 
-## Available Connectors
+### 1. Service Integrations
 
-### DevOps & Engineering
-- **Linear** - Issue tracking and project management
-- **GitHub** - Code repositories and version control
-- **Sentry** - Error monitoring and tracking
-- **Render** - Cloud hosting and deployment
-- **Netlify** - Deploy and host web applications
-- **Neon** - Serverless Postgres for developers
-- **BuildKit** - CI/CD pipeline and workflow orchestration
-- **Jam.dev** - Bug reporting with automatic dev tool snapshots
+Connect your agent to existing external services like Slack, GitHub, Linear, and more. Each integration provides tools that let agents interact with that service.
 
-### Communication & Collaboration
-- **Slack** - Team messaging and collaboration
-- **Slack Notifier** - Send notifications and alerts to Slack channels
+**Examples:**
 
-### Data & Backend
-- **Supabase** - PostgreSQL database and backend
-- **Cloudflare Workers** - Serverless functions at the edge
-- **Cloudflare Observability** - Monitoring and observability platform
+<CardGroup cols={3}>
+  <Card title="Slack" icon="/logos/slack.svg">
+    Post messages, search conversations, create channels
+  </Card>
+  <Card title="Linear" icon="/logos/linear.svg">
+    Create and update tickets, add comments, search issues
+  </Card>
+  <Card title="GitHub" icon="/logos/github.svg">
+    Create issues, list PRs, search code, manage releases
+  </Card>
+  <Card title="Sentry" icon="/logos/sentry.svg">
+    List errors, get error details, resolve issues
+  </Card>
+  <Card title="Notion" icon="/logos/notion.svg">
+    Search pages, create documents, update databases
+  </Card>
+  <Card title="And 50+ more" icon="ellipsis">
+    New integrations added daily
+  </Card>
+</CardGroup>
 
-### Productivity & Documentation
-- **Notion** - All-in-one workspace and docs
-- **Monday** - Work management and team collaboration
-- **Atlassian** - Jira, Confluence, and Compass integration
+### 2. Agent Capabilities
 
-### CRM & Sales
-- **Attio** - Modern CRM platform
+Give your agent new capabilities like searching documentation, searching code, web search, and memory. These aren't connections to external services - they're built-in tools that extend what your agent can do.
 
-### Marketing & Analytics
-- **Klaviyo** - AI Email Marketing & SMS
+<CardGroup cols={2}>
+  <Card title="Knowledge Search" icon="book" href="/connectors/knowledge-indexing">
+    **Search documentation sites**
 
-### AI & Search
-- **Exa** - AI-powered web search and content retrieval
-- **Tavily** - AI-powered search engine for LLMs and RAG
-- **AudioScrape** - Audio search with 1M+ hours of content
+    Point to any public website (like your docs) and your agent can search it to answer questions. No need to connect to a specific service.
 
-### Meetings & Voice
-- **Fireflies** - AI meeting notes with transcription and search
-- **Carbon Voice** - AI voice messaging with transcripts and summaries
+    Example: Index your help center so support agents can find answers instantly.
+  </Card>
+  <Card title="Code Search" icon="code" href="/connectors/code-indexing">
+    **Search GitHub repositories**
 
-### Authentication
-- **Clerk** - Authentication and user management
+    Point to public GitHub repos and your agent can search the codebase for relevant code and implementations.
 
-## Adding New Connectors
+    Example: Let triage agents find code related to production errors.
+  </Card>
+</CardGroup>
 
-We're adding new connectors regularly based on user demand.
+## How Connectors Work
 
-**Need a connector that's not listed?**
+1. **Connect Once**: Authenticate with OAuth or API key (Tadata stores credentials securely)
+2. **Add to Toolset**: Select which connectors your agent needs
+3. **Deploy**: Your agent can now use all the tools from those connectors
 
-<Card title="Request New Connector" icon="plus" href="https://tadata.com/request-connector">
-  Submit a request for a new integration
+Tadata handles authentication, tool definitions, response optimization, and API rate limiting automatically.
+
+## Browse Available Connectors
+
+We offer many pre-built connectors for popular services, with new connectors added daily.
+
+<Card title="View All Connectors" icon="grid-2" href="https://app.tadata.com/connectors">
+  Browse the full catalog in your dashboard
 </Card>
 
-We prioritize connectors based on community requests.
+**Don't see what you need?** Click **Request Connector** in the catalog - we'll do our best to add it and get back to you.
 
 ## Bring Your Own API
 
-If you need a custom or private API:
+Need a custom or private API? Upload your OpenAPI spec or integrate an existing MCP server.
 
 <Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
-  Upload OpenAPI specs or integrate existing MCP servers
+  Learn how to add custom connectors
 </Card>
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Browse Connectors" icon="grid-2" href="https://app.tadata.com/connectors">
-    Explore all integrations in your dashboard
-  </Card>
   <Card title="Using Connectors" icon="book" href="/guides/using-connectors">
     Guide to connecting and managing services
   </Card>
   <Card title="View Recipes" icon="book-open" href="/recipes/introduction">
-    Pre-configured connector combinations
+    Pre-configured connector combinations for common use cases
   </Card>
-  <Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
-    Add custom connectors with OpenAPI specs
+  <Card title="Knowledge Indexing" icon="book" href="/connectors/knowledge-indexing">
+    Index documentation sites for agent access
+  </Card>
+  <Card title="Code Indexing" icon="code" href="/connectors/code-indexing">
+    Index GitHub repositories for code search
   </Card>
 </CardGroup>
