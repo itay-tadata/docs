@@ -52,21 +52,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Recipes",
-        "groups": [
-          {
-            "group": "Recipes",
-            "pages": [
-              "recipes/introduction",
-              "recipes/triage-agent",
-              "recipes/customer-support",
-              "recipes/devops-automation",
-              "recipes/data-analysis"
-            ]
-          }
-        ]
       }
     ],
     "global": {
