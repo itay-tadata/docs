@@ -52,6 +52,21 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Templates",
+        "groups": [
+          {
+            "group": "Templates",
+            "pages": [
+              "templates/introduction",
+              "templates/enrich-user-signups",
+              "templates/quick-look-up",
+              "templates/prep-for-meeting",
+              "templates/social-listening"
+            ]
+          }
+        ]
       }
     ],
     "global": {
@@ -95,7 +110,7 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/ToriSeidenstein",
+      "x": "https://x.com/tadata_team",
       "github": "https://github.com/tadata-org",
       "linkedin": "https://www.linkedin.com/company/tadata-inc"
     }

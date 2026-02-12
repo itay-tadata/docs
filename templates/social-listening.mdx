@@ -1,0 +1,28 @@
+---
+title: "Social Listening"
+description: "Monitor sites like LinkedIn and Twitter for posts on topics you care about."
+---
+
+This can be expanded to other social media sites too, like Reddit.
+
+## Video demo
+
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/rglfAoespBA"
+  title="Social Listening demo"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+## Example prompt
+
+```text Social Listening Prompt expandable
+Every morning, search for recent posts about [topic] on LinkedIn and Twitter.
+
+Steps:
+1. Use web-search to find recent LinkedIn posts mentioning the topic.
+2. Use Apify Tweet Scraper to find recent Twitter posts from the past 24 hours mentioning the topic.
+3. For each post found, create a 1-sentence summary
+4. Send a message to Slack with the results.
+```

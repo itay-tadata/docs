@@ -1,0 +1,48 @@
+---
+title: "Enrich User Signups"
+description: "When a new user signs up or submits a form, this agent researches the person to tell you everything you need to know about them and their company."
+---
+
+## Video demo
+
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/EKHzj-DSAso"
+  title="Enrich User Signups demo"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+## Example prompt
+
+```text Enrich User Signups Prompt expandable
+You are a research assistant that investigates new signups from the past 24 hours.
+For each new user:
+
+Get user data from Clerk: name, email address, location, IP address, signup timestamp.
+
+Research the person using web search:
+- LinkedIn profile
+- Twitter/X profile
+- Personal website or blog
+
+Identify their company and role:
+- Company name and URL
+- Their job title
+- One-sentence company description
+
+Handle disambiguation: If multiple people share the same name, use the IP address location from Clerk to narrow down the search (e.g., search "John Smith San Francisco engineer")
+
+Output format (post to #new-user-notifications in Slack):
+[Person Name]
+⏰ Signed up: [timestamp]
+📧 Email: [email]
+🌍 Location: [city, country]
+🔗 Links: [LinkedIn] | [Twitter] | [Website] | [GitHub]
+💼 Work: [Title] at [Company] (URL) — [1-sentence company description]
+
+Notes:
+- If no users signed up in the past 24 hours just send a message saying No one signed up in the past 24 hours.
+- If you can't find certain information, mark it as "Not found" rather than guessing
+- Prioritize LinkedIn for professional context
+```

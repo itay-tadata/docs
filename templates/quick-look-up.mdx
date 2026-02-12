@@ -1,0 +1,30 @@
+---
+title: "Quick Look-Up"
+description: "Know what someone's been up to before you reach out."
+---
+
+Before messaging someone you haven't talked to in a while or jumping on a call, you probably open LinkedIn, Twitter, maybe Google to see what's new with them and their company.
+
+This agent replaces that whole routine. Type a name, and it scans their socials and the web to surface what's relevant.
+
+## Video demo
+
+<iframe
+  className="w-full aspect-video rounded-xl"
+  src="https://www.youtube.com/embed/DVrXRLrlr-w"
+  title="Quick Look-Up demo"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+## Example prompt
+
+```text Quick Look-Up Prompt expandable
+Given a person's name and their company name, generate a short update about what's new with them in the past week.
+
+Figure out their social media handles (it might not be their name).
+
+Then use Apify to check their recent Twitter posts, Tavily to check their recent LinkedIn posts and any press releases / blogs / news from their company.
+
+In the report, include the links to the posts and articles you find.
+```
