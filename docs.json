@@ -1,1 +1,129 @@
-{"$schema":"https://mintlify.com/docs.json","theme":"mint","name":"Tadata","colors":{"primary":"#000000","light":"#404040","dark":"#000000"},"favicon":"/favicon.png","navigation":{"tabs":[{"tab":"Documentation","groups":[{"group":"Getting Started","pages":["getting-started/welcome","getting-started/quickstart","getting-started/key-concepts"]},{"group":"Guides","pages":["guides/using-connectors","guides/bringing-your-own","guides/testing-playground"]},{"group":"Authentication","pages":["authentication/overview","authentication/passthrough"]},{"group":"Connectors","pages":["connectors/introduction","connectors/knowledge-indexing","connectors/code-indexing"]},{"group":"Optimization","pages":["optimization/overview","optimization/analytics"]}]},{"tab":"Templates","groups":[{"group":"Templates","pages":["templates/introduction","templates/enrich-user-signups","templates/quick-look-up","templates/prep-for-meeting","templates/social-listening"]}]},{"tab":"Changelog","groups":[{"group":"Changelog","pages":["changelog/introduction"]}]}],"global":{"anchors":[{"anchor":"Platform","href":"https://app.tadata.com","icon":"grid-2"}]}},"logo":{"light":"/logo/light.svg","dark":"/logo/dark.svg"},"navbar":{"links":[{"label":"Support","href":"mailto:support@tadata.com"}],"primary":{"type":"button","label":"Platform","href":"https://app.tadata.com"}},"contextual":{"options":["copy","view","chatgpt","claude","perplexity","mcp","cursor","vscode"]},"footer":{"socials":{"x":"https://x.com/tadata_team","github":"https://github.com/tadata-org","linkedin":"https://www.linkedin.com/company/tadata-inc"}}}
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Tadata",
+  "colors": {
+    "primary": "#000000",
+    "light": "#404040",
+    "dark": "#000000"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "getting-started/welcome",
+              "getting-started/quickstart",
+              "getting-started/key-concepts"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/using-connectors",
+              "guides/bringing-your-own",
+              "guides/testing-playground"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "authentication/overview",
+              "authentication/passthrough"
+            ]
+          },
+          {
+            "group": "Connectors",
+            "pages": [
+              "connectors/introduction",
+              "connectors/knowledge-indexing",
+              "connectors/code-indexing"
+            ]
+          },
+          {
+            "group": "Optimization",
+            "pages": [
+              "optimization/overview",
+              "optimization/analytics"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Templates",
+        "groups": [
+          {
+            "group": "Templates",
+            "pages": [
+              "templates/introduction",
+              "templates/enrich-user-signups",
+              "templates/quick-look-up",
+              "templates/prep-for-meeting",
+              "templates/social-listening"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog/introduction"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Platform",
+          "href": "https://app.tadata.com",
+          "icon": "grid-2"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@tadata.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Platform",
+      "href": "https://app.tadata.com"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/tadata_team",
+      "github": "https://github.com/tadata-org",
+      "linkedin": "https://www.linkedin.com/company/tadata-inc"
+    }
+  }
+}
