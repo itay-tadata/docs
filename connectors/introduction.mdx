@@ -1,99 +1,28 @@
 ---
 title: "Connectors"
-description: "Connect your AI agents to the tools they need"
+description: "Connect your agent to the tools it needs"
 ---
 
-## What Are Connectors?
+Connectors are pre-built integrations with external services. When you add a connector to an agent, the agent can read and write to that service — sending Slack messages, creating Linear issues, searching Gmail, and so on.
 
-Connectors give AI agents the ability to interact with external services and data. Tadata offers two types of connectors:
+Tadata has 50+ connectors, with new ones added regularly.
 
-### 1. Service Integrations
+## Connecting a service
 
-Connect your agent to existing external services like Slack, GitHub, Linear, and more. Each integration provides tools that let agents interact with that service.
+Most connectors use OAuth — click **Connect**, authorize access, and you're done. Tadata handles authentication and keeps the connection active automatically.
 
-**Examples:**
+Some connectors use an API key instead. These ask you to paste a key from the service's settings page.
 
-<CardGroup cols={3}>
-  <Card title="Slack" icon="/logos/slack.svg">
-    Post messages, search conversations, create channels
-  </Card>
-  <Card title="Linear" icon="/logos/linear.svg">
-    Create and update tickets, add comments, search issues
-  </Card>
-  <Card title="GitHub" icon="/logos/github.svg">
-    Create issues, list PRs, search code, manage releases
-  </Card>
-  <Card title="Sentry" icon="/logos/sentry.svg">
-    List errors, get error details, resolve issues
-  </Card>
-  <Card title="Notion" icon="/logos/notion.svg">
-    Search pages, create documents, update databases
-  </Card>
-  <Card title="And 50+ more" icon="ellipsis">
-    New integrations added daily
-  </Card>
-</CardGroup>
+## Browse the catalog
 
-### 2. Agent Capabilities
-
-Give your agent new capabilities like searching documentation, searching code, web search, and memory. These aren't connections to external services - they're built-in tools that extend what your agent can do.
-
-<CardGroup cols={2}>
-  <Card title="Knowledge Search" icon="book" href="/connectors/knowledge-indexing">
-    **Search documentation sites**
-
-    Point to any public website (like your docs) and your agent can search it to answer questions. No need to connect to a specific service.
-
-    Example: Index your help center so support agents can find answers instantly.
-  </Card>
-  <Card title="Code Search" icon="code" href="/connectors/code-indexing">
-    **Search GitHub repositories**
-
-    Point to public GitHub repos and your agent can search the codebase for relevant code and implementations.
-
-    Example: Let triage agents find code related to production errors.
-  </Card>
-</CardGroup>
-
-## How Connectors Work
-
-1. **Connect Once**: Authenticate with OAuth or API key (Tadata stores credentials securely)
-2. **Add to Toolset**: Select which connectors your agent needs
-3. **Deploy**: Your agent can now use all the tools from those connectors
-
-Tadata handles authentication, tool definitions, response optimization, and API rate limiting automatically.
-
-## Browse Available Connectors
-
-We offer many pre-built connectors for popular services, with new connectors added daily.
-
-<Card title="View All Connectors" icon="grid-2" href="https://app.tadata.com/connectors">
-  Browse the full catalog in your dashboard
+<Card title="View all connectors" icon="grid-2" href="https://app.tadata.com/connectors">
+  Browse the full catalog in the platform
 </Card>
 
-**Don't see what you need?** Click **Request Connector** in the catalog - we'll do our best to add it and get back to you.
+**Popular connectors:** Slack, Gmail, Google Calendar, GitHub, Linear, HubSpot, Notion, Apollo, Google Sheets, Fathom, Granola
 
-## Bring Your Own API
+## Missing a connector?
 
-Need a custom or private API? Upload your OpenAPI spec or integrate an existing MCP server.
+Click **Request Connector** in the catalog and we'll do our best to add it.
 
-<Card title="Bring Your Own API" icon="code" href="/guides/bringing-your-own">
-  Learn how to add custom connectors
-</Card>
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Using Connectors" icon="book" href="/guides/using-connectors">
-    Guide to connecting and managing services
-  </Card>
-  <Card title="View Recipes" icon="book-open" href="/recipes/introduction">
-    Pre-configured connector combinations for common use cases
-  </Card>
-  <Card title="Knowledge Indexing" icon="book" href="/connectors/knowledge-indexing">
-    Index documentation sites for agent access
-  </Card>
-  <Card title="Code Indexing" icon="code" href="/connectors/code-indexing">
-    Index GitHub repositories for code search
-  </Card>
-</CardGroup>
+You can also generate a connector with AI — describe the service you want to connect to and Tadata will build it in a few minutes.

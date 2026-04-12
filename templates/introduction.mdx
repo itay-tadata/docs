@@ -1,32 +1,91 @@
 ---
-title: "Templates Overview"
-description: "Outlines and guidance for commonly-used AI agents"
+title: "Templates"
+description: "Ready-made agents for common workflows"
 ---
 
-## Available Templates
+Templates are pre-built agents you can activate in minutes. Each one comes with a goal, instructions, and the right connectors already selected — you just authenticate and go.
+
+<Card title="Browse Templates" icon="grid-2" href="https://app.tadata.com/templates">
+  Open the template gallery in the platform
+</Card>
+
+## How to use a template
+
+<Steps>
+  <Step title="Pick a template">
+    Browse the gallery and click on one that fits your use case.
+  </Step>
+  <Step title="Connect your accounts">
+    Each template lists the services it needs. Click to authenticate — most use one-click OAuth.
+  </Step>
+  <Step title="Review the instructions">
+    The agent comes with a pre-written prompt. Edit it if you want to customize the behavior (optional).
+  </Step>
+  <Step title="Run it">
+    Most templates are set up to run on a schedule automatically. You can also start a conversation with your agent at any time.
+  </Step>
+</Steps>
+
+## Available templates
+
+### Sales
 
 <CardGroup cols={2}>
-  <Card title="Enrich User Signups" icon="user-plus" href="/templates/enrich-user-signups">
-    **Research new signups automatically**
-
-    When a new user signs up or submits a form, this agent researches the person to tell you everything you need to know about them and their company.
+  <Card title="Identify Leads from Competitor Site" icon="crosshairs" href="/templates/identify-leads-from-competitor-site">
+    Scrape competitor case studies and extract a list of potential leads into a Google Sheet.
   </Card>
-
-  <Card title="Quick Look-Up" icon="magnifying-glass" href="/templates/quick-look-up">
-    **Know what someone's been up to before you reach out**
-
-    Type a name and this agent scans their socials and the web to surface what's relevant—replacing the LinkedIn, Twitter, and Google routine.
+  <Card title="Extract Conference Attendees" icon="users" href="/templates/extract-conference-attendees">
+    Research an upcoming conference and pull attendee names, titles, and companies into a spreadsheet.
   </Card>
-
-  <Card title="Automate Meeting Prep" icon="calendar" href="/templates/prep-for-meeting">
-    **Compile briefing docs before your meetings**
-
-    Get a brief before each meeting that synthesizes interactions, notes, and relevant news.
+  <Card title="New Role Detection" icon="briefcase" href="/templates/new-role-detection">
+    Find people who recently started new roles matching your criteria, enriched with contact info — delivered to your inbox weekly.
   </Card>
-
-  <Card title="Social Listening" icon="megaphone" href="/templates/social-listening">
-    **Monitor mentions and conversations**
-
-    Track what's being said about your brand, products, or topics across social channels.
+  <Card title="Identify Leads from Job Postings" icon="magnifying-glass" href="/templates/identify-leads-from-job-postings">
+    Use hiring activity as a buying signal — find companies hiring for roles your product serves and get the right contact at each one.
+  </Card>
+  <Card title="Prep for Meetings" icon="calendar" href="/templates/prep-for-meetings">
+    Get a briefing email before every meeting with an external contact, pulling from your CRM and email history.
+  </Card>
+  <Card title="Personalize Apollo Sequences" icon="envelope" href="/templates/personalize-apollo-sequences">
+    Research your prospects and draft hyper-personalized outreach messages for your Apollo sequences.
   </Card>
 </CardGroup>
+
+### Recruiting
+
+<CardGroup cols={2}>
+  <Card title="Find Jobs to Apply To" icon="file-lines" href="/templates/find-jobs-to-apply-to">
+    Monitor job boards weekly for roles matching your criteria and get a curated list delivered to your inbox.
+  </Card>
+</CardGroup>
+
+### Marketing
+
+<CardGroup cols={2}>
+  <Card title="LinkedIn Post Idea Generator" icon="lightbulb" href="/templates/linkedin-post-idea-generator">
+    Synthesize insights from customer calls and internal meetings into fresh LinkedIn post ideas — sent to Slack every week.
+  </Card>
+</CardGroup>
+
+### Development
+
+<CardGroup cols={2}>
+  <Card title="Release Notes Generator" icon="file-lines" href="/templates/release-notes-generator">
+    Automatically generate release notes by correlating GitHub activity with Linear issues.
+  </Card>
+  <Card title="Create Issues from Meeting Recordings" icon="microphone" href="/templates/create-issues-for-bug-reports">
+    Monitor meeting recordings for feature requests and bug reports, and create structured issues in Linear automatically.
+  </Card>
+</CardGroup>
+
+### Productivity
+
+<CardGroup cols={2}>
+  <Card title="Sync Two Gmail Calendars" icon="calendar-days" href="/templates/sync-two-gmail-calendars">
+    Keep two Google Calendar accounts in sync — ideal for managing work and personal calendars together.
+  </Card>
+</CardGroup>
+
+<Note>
+  Don't see what you need? You can build a custom agent from scratch or request a new template from within the platform.
+</Note>

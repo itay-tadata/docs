@@ -1,98 +1,55 @@
 ---
 title: "Quickstart"
-description: "Connect your first integration in 5 minutes"
+description: "Build your first agent in 5 minutes"
 ---
 
-## Overview
-
-This guide walks you through connecting your first integration using Tadata's optimized connectors. You'll connect Slack and test it in just 3 steps.
+The fastest way to get started is with a template — a pre-built agent with instructions and connectors already set up.
 
 <Info>
-  **Prerequisites:**
-  - A Tadata account ([sign up here](https://app.tadata.com/signup))
-  - A Slack workspace (for this example)
+  **You'll need:** A Tadata account ([sign up here](https://app.tadata.com/signup))
 </Info>
 
-## Step 1: Choose Integration
+## Step 1: Pick a template
 
-1. Log in to your [Tadata Dashboard](https://app.tadata.com)
-2. Navigate to **Connectors**
-3. Find **Slack**
+1. Log in to [Tadata](https://app.tadata.com)
+2. Go to **Templates** in the sidebar
+3. Browse the gallery and click on a template that fits your goal
 
-<Tip>
-  For this quickstart, we'll use Slack for team communication. You can connect any of our integrations.
-</Tip>
+Not sure which to pick? Try [Prep for Meetings](/templates/prep-for-meetings) — it's a good first agent that connects to tools most people already use.
 
-## Step 2: Authenticate
+## Step 2: Connect your accounts
 
-1. Click **Connect** on the Slack connector
-2. Authorize with OAuth (redirects to Slack)
-3. Grant permissions and select your workspace
+Each template lists the services it needs. Click each connector to authenticate — most use one-click OAuth and take a few seconds.
 
-<Frame>
-  <img src="/images/slack-oauth.png" alt="Slack OAuth Authorization" />
-</Frame>
+You can skip authentication for now and come back to it later.
 
-<Check>
-  Done! Your Slack integration is connected and optimized automatically.
-</Check>
+## Step 3: Review the instructions
 
-## Step 3: Test in Playground
+The agent comes with a pre-written prompt explaining what it should do. Read through it and edit anything you want to customize — for example, changing which Slack channel to post to, or what kinds of roles to search for.
 
-Now verify your integration works:
+## Step 4: Run your agent
 
-1. Navigate to **Toolsets** in your dashboard
-2. Find your newly created Slack toolset
-3. Click **Playground**
-4. Try a command:
+Click **Create Agent**. Most templates are set to run on a schedule automatically — you don't need to do anything else.
 
-```text
-Post "Hello from Tadata!" to #general
-```
-
-You'll see the tool execute in real-time and your message appear in Slack.
+You can also start a conversation with your agent at any time to run it on demand or ask it to do something specific.
 
 <Check>
-  Your integration is working! You can now connect it to Claude Desktop, Cursor, or use it programmatically.
+  Your agent is live. It will run automatically on its schedule and you can chat with it whenever you want.
 </Check>
 
-## Connecting to Your AI Agent
-
-Ready to use your integration? Follow the instructions in the app to connect the toolset to your agent, or connect to any agent with an MCP client.
-
-## What's Next?
+## What's next?
 
 <CardGroup cols={2}>
-  <Card title="Add More Integrations" icon="plus" href="/guides/using-connectors">
-    Connect GitHub, Linear, Sentry, and more
+  <Card title="Browse all templates" icon="grid-2" href="/templates/introduction">
+    Explore all 11 ready-made agents
   </Card>
-  <Card title="Bring Your Own API" icon="upload" href="/guides/bringing-your-own">
-    Upload an OpenAPI spec or integrate existing tools
+  <Card title="Build a custom agent" icon="wand-magic-sparkles" href="/agents/building-an-agent">
+    Describe what you want and Tadata builds it
   </Card>
-  <Card title="Explore Recipes" icon="book-open" href="/recipes/introduction">
-    Pre-configured combinations for common workflows
+  <Card title="Connectors" icon="plug" href="/connectors/introduction">
+    See all the services your agent can connect to
   </Card>
-  <Card title="View Analytics" icon="chart-line" href="/optimization/analytics">
-    Monitor usage and performance
+  <Card title="Triggers" icon="clock" href="/agents/triggers">
+    Schedule agents or trigger them from external events
   </Card>
 </CardGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="OAuth authorization failed">
-    - Check that popup blockers are disabled
-    - Try again in an incognito/private browser window
-    - Ensure you have admin access to the Slack workspace
-  </Accordion>
-
-  <Accordion title="Tool execution errors in Playground">
-    - Verify your Slack account has necessary permissions
-    - Check that the workspace is still connected
-    - Try reconnecting the Slack account
-  </Accordion>
-</AccordionGroup>
-
-<Note>
-  **Need more help?** Check out our [Testing Playground guide](/guides/testing-playground) or contact [support@tadata.com](mailto:support@tadata.com).
-</Note>

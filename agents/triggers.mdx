@@ -1,0 +1,38 @@
+---
+title: "Triggers"
+description: "Schedule your agent to run automatically"
+---
+
+By default, you run an agent by starting a conversation with it. Triggers let your agent run on its own — on a schedule or when something happens externally.
+
+## Adding a trigger
+
+The easiest way is to just tell your agent in conversation:
+
+- *"Run every Monday at 9am"*
+- *"Change the schedule to every weekday morning"*
+- *"Add a webhook trigger"*
+
+The agent will set it up for you. Alternatively, go to the agent's **Build** tab → **Add Trigger** and configure it from there.
+
+## Schedule triggers
+
+A schedule trigger runs your agent automatically at a set time — for example, every Monday morning, or every night before you go to sleep.
+
+You can add multiple schedules to the same agent.
+
+<Tip>
+  Most templates come with a schedule already configured. You can change it by asking your agent or from the Build tab.
+</Tip>
+
+## Webhook triggers
+
+A webhook trigger lets an external system kick off your agent. When the webhook receives a request, the agent starts a new run with the request data as its input.
+
+This is useful for event-driven workflows — for example, running an agent whenever a new row is added to a spreadsheet, or when a form is submitted.
+
+To get your webhook URL, ask your agent to add a webhook trigger, or go to **Build** → **Add Trigger** → **Webhook**.
+
+## Running manually
+
+You can always start a conversation with your agent to run it on demand. This is useful for testing or for agents that are too context-specific to automate on a fixed schedule.

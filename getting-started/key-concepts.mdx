@@ -1,80 +1,35 @@
 ---
 title: "Key Concepts"
-description: "Essential terms and concepts for using Tadata"
+description: "The core ideas behind Tadata"
 ---
-
-## Connector
-
-A **connector** is a pre-built integration for a specific service (like Slack, GitHub, or Linear). Each connector includes:
-
-- Authentication setup (OAuth or API key)
-- Available tools/operations
-- Optimized responses for AI usage
-
-**Example:** The Slack connector lets AI agents post messages, create channels, and search conversations.
-
-## Toolset
-
-A **toolset** is a collection of connectors packaged together for your AI agent to use. You can combine multiple connectors into one toolset.
-
-**Examples:**
-- Single connector: Just Slack
-- Multiple connectors: Slack + Linear + GitHub (for a triage workflow)
-
-Each toolset gets a unique URL that you connect to your AI agent.
-
-## Tool
-
-A **tool** is a specific operation within a connector. Tools are what your AI agent actually executes.
-
-**Examples from Slack connector:**
-- `post_message` - Send a message to a channel
-- `list_channels` - Get all channels in workspace
-- `create_channel` - Create a new channel
-
-## MCP (Model Context Protocol)
-
-**MCP** is the standard protocol that lets AI agents communicate with external tools. Think of it as the language AI agents use to call tools.
-
-Tadata handles all the MCP complexity for you - you don't need to understand the protocol to use it.
 
 ## Agent
 
-An **agent** is an AI system that can use tools to perform tasks. Examples include Claude Desktop, Cursor, or your custom AI implementation.
+An **agent** is an AI worker you build in Tadata. It has a goal (defined by its instructions), the tools it needs to do its job (connectors), and a way to run (triggers or chat).
 
-Agents use MCP to discover available tools and execute them based on user requests.
+**Example:** A meeting prep agent that checks your calendar each morning, looks up each external attendee in your CRM, and emails you a briefing.
 
-## Common Terms
+## Template
 
-| Term | Definition |
-|------|------------|
-| **OAuth** | Secure authentication method where you authorize Tadata to access a service on your behalf |
-| **Playground** | Interactive environment in Tadata to test your toolsets before connecting to agents |
-| **Deployment** | A specific version of your toolset configuration |
-| **Integration** | Another term for connector - a connection to an external service |
+A **template** is a ready-made agent for a specific use case. It comes with instructions and connectors already configured — you just authenticate and run.
 
-## How It All Fits Together
+Templates are the fastest way to get started. Browse them in the [Templates](/templates/introduction) section.
 
-```
-1. You connect a Connector (e.g., Slack)
-2. Tadata creates a Toolset with available Tools
-3. Your Agent connects to the Toolset via MCP
-4. Agent can now execute Tools (e.g., post_message)
-```
+## Connector
 
-## Next Steps
+A **connector** is a pre-built integration with an external service — Slack, Gmail, GitHub, HubSpot, and 50+ more. When you add a connector to an agent, the agent can read and write to that service.
 
-<CardGroup cols={2}>
-  <Card title="Using Connectors" icon="plug" href="/guides/using-connectors">
-    Learn how to browse and connect integrations
-  </Card>
-  <Card title="Testing Playground" icon="flask" href="/guides/testing-playground">
-    Test your toolsets before deploying
-  </Card>
-  <Card title="Recipes" icon="book-open" href="/recipes/introduction">
-    Pre-configured combinations for common workflows
-  </Card>
-  <Card title="Authentication" icon="key" href="/authentication/overview">
-    Understanding OAuth and API keys
-  </Card>
-</CardGroup>
+Connecting a service takes one click for most tools (OAuth handles the authentication automatically).
+
+## Trigger
+
+A **trigger** is what makes your agent run. There are two types:
+
+- **Schedule** — the agent runs automatically at a set time (e.g. every Monday morning, every night at 2am)
+- **Webhook** — an external system kicks off the agent when something happens
+
+You can also start a conversation with any agent manually at any time.
+
+## Conversation
+
+A **conversation** is a chat session with your agent. You can use it to run the agent on demand, ask it to do something specific, or adjust its behavior. Conversations are saved so you can review what your agent did.

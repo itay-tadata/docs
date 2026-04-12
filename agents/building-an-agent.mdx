@@ -1,0 +1,39 @@
+---
+title: "Building an Agent"
+description: "Create a custom agent from scratch"
+---
+
+If the templates don't cover your use case, you can build a custom agent by describing what you want in plain language.
+
+## Create a new agent
+
+1. Click **New Agent** in the sidebar
+2. Describe your goal in the text box — for example: *"Monitor our Slack for customer complaints and create a Linear issue for each one"*
+3. Tadata generates a name, instructions, and suggests the connectors your agent will need
+4. Review the configuration, authenticate any connectors, and click **Create**
+
+You don't need to get the instructions perfect upfront. Once your agent is created, you can refine everything by chatting with it.
+
+## Editing your agent
+
+Your agent's instructions, connectors, and settings can all be changed at any time. The easiest way is to just tell it what you want to change in a conversation:
+
+- *"Also send a Slack notification when you create an issue"*
+- *"Focus only on complaints about billing"*
+- *"Remove the GitHub connector, I don't need it"*
+
+The agent will update its own configuration based on your instructions.
+
+You can also edit settings directly from the agent's **Build** tab.
+
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Set up a trigger" icon="clock" href="/agents/triggers">
+    Schedule your agent to run automatically
+  </Card>
+  <Card title="Browse connectors" icon="plug" href="/connectors/introduction">
+    See all the services your agent can connect to
+  </Card>
+</CardGroup>
