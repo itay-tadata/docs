@@ -1,0 +1,32 @@
+---
+title: "Release Notes Generator"
+description: "Automatically generate release notes from GitHub and Linear"
+---
+
+This agent correlates GitHub activity with completed Linear issues to produce structured release notes — organized by features, bug fixes, and improvements, with references to the relevant PRs and issue IDs.
+
+## What it does
+
+1. Queries GitHub for all commits, pull requests, and deployments merged to production in a given timeframe
+2. Queries Linear for all issues marked as done in the same period
+3. Correlates the two to understand what was shipped and why
+4. Drafts release notes organized by category: Features, Bug Fixes, Improvements
+
+You define the timeframe by editing the agent's instructions, or by specifying it in a conversation.
+
+## Connectors
+
+| Connector | What it's used for |
+|---|---|
+| GitHub | Access commits, pull requests, and releases |
+| Linear | Find completed issues and their details |
+
+## How to run it
+
+Runs automatically Monday through Friday at 9am. You can also run it on demand by starting a conversation and specifying the timeframe.
+
+## Get started
+
+<Card title="Use this template" icon="rocket" href="https://app.tadata.com/templates/release-notes-generator">
+  Open in Tadata
+</Card>

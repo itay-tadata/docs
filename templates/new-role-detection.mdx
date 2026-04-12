@@ -1,0 +1,33 @@
+---
+title: "New Role Detection"
+description: "Find people who recently started new roles matching your criteria"
+---
+
+This agent runs every week and finds people who recently changed jobs into roles you care about. It searches for matching profiles, enriches them with contact details, and emails you a structured report.
+
+## What it does
+
+1. Searches for people who started a new role in the past 3 months matching your criteria (title, industry, location, company size)
+2. Enriches each contact with email, LinkedIn URL, and phone where available
+3. Emails you a summary with a full results table — name, title, company, start date, and contact info
+
+You define the criteria (job title, company size, location, industry) by editing the agent's instructions.
+
+## Connectors
+
+| Connector | What it's used for |
+|---|---|
+| People & Company Finder | Search for people who recently changed roles |
+| Apollo | Enrich contacts with missing details |
+| Exa | Web search fallback for finding LinkedIn profiles |
+| Gmail | Send the weekly email report |
+
+## How to run it
+
+Runs automatically every Monday at 9am.
+
+## Get started
+
+<Card title="Use this template" icon="rocket" href="https://app.tadata.com/templates/new-role-detection">
+  Open in Tadata
+</Card>

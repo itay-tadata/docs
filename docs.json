@@ -22,33 +22,16 @@
             ]
           },
           {
-            "group": "Guides",
+            "group": "Agents",
             "pages": [
-              "guides/using-connectors",
-              "guides/bringing-your-own",
-              "guides/testing-playground"
-            ]
-          },
-          {
-            "group": "Authentication",
-            "pages": [
-              "authentication/overview",
-              "authentication/passthrough"
+              "agents/building-an-agent",
+              "agents/triggers"
             ]
           },
           {
             "group": "Connectors",
             "pages": [
-              "connectors/introduction",
-              "connectors/knowledge-indexing",
-              "connectors/code-indexing"
-            ]
-          },
-          {
-            "group": "Optimization",
-            "pages": [
-              "optimization/overview",
-              "optimization/analytics"
+              "connectors/introduction"
             ]
           }
         ]
@@ -60,10 +43,17 @@
             "group": "Templates",
             "pages": [
               "templates/introduction",
-              "templates/enrich-user-signups",
-              "templates/quick-look-up",
-              "templates/prep-for-meeting",
-              "templates/social-listening"
+              "templates/prep-for-meetings",
+              "templates/sync-two-gmail-calendars",
+              "templates/new-role-detection",
+              "templates/identify-leads-from-job-postings",
+              "templates/find-jobs-to-apply-to",
+              "templates/personalize-apollo-sequences",
+              "templates/linkedin-post-idea-generator",
+              "templates/identify-leads-from-competitor-site",
+              "templates/release-notes-generator",
+              "templates/create-issues-for-bug-reports",
+              "templates/extract-conference-attendees"
             ]
           }
         ]
