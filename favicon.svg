@@ -1,19 +1,6 @@
-<svg width="720" height="729" viewBox="0 0 720 729" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="720" height="720" fill="black"/>
-<rect x="687.777" y="289.316" width="2.16646" height="14.4087" transform="rotate(45 687.777 289.316)" fill="black"/>
-<rect x="693.272" y="294.812" width="0.859705" height="3.33565" transform="rotate(135 693.272 294.812)" fill="black"/>
-<rect x="686.221" y="287.76" width="0.859705" height="3.33565" transform="rotate(135 686.221 287.76)" fill="black"/>
-<rect x="694.918" y="289.98" width="0.859705" height="3.33565" transform="rotate(90 694.918 289.98)" fill="black"/>
-<rect x="684.945" y="289.98" width="0.859705" height="3.33565" transform="rotate(90 684.945 289.98)" fill="black"/>
-<rect x="692.665" y="285.4" width="0.859705" height="3.33565" transform="rotate(45 692.665 285.4)" fill="black"/>
-<rect x="687.834" y="283.756" width="0.859705" height="3.33565" fill="black"/>
-<rect x="687.834" y="293.729" width="0.859705" height="3.33565" fill="black"/>
-<rect x="410.121" y="272.83" width="63" height="419" transform="rotate(45 410.121 272.83)" fill="white"/>
-<rect x="569.928" y="432.637" width="25" height="97" transform="rotate(135 569.928 432.637)" fill="white"/>
-<rect x="364.867" y="227.576" width="25" height="97" transform="rotate(135 364.867 227.576)" fill="white"/>
-<rect x="617.764" y="292.15" width="25" height="97" transform="rotate(90 617.764 292.15)" fill="white"/>
-<rect x="327.764" y="292.15" width="25" height="97" transform="rotate(90 327.764 292.15)" fill="white"/>
-<rect x="552.25" y="158.986" width="25" height="97" transform="rotate(45 552.25 158.986)" fill="white"/>
-<rect x="411.764" y="111.15" width="25" height="97" fill="white"/>
-<rect x="411.764" y="401.15" width="25" height="97" fill="white"/>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.7513 1.66675H7.20896V7.06811H12.7513V1.66675Z" fill="#0A0A0A"/>
+<path d="M7.20896 7.06811L1.66664 7.06821V12.4696H7.20898L7.20896 7.06811Z" fill="#0A0A0A"/>
+<path d="M18.3333 7.06821H12.791V12.4696H18.3333V7.06821Z" fill="#0A0A0A"/>
+<path d="M12.7513 12.4639H7.20896V17.8652H12.7513V12.4639Z" fill="#0A0A0A"/>
 </svg>
