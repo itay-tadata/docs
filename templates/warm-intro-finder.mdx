@@ -1,29 +1,17 @@
 ---
 title: "Warm Intro Finder"
-description: "Surface the best introduction paths from your team to target contacts on LinkedIn"
+description: "Surface the best LinkedIn intro paths from your team to any target contact"
 ---
 
-Find the warmest path from your team to any target contact on LinkedIn. The agent checks for direct connections first, then discovers second-degree paths through the target's colleagues — surfacing mutual connection counts and shared experiences so your intro ask lands with the right context.
+Find the warmest path from your team to any target contact on LinkedIn. The agent checks for direct connections first, then finds second-degree paths through the target’s colleagues — surfacing mutual connection counts and shared experiences so your intro request lands with the right context.
 
 ## What it does
 
-1. Accepts a list of target LinkedIn URLs as input
-2. Checks if any team member (authenticated LinkedIn account) is directly connected to each target
-3. If no direct connection exists, finds colleagues at the target's company who share a connection with a team member
-4. Fetches full profiles of the relevant pair to identify shared experiences (same university, former employer, program like YC, etc.)
+1. Accepts a list of target LinkedIn profile URLs
+2. Checks if any team member is directly connected to each target
+3. If no direct connection exists, finds colleagues at the target’s company who are connected to a team member
+4. Compares profiles to identify shared experiences (same university, former employer, programs like YC)
 5. Outputs a structured table with every intro path, network distance, mutual connection counts, and shared context
-
-## Output columns
-
-| Column | Description |
-|---|---|
-| Target Name / Title / Company | Who you're trying to reach |
-| Teammember Name | The team member with the connection |
-| Network Distance | Direct (1st) or via colleague (2nd) |
-| Colleague Name / Title / LinkedIn | For second-degree paths only |
-| Mutual Connection Count | Shared connections with target or colleague |
-| Shared Experiences | Overlapping university, employer, or programs |
-| No Connection Found | TRUE if no path was found |
 
 ## Connectors
 
@@ -31,11 +19,11 @@ Find the warmest path from your team to any target contact on LinkedIn. The agen
 |---|---|
 | LinkedIn Automation | Search connections and find mutual contacts |
 | LinkedIn Profile Scraper | Fetch full profiles for shared experience analysis |
-| Google Sheets | Store and share the warm intro results table |
+| Google Sheets | Store and share the warm intro results |
 
 ## How to run it
 
-Run on demand — provide a list of target LinkedIn profile URLs and the agent will find the best intro paths across all authenticated team LinkedIn accounts.
+Run on demand — provide a list of target LinkedIn profile URLs and the agent finds the best intro paths across all authenticated team LinkedIn accounts.
 
 ## Get started
 
