@@ -43,6 +43,7 @@
             "group": "Templates",
             "pages": [
               "templates/introduction",
+              "templates/warm-intro-finder",
               "templates/prep-for-meetings",
               "templates/sync-two-gmail-calendars",
               "templates/new-role-detection",
