@@ -54,7 +54,10 @@
               "templates/identify-leads-from-competitor-site",
               "templates/release-notes-generator",
               "templates/create-issues-for-bug-reports",
-              "templates/extract-conference-attendees"
+              "templates/extract-conference-attendees",
+              "templates/turn-new-linkedin-connections-into-prospects",
+              "templates/kondo-inbox-zero",
+              "templates/follow-up-on-todays-calls"
             ]
           }
         ]
