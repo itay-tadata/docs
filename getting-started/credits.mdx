@@ -1,0 +1,31 @@
+---
+title: "Understanding Credits"
+description: "How Tadata measures usage and what each agent run costs"
+---
+
+Credits are Tadata's unit of usage. Every time your agent does work, it draws from your monthly credit allowance.
+
+## How credits are spent
+
+Each agent run is made up of steps, and each step costs credits:
+
+**Thinking steps** — every time the agent reasons about what to do next, it costs 1 credit. A typical run involves several of these.
+
+**Tool calls** — every time the agent takes an action (reading a calendar, sending a Slack message, searching the web, writing to a spreadsheet), it costs credits. Standard tool calls cost 1 credit each.
+
+**Some tools cost more.** Data-intensive tools that fetch or enrich detailed records cost additional credits to reflect the underlying cost of the data. For example, searching for people via People Finder costs 10 credits per result returned — because each result is a rich, verified contact record pulled from a live data source. Each connector's page lists its credit costs.
+
+## A practical example
+
+An agent that runs once a day, checks your calendar, looks up each external attendee in your CRM, and sends you a Slack briefing might use roughly:
+
+- 3 thinking steps = 3 credits
+- 1 calendar read = 1 credit
+- 5 CRM lookups = 5 credits
+- 1 Slack message = 1 credit
+
+**Total: around 10 credits per run** — that's 300 credits a month if it runs every day.
+
+## Tracking your usage
+
+You can see how many credits you've used in the **Usage** tab.
