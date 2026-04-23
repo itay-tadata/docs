@@ -19,14 +19,14 @@
               "getting-started/welcome",
               "getting-started/quickstart",
               "getting-started/key-concepts",
-              "getting-started/credits"
             ]
           },
           {
             "group": "Agents",
             "pages": [
               "agents/building-an-agent",
-              "agents/triggers"
+              "agents/triggers",
+              "agents/credits"
             ]
           },
           {
