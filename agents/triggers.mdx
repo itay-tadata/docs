@@ -41,6 +41,20 @@ To pause or resume a trigger, go to the agent's **Build** tab and toggle the tri
 
 A paused trigger will not fire until you resume it. All trigger settings are preserved while paused.
 
+## Agent-managed triggers
+
+Agents can also pause and resume their own triggers autonomously during a run. This lets you build smarter workflows where the agent self-manages its own schedule based on what it finds.
+
+For example, an agent can:
+- Pause its own daily trigger when there's nothing new to process
+- Resume a paused trigger once a relevant condition is met
+
+To enable this, instruct your agent to manage its own triggers as part of its logic — no manual intervention required.
+
+## Trigger failure notifications
+
+When one of your agent's triggers fails to run, you'll receive an email notification so you're always aware of what's happening with your automated workflows.
+
 ## Running manually
 
 You can always start a conversation with your agent to run it on demand. This is useful for testing or for agents that are too context-specific to automate on a fixed schedule.
