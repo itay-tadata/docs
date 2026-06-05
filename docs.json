@@ -26,6 +26,7 @@
             "pages": [
               "agents/building-an-agent",
               "agents/triggers",
+              "agents/channels",
               "agents/credits"
             ]
           },
