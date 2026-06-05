@@ -1,0 +1,47 @@
+---
+title: "Channels"
+description: "Trigger your agents from Slack and receive replies directly in the conversation"
+---
+
+Channels connect your Tadata agents to external messaging platforms. Instead of opening Tadata to start a conversation, you can message your agent from wherever your team already communicates — and get replies there too.
+
+## Slack
+
+### Connecting Slack
+
+Slack is connected once per organization:
+
+1. Go to **Settings** → **Channels**
+2. Click **Connect Slack** and authorize Tadata to access your workspace
+
+### Subscribing an agent to channels
+
+In your agent's **Build** tab, open the **Channels** section:
+
+1. Select your connected Slack workspace
+2. Pick one or more channels for the agent to listen in
+3. Set one channel as the **default** — this is used when the agent posts proactively (not in response to an incoming message)
+
+<Note>
+  Tadata joins public channels automatically. For private channels, invite the bot first: `/invite @tadata`
+</Note>
+
+### Triggering your agent from Slack
+
+Send a message in any channel the agent is subscribed to and it will start a new conversation. The agent replies in a thread under your message.
+
+Reply to an existing agent thread to continue the same conversation — the agent picks up where it left off.
+
+<Note>
+  Only the Tadata user who configured the subscription can trigger the agent. If someone else sends a message in the channel, they'll receive an invitation to connect their own agent.
+</Note>
+
+### What you see while the agent runs
+
+- Your message gets an ⏳ reaction while the agent is working
+- On success: ✅ reaction and the agent's reply in the thread
+- On failure: ❌ reaction, a human-readable error message, and a link to view the full conversation in Tadata
+
+### Proactive posts
+
+When an agent uses the Slack connector to post a message to a channel, replies to that post are routed back to the agent — even if the channel has no subscription configured. This lets your agent initiate conversations in Slack and continue them naturally.
