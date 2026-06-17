@@ -1,0 +1,36 @@
+---
+title: "Multi-Agent Workflows"
+description: "Run parallel sub-tasks and follow along in chat"
+---
+
+When a task is too large or complex for a single pass, your agent can break it into parallel sub-tasks and run them concurrently. Each sub-task is handled by its own sub-agent — and they all run at the same time.
+
+## How it works
+
+Your agent decides when to spawn sub-agents. This typically happens when:
+
+- A task can be split into independent parts (for example, researching 10 companies in parallel)
+- You ask the agent to process a large list
+- The task benefits from running multiple operations simultaneously
+
+The agent coordinates everything and combines the results before responding.
+
+## Following progress in chat
+
+Sub-agents appear inline in the conversation as they run. Each one has an expandable row — click to see the tools it's using and what it has found so far.
+
+When multiple sub-agents run at the same time, they're grouped together with a stacked icon. Expand the group to view each one individually.
+
+A progress strip at the bottom of the chat shows how many sub-agents are running and how many have finished.
+
+## `/workflows` command
+
+Type `/workflows` in the chat input to navigate to running sub-agents. If one is active, the chat scrolls to it automatically. If several are running, a navigator opens so you can jump between them.
+
+## Task checklist
+
+When your agent breaks a task into steps, a checklist appears in the conversation. Items are checked off as the agent works through them, so you can follow its progress at a glance.
+
+## Background workflows
+
+Some tasks run entirely in the background. When the work finishes, your agent automatically picks up where it left off and continues in the same conversation — no action needed from you.
