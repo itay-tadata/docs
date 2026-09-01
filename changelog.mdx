@@ -3,6 +3,68 @@ title: "Changelog"
 description: "New features and improvements"
 ---
 
+<Update label="August 31 2026">
+  ### New Features
+
+  - **A New Connectors Page** — One page for everything: accounts that need reconnecting sit at the top, capabilities included with your plan come next, then the full catalog. Search by name or description, or filter by category, by whose accounts they are, and by catalog or in-house.
+  - **A Page for Every Connector** — Open any connector to see every account connected to it — its name, who can use it, who connected it, and whether it's healthy. Rename an account, change who it's shared with, reconnect a broken one, or remove it, all from one table.
+  - **See What a Connector Can Do** — Every connector now has a Tools page listing each action with a plain-language description. The header tells you the shape at a glance — *24 tools · all read-only* or *10 tools · 3 read · 7 actions* — so you know before connecting whether a tool can only look things up or can also make changes. It works without signing in.
+  - **Team, Personal & Private Connections** — Every connected account now carries an access level. **Team** accounts work for everyone in your workspace, **Personal** accounts follow you into any channel, and **Private** accounts stay in your direct messages with the agent. Each connector starts with a sensible default that you can change any time. See [Connections & Access](/connectors/connections).
+  - **One-Page Connector Setup** — Adding a connector used to mean three dialogs in a row. Now it's a single page: name the account, choose who can use it, and sign in. Services that need setup on their side walk you through it step by step, and an OAuth connector with nothing else to fill in is one click.
+  - **Included with Tadata** — The capabilities that come free with your plan now have their own section on the connectors page, with a card for each explaining what it does and what tools it brings.
+
+  ### Improvements
+
+  - **Honest Connection Status** — Status is now tracked per account instead of per connector, so one working account never makes a broken one beside it look fine. Anything that needs attention says *Needs reconnecting*.
+  - **Only the Owner Reconnects** — A connection runs on the account of whoever signed in, and only that person can reconnect it. If a shared account breaks and it isn't yours, your agent names the owner and offers to set up your own account instead — rather than quietly moving the whole team onto you.
+  - **No More Failed Calls** — When a connection has lost access, your agent tells you what needs reconnecting instead of firing a request that was never going to work.
+  - **Multiple Accounts Per Connector** — Connect a shared team inbox alongside individual ones. Give each account a name and your agent picks the right one for each task.
+</Update>
+
+<Update label="August 20 2026">
+  ### New Features
+
+  - **Files From Your Agent in Slack** — When the answer is a list, a report or something you'll want to forward, your agent now writes a file and attaches it to its reply — spreadsheets for tabular results, documents for briefs and reports. Up to five per message, and the reply still carries the takeaway.
+  - **You'll Always Hear When a Run Fails** — A failed run no longer disappears. Your agent replies in the thread it started in; for a scheduled task it messages whoever set it up, and if they can't be reached it posts in the channel the schedule came from.
+  - **A Heads-Up Before Credits Run Out** — When your workspace is nearly out of credits, your agent keeps the run small, delivers what it can, and tells you in its reply with a link to upgrade — instead of stopping without explanation.
+  - **Clear Messages When Credits Run Out** — Out of credits now reads as out of credits, not as an error. Work already done is saved, and a scheduled task is skipped and paused with a note to its owner rather than failing over and over.
+
+  ### Improvements
+
+  - **Your Agent Knows What Time It Is Where You Are** — It picks up your timezone from your Slack profile, so "tomorrow at 9", "end of day" and "this Friday" mean what you'd expect.
+  - **A Warm Start in Slack** — Finish setting up and your agent introduces itself in a direct message, names the tools it can already reach, and suggests a first thing to try.
+  - **Keep Talking to a Scheduled Task** — Once a scheduled run posts its first message, you can reply in that thread and carry on the conversation normally.
+</Update>
+
+<Update label="August 6 2026">
+  ### New Features
+
+  - **Send Files to Your Agent in Slack** — Drop a spreadsheet, document or transcript into a thread and your agent can read it. It picks up files posted earlier in the thread too, so you don't have to re-upload before mentioning it.
+  - **Connect a Tool Without Leaving Slack** — When your agent needs a service it isn't signed in to, it asks in the thread with a card showing the tool, why it needs it, and a sign-in button. In a direct message you can choose whether the account is for the whole team or just you.
+  - **Group DMs** — Your agent can now work in multi-person direct messages, so you can pull it into a small huddle with a few colleagues.
+
+  ### New Connectors
+
+  - **Google Ads** — Query campaigns, ad groups and performance metrics from your Google Ads account. Sign in with your own Google account, choose which advertising account a question targets, and get results back in readable numbers rather than raw API values.
+
+  ### Improvements
+
+  - **Simpler Sign-In for Some Services** — A growing set of connectors, starting with LinkedIn, now sign in through a hosted page run by the service itself — no API key to paste and no app of your own to configure.
+  - **Know Which Tool You're Authorizing** — Sign-in cards in Slack now show the connector's name, icon and description, so it's clear what you're connecting before you click.
+</Update>
+
+<Update label="July 28 2026">
+  ### New Features
+
+  - **Settings** — A new Settings page in the sidebar shows which Slack workspace is connected and lets you pick the channels your agent listens in, all in one place. Admins can uninstall from there; uninstalling is non-destructive, so reconnecting the same workspace picks up where you left off.
+  - **Private Conversations** — Direct messages and web chats are visible only to you. Conversations in a Slack channel stay visible to your workspace, like any other channel thread.
+
+  ### Improvements
+
+  - **Mention Your Agent Naturally** — A bare mention with nothing else now means "handle what's above" — useful when a conversation has already played out and you just want your agent to pick it up. Mid-sentence mentions come through intact.
+  - **Missing a Connector?** — When your agent can't find a tool for the job, it now points you to the connectors page, where anyone in your workspace can add it.
+</Update>
+
 <Update label="June 17 2026">
   ### New Features
 

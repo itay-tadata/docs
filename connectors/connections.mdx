@@ -1,0 +1,77 @@
+---
+title: "Connections & Access"
+description: "How accounts get connected, who can use them, and how to keep them healthy"
+---
+
+A **connector** is the integration — Gmail, Linear, Notion, Google Sheets. A **connection** is one account signed in to that connector.
+
+A connector can hold several connections at once. A team might connect a shared support inbox *and* each person's own inbox to the same Gmail connector, and let the agent pick the right one for each task.
+
+## Naming your accounts
+
+When you add an account you give it a name — "Support inbox", "Maya's inbox", "Marketing Google Ads". That name is how your agent tells accounts apart, so name it for how you want it used. If you don't pick one, Tadata suggests a sensible default.
+
+## Who can use a connection
+
+Every connection has an access level:
+
+| Access | Who can use it | Where |
+| --- | --- | --- |
+| **Team** | Everyone in your workspace | Any channel, and in DMs |
+| **Personal** | Only you | Any channel, and in DMs |
+| **Private** | Only you | Only in your direct messages with the agent |
+
+Each connector starts with a sensible default — a personal inbox defaults to Private, a shared team system defaults to Team. You can change it when you add the account, or any time afterwards.
+
+You pick the access level right in the setup dialog, and hovering an option explains it in plain terms before you commit.
+
+<Note>
+  Connectors that don't require signing in at all are available to everyone in the workspace, so they show no access option.
+</Note>
+
+<Tip>
+  In a busy channel, several people's messages are sometimes handled together. When that happens there's no single person asking, so only **Team** connections are available. Your agent will say so and suggest tagging the person whose account is needed, so their own message comes through with their identity.
+</Tip>
+
+## Using an account isn't owning it
+
+Team access shares the *tools*, not the account. A connection always runs on the account of the person who signed in, and that person stays its owner.
+
+This matters in two places:
+
+- **Only the owner can sign in or reconnect.** If a shared connection breaks and it isn't yours, your agent tells you whose account it is and offers to set up a connection on *your* account instead — which you can share with the team so everyone is unblocked.
+- **Removing a teammate's account from the team doesn't delete it.** The owner keeps it for their own use; it just stops being available to everyone else. The owner gets a note explaining what changed.
+
+## Connection status
+
+Status is tracked per account, not per connector — so one healthy account never makes a broken one next to it look fine.
+
+- **Active** — signed in and working.
+- **Needs reconnecting** — access was revoked or has expired. Only the account's owner can fix it.
+- **Not connected** — sign-in was never completed.
+
+When a connection has no working access, your agent stops before making the call and tells you what needs reconnecting, instead of firing a request that would fail.
+
+## Managing connections
+
+Open **Connectors** and click any connector your workspace already uses. You'll see a table of every account connected to it — the account name, its access level, who connected it, and its status.
+
+From each row you can:
+
+- **Reconnect** — sign in again to restore a broken account
+- **Edit** — rename the account or change who can use it
+- **Delete** — remove an account you own
+- **Remove from team** — stop sharing a teammate's account with the workspace
+
+A teammate's **Private** account shows up as a masked row, so you can tell the connector is in use without seeing whose account it is or anything about it.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Browse connectors" icon="plug" href="/connectors/introduction">
+    See all the services your agent can connect to
+  </Card>
+  <Card title="Working in Slack" icon="slack" href="/agents/slack">
+    Connect a tool without leaving the conversation
+  </Card>
+</CardGroup>

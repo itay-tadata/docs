@@ -26,13 +26,15 @@
             "pages": [
               "agents/building-an-agent",
               "agents/triggers",
-              "agents/credits"
+              "agents/credits",
+              "agents/slack"
             ]
           },
           {
             "group": "Connectors",
             "pages": [
-              "connectors/introduction"
+              "connectors/introduction",
+              "connectors/connections"
             ]
           }
         ]

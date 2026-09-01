@@ -1,0 +1,47 @@
+---
+title: "Working in Slack"
+description: "What you and your agent can do together in Slack"
+---
+
+Once your workspace is connected, your agent works like a teammate in Slack: mention it in a channel, or DM it directly. This page covers what that day-to-day work looks like. For connecting the workspace and choosing channels, see [Channels](/agents/channels).
+
+## Mentioning your agent
+
+Mention the agent in a channel and it replies in a thread. Reply in that thread to keep the same conversation going.
+
+A bare **@mention** with nothing else means *"handle what's above"* — useful when a conversation has already played out and you just want the agent to pick it up. Your messages reach the agent exactly as you wrote them, including mid-sentence mentions.
+
+Your agent also works in group DMs, so you can pull it into a small huddle with a few colleagues.
+
+## Files
+
+**Files your agent creates.** When the result is a list, a report, or something you'll want to forward, your agent writes a file and attaches it to its reply — spreadsheets (`.csv`) for tabular results, documents (`.md`) for reports and briefs, and plain text (`.txt`) for long raw content. Up to five files can arrive on a single reply, and the message text still carries the takeaway.
+
+**Files you send it.** Drop a file into a thread and your agent can read it — a spreadsheet to work through, a document to summarize, a transcript to pull actions from. It picks up files posted earlier in the thread too, so you don't have to re-upload before mentioning it.
+
+<Note>
+  File attachments need an up-to-date Slack app. If your workspace was connected a while ago, reconnect it under **Settings** and your agent will start attaching files.
+</Note>
+
+## Connecting a tool without leaving Slack
+
+If your agent needs a service it isn't signed in to yet, it asks right there in the thread. You get a card with the tool's name, icon and description, a line from the agent explaining why it needs it, and a **Sign in** button — plus **Skip** if you'd rather not.
+
+In a DM the card lets you choose whether the account is for the whole team or just you. In a channel, accounts are always shared with the team. Services that use an API key send you to a form on the web app, so keys never pass through Slack.
+
+Only the person the agent asked can act on the card. See [Connections & Access](/connectors/connections) for what the access levels mean.
+
+## Who can see a conversation
+
+- **Direct messages and web chats are yours.** Only you can see them.
+- **Channel conversations are visible to your workspace**, like any other channel thread.
+
+## Local time
+
+Your agent picks up your timezone from your Slack profile, so "tomorrow at 9", "end of day" and "this Friday" mean what you'd expect without you spelling out a date.
+
+## When something goes wrong
+
+You always hear back. If a run fails, your agent replies in the thread where it started. For a scheduled run, it sends a DM to whoever set the schedule — and if that person can't be reached, it posts in the channel the schedule came from, so a task never fails quietly.
+
+Once a scheduled task has posted its first message, you can reply in that thread and carry on the conversation normally.
