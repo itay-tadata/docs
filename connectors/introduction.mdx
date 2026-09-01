@@ -7,13 +7,15 @@ Connectors are pre-built integrations with external services. When you add a con
 
 Tadata has 50+ connectors, with new ones added regularly.
 
-## Connecting a service
-
-Most connectors use OAuth — click **Connect**, authorize access, and you're done. Tadata handles authentication and keeps the connection active automatically.
-
-Some connectors use an API key instead. These ask you to paste a key from the service's settings page.
-
 ## Browse the catalog
+
+The **Connectors** page is one place for everything:
+
+- **Needs attention** — accounts that have lost access and need reconnecting, right at the top
+- **Included with Tadata** — capabilities that come with your plan, ready to use with nothing to connect
+- **All connectors** — the full catalog
+
+Search by name or description, or narrow the page down by whose accounts they are, by category, or by whether a connector came from the catalog or was built in-house.
 
 <Card title="View all connectors" icon="grid-2" href="https://app.tadata.com/connectors">
   Browse the full catalog in the platform
@@ -21,8 +23,34 @@ Some connectors use an API key instead. These ask you to paste a key from the se
 
 **Popular connectors:** Slack, Gmail, Google Calendar, GitHub, Linear, HubSpot, Notion, Apollo, Google Sheets, Fathom, Granola
 
+## See what a connector can do
+
+Every connector has a **Tools** page listing every action it offers, with a plain-language description for each one. The header tells you the shape at a glance — for example *24 tools · all read-only*, or *10 tools · 3 read · 7 actions* — so you know upfront whether a connector can only look things up or can also make changes. Search the list or filter it down to reads or actions.
+
+You don't need to be signed in to look, so you can check what a connector covers before adding it.
+
+## Connecting a service
+
+Setup happens on a single page. Give the account a name, choose who can use it, and sign in.
+
+- **OAuth connectors** are one click — hit **Sign in**, authorize access, and you're done. Tadata keeps the connection active automatically.
+- **API key connectors** ask you to paste a key from the service's settings page.
+- Some services need a little setup on their side first. Those connectors walk you through it step by step, so prerequisites are spelled out instead of buried in a field description.
+
+A few connectors sign you in through a hosted page run by the service itself — no key to paste and no app of your own to configure.
+
+You can also connect a tool [straight from a Slack conversation](/agents/slack) when your agent asks for one.
+
+## Managing your accounts
+
+One connector can hold several accounts — a shared team inbox alongside individual ones — and your agent picks the right one per task. Open any connector to see every account on it, rename them, change who can use them, or reconnect one that's stopped working.
+
+<Card title="Connections & access" icon="key" href="/connectors/connections">
+  How accounts are shared, who can reconnect them, and what each status means
+</Card>
+
 ## Missing a connector?
 
 Click **Request Connector** in the catalog and we'll do our best to add it.
 
-You can also generate a connector with AI — describe the service you want to connect to and Tadata will build it in a few minutes.
+You can also generate a connector with AI — describe the service you want to connect to and Tadata will build it in a few minutes. Anyone in your workspace can do this.

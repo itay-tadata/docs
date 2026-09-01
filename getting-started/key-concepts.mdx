@@ -21,6 +21,12 @@ A **connector** is a pre-built integration with an external service — Slack, G
 
 Connecting a service takes one click for most tools (OAuth handles the authentication automatically).
 
+## Connection
+
+A **connection** is one account signed in to a connector. A connector can hold several — a shared team inbox and each person's own inbox, for instance — and each one carries a name so your agent knows which to use for which job.
+
+Every connection also has an access level: **Team** (everyone in your workspace), **Personal** (just you, anywhere) or **Private** (just you, in your direct messages). See [Connections & Access](/connectors/connections).
+
 ## Trigger
 
 A **trigger** is what makes your agent run. There are two types:
@@ -33,3 +39,5 @@ You can also start a conversation with any agent manually at any time.
 ## Conversation
 
 A **conversation** is a chat session with your agent. You can use it to run the agent on demand, ask it to do something specific, or adjust its behavior. Conversations are saved so you can review what your agent did.
+
+Direct messages and web chats are visible only to you. Conversations in a Slack channel are visible to your workspace, like any other channel thread.
