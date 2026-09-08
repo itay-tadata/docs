@@ -21,6 +21,16 @@ A schedule trigger runs your agent automatically at a set time — for example, 
 
 You can add multiple schedules to the same agent.
 
+### When a scheduled run actually starts
+
+Scheduled runs start close to the time you set, not exactly on the minute. Each schedule gets its own small start offset — up to 10 minutes past the time you picked, plus a few minutes of leeway — so that agents don't all start at the same popular times like the top of the hour.
+
+The offset is consistent for a given schedule: a 9:00 run that starts at 9:07 will keep starting around 9:07 every time, so the rhythm stays predictable.
+
+If a run needs to be finished by a certain moment, set the schedule a little earlier than your deadline.
+
+Each occurrence of a schedule starts exactly one run, even if the schedule is delivered more than once behind the scenes.
+
 <Tip>
   Most templates come with a schedule already configured. You can change it by asking your agent or from the Build tab.
 </Tip>
