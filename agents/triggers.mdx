@@ -43,6 +43,16 @@ A paused trigger will not fire until you resume it. All trigger settings are pre
 
 If an agent is blocked and can't continue — for example, because it needs authentication or doesn't know how to proceed — it will pause its triggers and notify you.
 
+### When a connector stops working
+
+If a recurring schedule fails **3 runs in a row** because a connector it depends on isn't working — for example, the account was disconnected, its sign-in expired, or the connector was removed — Tadata pauses that schedule automatically so it doesn't keep failing. You'll get a message letting you know which task was paused and which connector caused it.
+
+To get it running again, reconnect the connector from the **Connectors** page, or just ask your agent to reconnect it for you. Once the connector is working, the schedule resumes on its own and picks up again at its next scheduled time — there's nothing else to turn back on.
+
+<Note>
+  This only applies to recurring schedules. A run that succeeds resets the count, so an occasional failure won't pause your schedule.
+</Note>
+
 ## Running manually
 
 You can always start a conversation with your agent to run it on demand. This is useful for testing or for agents that are too context-specific to automate on a fixed schedule.
